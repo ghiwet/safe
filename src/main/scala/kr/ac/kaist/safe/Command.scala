@@ -137,6 +137,11 @@ case object CmdBugDetect extends CommandObj("bugDetect", CmdAnalyze >> BugDetect
   override def display(cfg: CFG): Unit = ()
 }
 
+// experimental: taint
+case object CmdTaintDetect extends CommandObj("taint", CmdAnalyze >> TaintDetect) {
+  override def display(cfg: CFG): Unit = ()
+}
+
 // help
 case object CmdHelp extends CommandObj("help", CmdBase >> Help)
 

@@ -26,7 +26,7 @@ case class StringSet(maxSetSize: Int) extends StrDomain {
     def apply(seq: String*): StrSet = StrSet(seq.toSet)
   }
   lazy val Bot: Elem = StrSet()
-
+  lazy val Untainted = Top
   def alpha(str: Str): Elem = StrSet(str)
 
   override def alpha(values: Set[Str]): Elem = {
