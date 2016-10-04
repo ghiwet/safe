@@ -19,6 +19,8 @@ trait StrDomain extends AbsDomain[Str] {
   // abstraction from all non-number string
   val Other: Elem
 
+  val Untainted: Elem
+
   def fromCharCode(n: AbsNum): Elem
 
   // abstract string element
