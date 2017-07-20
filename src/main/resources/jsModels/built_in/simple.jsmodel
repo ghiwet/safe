@@ -1,0 +1,38 @@
+Heap: {
+  #Global: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "triple": <#Global.triple, T, F, T>
+  },
+  #Global.triple: {
+    [[Call]]: fun(1),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #DOUBLE: {
+    [[Call]]: fun(2),
+    [[Class]]: "Function",
+    [[Construct]]: fun(4),
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  }
+}
+
+Function: {
+  1: [\\
+  function triple(v) {
+    return @Call(@getLoc("DOUBLE"), this, [v]) + v;
+  }
+  \\],
+  2: [\\
+  function DOUBLE(v) {
+    return v + v;
+  }
+  \\]
+}
