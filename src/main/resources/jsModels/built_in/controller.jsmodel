@@ -1,0 +1,12 @@
+Heap: {
+    #Global: {
+      "login": <string, T, F, T>,
+      "password": <string, T, F, T>
+    }
+}
+Function: {
+  1: [\\
+  function () {
+  }
+  \\]
+}
