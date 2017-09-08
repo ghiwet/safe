@@ -1,0 +1,111 @@
+Heap: {
+  #Global: {
+    "Promise": <#Promise, T, F, T>
+  },
+  #Promise: {
+    [[Call]]: fun(1),
+    [[Class]]: "Function",
+    [[Construct]]: fun(2),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "all": <#Promise.all, T, F, T>,
+    "length": <1, F, F, F>,
+    "prototype": <#Promise.prototype, F, F, F>,
+    "race": <#Promise.race, T, F, T>,
+    "reject": <#Promise.reject, T, F, T>,
+    "resolve": <#Promise.resolve, T, F, T>
+  },
+  #Promise.all: {
+    [[Call]]: fun(3),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Promise.race: {
+    [[Call]]: fun(4),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Promise.reject: {
+    [[Call]]: fun(5),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Promise.resolve: {
+    [[Call]]: fun(6),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Promise.prototype: {
+    [[Class]]: "Promise",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "catch": <#Promise.prototype.catch, T, F, T>,
+    "constructor": <#Promise, T, F, T>,
+    "then": <#Promise.prototype.then, T, F, T>
+  },
+  #Promise.prototype.catch: {
+    [[Call]]: fun(7),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Promise.prototype.then: {
+    [[Call]]: fun(8),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  }
+}
+
+Function: {
+  1: [\\
+  function () {
+  }
+  \\],
+  2: [\\
+  function () {
+  }
+  \\],
+  3: [\\
+  function () {
+  }
+  \\],
+  4: [\\
+  function () {
+  }
+  \\],
+  5: [\\
+  function () {
+  }
+  \\],
+  6: [\\
+  function () {
+  }
+  \\],
+  7: [\\
+  function () {
+  }
+  \\],
+  8: [\\
+  function () {
+  }
+  \\]
+}
