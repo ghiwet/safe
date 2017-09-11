@@ -49,6 +49,18 @@ case object IBoundThis extends IName {
 case object IBoundArgs extends IName {
   override def toString: String = s"[[BoundArgs]]"
 }
+case object IPromiseState extends IName {
+  override def toString: String = s"[[PromiseState]]"
+}
+case object IPromiseResult extends IName {
+  override def toString: String = s"[[PromiseResult]]"
+}
+case object IPromiseFulfillReactions extends IName {
+  override def toString: String = s"[[PromiseFulfillReactions]]"
+}
+case object IPromiseRejectReactions extends IName {
+  override def toString: String = s"[[PromiseRejectReactions]]"
+}
 
 abstract class IValue {
   def +(other: IValue): IValue = {
