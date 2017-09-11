@@ -1195,6 +1195,131 @@ class Semantics(
       val newExcSt = st.raiseException(excSet)
       (st1, excSt + newExcSt)
     }
+    case (NodeUtil.INTERNAL_PRO_STATE, List(exprO, exprP), None) => {
+      val (v, excSetO) = V(exprO, st)
+      val (p, excSetP) = V(exprP, st)
+      val newH = v.locset.foldLeft(st.heap) {
+        case (h, loc) => {
+          val obj = st.heap.get(loc)
+          val newObj = obj.update(IPromiseState, AbsIValueUtil(p))
+          h.update(loc, newObj)
+        }
+      }
+      val newSt = AbsState(newH, st.context).varStore(lhs, p)
+      val newExcSt = st.raiseException(excSetO ++ excSetP)
+      (newSt, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_STATE, List(expr), None) => {
+      val (v, excSet) = V(expr, st)
+      val obj = st.heap.get(v.locset)
+      val value = obj(IPromiseState).value
+      val st1 =
+        if (!v.isBottom) st.varStore(lhs, value)
+        else AbsState.Bot
+
+      val newExcSt = st.raiseException(excSet)
+      (st1, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_STATE, List(exprO, exprP), None) => {
+      val (v, excSetO) = V(exprO, st)
+      val (p, excSetP) = V(exprP, st)
+      val newH = v.locset.foldLeft(st.heap) {
+        case (h, loc) => {
+          val obj = st.heap.get(loc)
+          val newObj = obj.update(IPromiseState, AbsIValueUtil(p))
+          h.update(loc, newObj)
+        }
+      }
+      val newSt = AbsState(newH, st.context).varStore(lhs, p)
+      val newExcSt = st.raiseException(excSetO ++ excSetP)
+      (newSt, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_STATE, List(expr), None) => {
+      val (v, excSet) = V(expr, st)
+      val obj = st.heap.get(v.locset)
+      val value = obj(IPromiseState).value
+      val st1 =
+        if (!v.isBottom) st.varStore(lhs, value)
+        else AbsState.Bot
+
+      val newExcSt = st.raiseException(excSet)
+      (st1, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_RES, List(exprO, exprP), None) => {
+      val (v, excSetO) = V(exprO, st)
+      val (p, excSetP) = V(exprP, st)
+      val newH = v.locset.foldLeft(st.heap) {
+        case (h, loc) => {
+          val obj = st.heap.get(loc)
+          val newObj = obj.update(IPromiseResult, AbsIValueUtil(p))
+          h.update(loc, newObj)
+        }
+      }
+      val newSt = AbsState(newH, st.context).varStore(lhs, p)
+      val newExcSt = st.raiseException(excSetO ++ excSetP)
+      (newSt, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_RES, List(expr), None) => {
+      val (v, excSet) = V(expr, st)
+      val obj = st.heap.get(v.locset)
+      val value = obj(IPromiseResult).value
+      val st1 =
+        if (!v.isBottom) st.varStore(lhs, value)
+        else AbsState.Bot
+
+      val newExcSt = st.raiseException(excSet)
+      (st1, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_FREAC, List(exprO, exprP), None) => {
+      val (v, excSetO) = V(exprO, st)
+      val (p, excSetP) = V(exprP, st)
+      val newH = v.locset.foldLeft(st.heap) {
+        case (h, loc) => {
+          val obj = st.heap.get(loc)
+          val newObj = obj.update(IPromiseFulfillReactions, AbsIValueUtil(p))
+          h.update(loc, newObj)
+        }
+      }
+      val newSt = AbsState(newH, st.context).varStore(lhs, p)
+      val newExcSt = st.raiseException(excSetO ++ excSetP)
+      (newSt, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_FREAC, List(expr), None) => {
+      val (v, excSet) = V(expr, st)
+      val obj = st.heap.get(v.locset)
+      val value = obj(IPromiseFulfillReactions).value
+      val st1 =
+        if (!v.isBottom) st.varStore(lhs, value)
+        else AbsState.Bot
+
+      val newExcSt = st.raiseException(excSet)
+      (st1, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_RREAC, List(exprO, exprP), None) => {
+      val (v, excSetO) = V(exprO, st)
+      val (p, excSetP) = V(exprP, st)
+      val newH = v.locset.foldLeft(st.heap) {
+        case (h, loc) => {
+          val obj = st.heap.get(loc)
+          val newObj = obj.update(IPromiseRejectReactions, AbsIValueUtil(p))
+          h.update(loc, newObj)
+        }
+      }
+      val newSt = AbsState(newH, st.context).varStore(lhs, p)
+      val newExcSt = st.raiseException(excSetO ++ excSetP)
+      (newSt, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO_RREAC, List(expr), None) => {
+      val (v, excSet) = V(expr, st)
+      val obj = st.heap.get(v.locset)
+      val value = obj(IPromiseRejectReactions).value
+      val st1 =
+        if (!v.isBottom) st.varStore(lhs, value)
+        else AbsState.Bot
+
+      val newExcSt = st.raiseException(excSet)
+      (st1, excSt + newExcSt)
+    }
     case _ =>
       excLog.signal(SemanticsNotYetImplementedError(ir))
       (AbsState.Bot, AbsState.Bot)
