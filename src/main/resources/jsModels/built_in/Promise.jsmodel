@@ -72,6 +72,15 @@ Heap: {
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "length": <1, F, F, F>
+  },
+  #PromiseResolveFunctions: {
+    [[Call]]: fun(9)
+  },
+  #PromiseRejectFunctions: {
+    [[Call]]: fun(10)
+  },
+  #FulfillPromise: {
+    [[Call]]: fun(11)
   }
 }
 
@@ -81,7 +90,68 @@ Function: {
   }
   \\],
   2: [\\
-  function () {
+  function Promise (executor) {
+    // 1. If NewTarget is undefined, throw a TypeError exception.
+    // TODO: NewTarget is the ´this´ value?
+    if (this === undefined) throw new TypeError();
+    // 2. If IsCallable(executor) is false, throw a TypeError exception.
+    if (@IsCallable(executor) === false) throw new TypeError();
+    // 3. Let promise be OrdinaryCreateFromConstructor(NewTarget, "%PromisePrototype%",
+    // «[[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]]» ).
+    var promise = {};
+    // NOTE: No subclassing of Promise
+    @Prototype(promise, Promise);
+    // 4. ReturnIfAbrupt(promise).
+    // 5. Set promise's [[PromiseState]] internal slot to "pending".
+    @PromiseState(promise, "pending");
+    // 6. Set promise's [[PromiseFulfillReactions]] internal slot to a new empty List.
+    @PromiseFulfillReactions(promise, []);
+    // 7. Set promise's [[PromiseRejectReactions]] internal slot to a new empty List.
+    @PromiseRejectReactions(promise, []);
+    // 8. Let resolvingFunctions be CreateResolvingFunctions(promise).
+
+    // NOTE: Inline CreateResolvingFunctions(promise)
+    // 1. Let alreadyResolved be a new Record { [[value]]: false }.
+    // 2. Let resolve be a new built-in function object as defined in Promise Resolve Functions (25.4.1.3.2).
+    var resolve = {};
+    @Class(resolve, "Function");
+    @Prototype(resolve, Function.prototype);
+    @Call(resolve, @getLoc("PromiseResolveFunctions"));
+    @DefineOwnProperty(resolve, "length", {
+      value: 1,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 3. Set the [[Promise]] internal slot of resolve to promise.
+    @Promise(resolve, promise);
+    // 4. Set the [[AlreadyResolved]] internal slot of resolve to alreadyResolved.
+    @AlreadyResolved(resolve, false);
+    // 5. Let reject be a new built-in function object as defined in Promise Reject Functions (25.4.1.3.1).
+    var reject = {};
+    @Class(reject, "Function");
+    @Prototype(reject, Function.prototype);
+    @Call(reject, @getLoc("PromiseRejectFunctions"));
+    @DefineOwnProperty(reject, "length", {
+      value: 1,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 6. Set the [[Promise]] internal slot of reject to promise.
+    @Promise(reject, promise);
+    // 7. Set the [[AlreadyResolved]] internal slot of reject to alreadyResolved.
+    @AlreadyResolved(reject, false);
+    // 8. Return a new Record { [[Resolve]]: resolve, [[Reject]]: reject }.
+
+    // 9. Let completion be Call(executor, undefined, «resolvingFunctions.[[Resolve]],
+    // resolvingFunctions.[[Reject]]»).
+    @Call(executor, undefined, [resolve, reject]);
+    // 10. If completion is an abrupt completion, then
+    //   a. Let status be Call(resolvingFunctions.[[Reject]], undefined, «completion.[[value]]»).
+    //   b. ReturnIfAbrupt(status).
+    // 11. Return promise.
+    return promise;
   }
   \\],
   3: [\\
@@ -93,7 +163,15 @@ Function: {
   }
   \\],
   5: [\\
-  function () {
+  function reject (r) {
+    // 1. Let C be the this value.
+    // 2. If Type(C) is not Object, throw a TypeError exception.
+    if (typeof C !== 'object') throw new TypeError();
+    // 3. Let promiseCapability be NewPromiseCapability(C).
+    // 4. ReturnIfAbrupt(promiseCapability).
+    // 5. Let rejectResult be Call(promiseCapability.[[Reject]], undefined, «r»).
+    // 6. ReturnIfAbrupt(rejectResult).
+    // 7. Return promiseCapability.[[Promise]].
   }
   \\],
   6: [\\
@@ -106,6 +184,109 @@ Function: {
   \\],
   8: [\\
   function () {
+  }
+  \\],
+  9: [\\
+  function bindResolve (resolution) {
+    // 1. Assert: F has a [[Promise]] internal slot whose value is an Object.
+    // 2. Let promise be the value of F's [[Promise]] internal slot.
+    var promise = @Promise(arguments.callee);
+    // 3. Let alreadyResolved be the value of F's [[AlreadyResolved]] internal slot.
+    var alreadyResolved =  @AlreadyResolved(arguments.callee);
+    // 4. If alreadyResolved.[[value]] is true, return undefined.
+    if (alreadyResolved === true) return undefined;
+    // 5. Set alreadyResolved.[[value]] to true.
+    @AlreadyResolved(arguments.callee, true);
+
+    // 6. If SameValue(resolution, promise) is true, then
+    //   a. Let selfResolutionError be a newly created TypeError object.
+    //   b. Return RejectPromise(promise, selfResolutionError).
+    // TODO: Probably RejectPromise should be in a function and not inlined
+    // 7. If Type(resolution) is not Object, then
+    //   a. Return FulfillPromise(promise, resolution).
+    // TODO
+    // 8. Let then be Get(resolution, "then").
+    var then = resolution["then"];
+    // 9. If then is an abrupt completion, then
+    //    a. Return RejectPromise(promise, then.[[value]]).
+    // TODO
+    // 10. Let thenAction be then.[[value]].
+    // 11. If IsCallable(thenAction) is false, then
+    if (@IsCallable(then) === false) {
+      // a. Return FulfillPromise(promise, resolution).
+
+      // NOTE: No return. Inline FulfillPromise(promise, reason).
+      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
+      // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
+      var reactions = @PromiseFulfillReactions(promise);
+      // 3. Set the value of promise's [[PromiseResult]] internal slot to value.
+      @PromiseResult(promise, resolution);
+      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
+      @PromiseFulfillReactions(promise, undefined);
+      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
+      @PromiseRejectReactions(promise, undefined);
+      // 6. Set the value of promise's [[PromiseState]] internal slot to "fulfilled".
+      @PromiseState(promise, "fulfilled");
+      // 7. Return TriggerPromiseReactions(reactions, value).
+
+      // NOTE: No return. Inline TriggerPromiseReactions(reactions, argument).
+      // 1. Repeat for each reaction in reactions, in original insertion order
+      //   a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+      // NOTE: simplifying EnqueueJob behaviour
+      // TODO: this might be oversimplified a bit too much
+      for (var i = 0; i < reactions.length; i++) {
+        @Call(reactions[i], undefined, resolution);
+      }
+      // 2. Return undefined.
+      return undefined;
+    }
+    // 12. Perform EnqueueJob ("PromiseJobs", PromiseResolveThenableJob, «promise, resolution, thenAction»)
+    // NOTE: Ignore resolution as Promise case for now
+    // 13. Return undefined.
+  }
+  \\],
+  10: [\\
+  function bindReject (reason) {
+    // 1. Assert: F has a [[Promise]] internal slot whose value is an Object.
+    // 2. Let promise be the value of F's [[Promise]] internal slot.
+    var promise = @Promise(arguments.callee);
+    // 3. Let alreadyResolved be the value of F's [[AlreadyResolved]] internal slot.
+    var alreadyResolved = @AlreadyResolved(arguments.callee);
+    // 4. If alreadyResolved.[[value]] is true, return undefined.
+    if (alreadyResolved === true) return undefined;
+    // 5. Set alreadyResolved.[[value]] to true.
+    @AlreadyResolved(arguments.callee, true);
+    // 6. Return RejectPromise(promise, reason).
+
+    // NOTE: No return. Inline RejectPromise(promise, reason).
+    // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
+    // 2. Let reactions be the value of promise's [[PromiseRejectReactions]] internal slot.
+    var reactions = @PromiseRejectReactions(promise);
+    // 3. Set the value of promise's [[PromiseResult]] internal slot to reason.
+    @PromiseResult(promise, reason);
+    // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
+    @PromiseFulfillReactions(promise, undefined);
+    // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
+    @PromiseRejectReactions(promise, undefined);
+    // 6. Set the value of promise's [[PromiseState]] internal slot to "rejected".
+    @PromiseState(promise, "rejected");
+    // 7. Return TriggerPromiseReactions(reactions, reason).
+
+    // NOTE: No return. Inline TriggerPromiseReactions(reactions, argument).
+    // 1. Repeat for each reaction in reactions, in original insertion order
+    //   a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+    // NOTE: simplifying EnqueueJob behaviour
+    // TODO: this might be oversimplified a bit too much
+    for (var i = 0; i < reactions.length; i++) {
+      @Call(reactions[i], undefined, reason);
+    }
+    // 2. Return undefined.
+    return undefined;
+  }
+  \\],
+  11: [\\
+  function FullfillPromise (promise, value) {
+
   }
   \\]
 }
