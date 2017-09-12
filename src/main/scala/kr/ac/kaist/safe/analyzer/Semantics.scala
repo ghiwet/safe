@@ -1195,6 +1195,56 @@ class Semantics(
       val newExcSt = st.raiseException(excSet)
       (st1, excSt + newExcSt)
     }
+    case (NodeUtil.INTERNAL_PRO, List(exprO, exprP), None) => {
+      val (v, excSetO) = V(exprO, st)
+      val (p, excSetP) = V(exprP, st)
+      val newH = v.locset.foldLeft(st.heap) {
+        case (h, loc) => {
+          val obj = st.heap.get(loc)
+          val newObj = obj.update(IPromise, AbsIValueUtil(p))
+          h.update(loc, newObj)
+        }
+      }
+      val newSt = AbsState(newH, st.context).varStore(lhs, p)
+      val newExcSt = st.raiseException(excSetO ++ excSetP)
+      (newSt, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_PRO, List(expr), None) => {
+      val (v, excSet) = V(expr, st)
+      val obj = st.heap.get(v.locset)
+      val value = obj(IPromise).value
+      val st1 =
+        if (!v.isBottom) st.varStore(lhs, value)
+        else AbsState.Bot
+
+      val newExcSt = st.raiseException(excSet)
+      (st1, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_ALR_RES, List(exprO, exprP), None) => {
+      val (v, excSetO) = V(exprO, st)
+      val (p, excSetP) = V(exprP, st)
+      val newH = v.locset.foldLeft(st.heap) {
+        case (h, loc) => {
+          val obj = st.heap.get(loc)
+          val newObj = obj.update(IAlreadyResolved, AbsIValueUtil(p))
+          h.update(loc, newObj)
+        }
+      }
+      val newSt = AbsState(newH, st.context).varStore(lhs, p)
+      val newExcSt = st.raiseException(excSetO ++ excSetP)
+      (newSt, excSt + newExcSt)
+    }
+    case (NodeUtil.INTERNAL_ALR_RES, List(expr), None) => {
+      val (v, excSet) = V(expr, st)
+      val obj = st.heap.get(v.locset)
+      val value = obj(IAlreadyResolved).value
+      val st1 =
+        if (!v.isBottom) st.varStore(lhs, value)
+        else AbsState.Bot
+
+      val newExcSt = st.raiseException(excSet)
+      (st1, excSt + newExcSt)
+    }
     case (NodeUtil.INTERNAL_PRO_STATE, List(exprO, exprP), None) => {
       val (v, excSetO) = V(exprO, st)
       val (p, excSetP) = V(exprP, st)

@@ -49,6 +49,12 @@ case object IBoundThis extends IName {
 case object IBoundArgs extends IName {
   override def toString: String = s"[[BoundArgs]]"
 }
+case object IPromise extends IName {
+  override def toString: String = s"[[Promise]]"
+}
+case object IAlreadyResolved extends IName {
+  override def toString: String = s"[[AlreadyResolved]]"
+}
 case object IPromiseState extends IName {
   override def toString: String = s"[[PromiseState]]"
 }
