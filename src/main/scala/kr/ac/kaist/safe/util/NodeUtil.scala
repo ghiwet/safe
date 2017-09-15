@@ -138,6 +138,8 @@ object NodeUtil {
   // 25.4.1.3 CreateResolvingFunctions
   val INTERNAL_PRO = internalAPIName("Promise")
   val INTERNAL_ALR_RES = internalAPIName("AlreadyResolved")
+  // 25.4.1.5 NewPromiseCapability
+  val INTERNAL_CAP = internalAPIName("Capability")
   // 25.4.6 Properties of Promise Instances
   val INTERNAL_PRO_STATE = internalAPIName("PromiseState")
   val INTERNAL_PRO_RES = internalAPIName("PromiseResult")
@@ -204,6 +206,7 @@ object NodeUtil {
     INTERNAL_HAS_CONST,
     INTERNAL_PRO,
     INTERNAL_ALR_RES,
+    INTERNAL_CAP,
     INTERNAL_PRO_STATE,
     INTERNAL_PRO_RES,
     INTERNAL_PRO_FREAC,

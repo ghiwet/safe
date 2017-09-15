@@ -55,6 +55,9 @@ case object IPromise extends IName {
 case object IAlreadyResolved extends IName {
   override def toString: String = s"[[AlreadyResolved]]"
 }
+case object ICapability extends IName {
+  override def toString: String = s"[[Capability]]"
+}
 case object IPromiseState extends IName {
   override def toString: String = s"[[PromiseState]]"
 }
