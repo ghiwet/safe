@@ -8,7 +8,7 @@ Heap: {
     [[Construct]]: fun(2),
     [[Extensible]]: true,
     [[HasInstance]]: null,
-    [[Prototype]]: #Function.prototype,
+    [[Prototype]]: #Promise.prototype,
     [[Scope]]: null,
     "all": <#Promise.all, T, F, T>,
     "length": <1, F, F, F>,
@@ -79,8 +79,24 @@ Heap: {
   #PromiseRejectFunctions: {
     [[Call]]: fun(10)
   },
-  #FulfillPromise: {
-    [[Call]]: fun(11)
+  #PromiseReactionJob: {
+    [[Call]]: fun(11),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #GetCapabilitiesExecutor: {
+    [[Call]]: fun(12)
+  },
+  #NewPromiseCapability: {
+    [[Call]]: fun(13),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
   }
 }
 
@@ -99,7 +115,7 @@ Function: {
     // 3. Let promise be OrdinaryCreateFromConstructor(NewTarget, "%PromisePrototype%",
     // «[[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]]» ).
     var promise = {};
-    // NOTE: No subclassing of Promise
+    // TODO: No subclassing of Promises
     @Prototype(promise, Promise);
     // 4. ReturnIfAbrupt(promise).
     // 5. Set promise's [[PromiseState]] internal slot to "pending".
@@ -144,12 +160,16 @@ Function: {
     @AlreadyResolved(reject, false);
     // 8. Return a new Record { [[Resolve]]: resolve, [[Reject]]: reject }.
 
-    // 9. Let completion be Call(executor, undefined, «resolvingFunctions.[[Resolve]],
-    // resolvingFunctions.[[Reject]]»).
-    @Call(executor, undefined, [resolve, reject]);
+    // 9. Let completion be Call(executor, undefined, «resolvingFunctions.[[Resolve]], resolvingFunctions.[[Reject]]»).
+    try {
+      @Call(executor, undefined, [resolve, reject]);
+    }
     // 10. If completion is an abrupt completion, then
-    //   a. Let status be Call(resolvingFunctions.[[Reject]], undefined, «completion.[[value]]»).
-    //   b. ReturnIfAbrupt(status).
+    catch (ex) {
+      // a. Let status be Call(resolvingFunctions.[[Reject]], undefined, «completion.[[value]]»).
+      var status = @Call(reject, undefined, ex);
+      // b. ReturnIfAbrupt(status).
+    }
     // 11. Return promise.
     return promise;
   }
@@ -183,7 +203,66 @@ Function: {
   }
   \\],
   8: [\\
-  function () {
+  function then (onFulfilled, onRejected) {
+    // 1. Let promise be the this value.
+    var promise = this;
+    // 2. If IsPromise(promise) is false, throw a TypeError exception.
+
+    // NOTE: Inline IsPromise(promise)
+    // 1. If Type(x) is not Object, return false.
+    if (typeof promise !== 'object') throw new TypeError();
+    // 2. If x does not have a [[PromiseState]] internal slot, return false.
+    if (@PromiseState(promise) === undefined) throw new TypeError();
+    // 3. Return true.
+
+    // 3. Let C be SpeciesConstructor(promise, %Promise%).
+    // 4. ReturnIfAbrupt(C).
+    // 5. Let resultCapability be NewPromiseCapability(C).
+    // TODO: No subclassing of Promises
+    var resultCapability = @Call(@getLoc("NewPromiseCapability"), undefined, [Promise]);
+    // 6. ReturnIfAbrupt(resultCapability).
+    // 7. Return PerformPromiseThen(promise, onFulfilled, onRejected, resultCapability).
+
+    // NOTE: No return. Inline PerformPromiseThen(promise, onFulfilled, onRejected, resultCapability).
+    // 1. Assert: IsPromise(promise) is true.
+    // 2. Assert: resultCapability is a PromiseCapability record.
+    // 3. If IsCallable(onFulfilled) is false, then
+    if (@IsCallable(onFulfilled) === false) {
+      // a. Let onFulfilled be "Identity".
+      onFulfilled = "Identity";
+    }
+    // 4. If IsCallable(onRejected) is false, then
+    if (@IsCallable(onRejected) === false) {
+      // a. Let onRejected be "Thrower".
+      onRejected = "Thrower";
+    }
+    // 5. Let fulfillReaction be the PromiseReaction { [[Capabilities]]: resultCapability, [[Handler]]: onFulfilled }.
+    var fulfillReaction = { Capabilities: resultCapability, Handler: onFulfilled };
+    // 6. Let rejectReaction be the PromiseReaction { [[Capabilities]]: resultCapability, [[Handler]]: onRejected }.
+    var rejectReaction = { Capabilities: resultCapability, Handler: onRejected };
+    // 7. If the value of promise's [[PromiseState]] internal slot is "pending",
+    if (@PromiseState(promise) === "pending") {
+      // a. Append fulfillReaction as the last element of the List that is the value of promise's [[PromiseFulfillReactions]] internal slot.
+      @PromiseFulfillReactions(promise).push(fulfillReaction);
+      // b. Append rejectReaction as the last element of the List that is the value of promise's [[PromiseRejectReactions]] internal slot.
+      @PromiseRejectReactions(promise).push(rejectReaction);
+    }
+    // 8. Else if the value of promise's [[PromiseState]] internal slot is "fulfilled",
+    else if (@PromiseState(promise) === "fulfilled") {
+      // a. Let value be the value of promise's [[PromiseResult]] internal slot.
+      var value = @PromiseResult(promise);
+      // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «fulfillReaction, value»).
+      @Call(@getLoc("PromiseReactionJob"), undefined, [fulfillReaction, value]);
+    }
+    // 9. Else if the value of promise's [[PromiseState]] internal slot is "rejected",
+    else if (@PromiseState(promise) === "rejected") {
+      // a. Let reason be the value of promise's [[PromiseResult]] internal slot.
+      var reason = @PromiseResult(promise);
+      // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «rejectReaction, reason»).
+      @Call(@getLoc("PromiseReactionJob"), undefined, [rejectReaction, value]);
+    }
+    // 10. Return resultCapability.[[Promise]].
+    return resultCapability.Promise;
   }
   \\],
   9: [\\
@@ -197,7 +276,6 @@ Function: {
     if (alreadyResolved === true) return undefined;
     // 5. Set alreadyResolved.[[value]] to true.
     @AlreadyResolved(arguments.callee, true);
-
     // 6. If SameValue(resolution, promise) is true, then
     //   a. Let selfResolutionError be a newly created TypeError object.
     //   b. Return RejectPromise(promise, selfResolutionError).
@@ -231,18 +309,18 @@ Function: {
 
       // NOTE: No return. Inline TriggerPromiseReactions(reactions, argument).
       // 1. Repeat for each reaction in reactions, in original insertion order
-      //   a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-      // NOTE: simplifying EnqueueJob behaviour
-      // TODO: this might be oversimplified a bit too much
       for (var i = 0; i < reactions.length; i++) {
-        @Call(reactions[i], undefined, resolution);
+        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+        // NOTE: Simplify EnqueueJob behaviour
+        @Call(@getLoc("PromiseReactionJob"), undefined, [reactions[i], resolution]);
       }
       // 2. Return undefined.
       return undefined;
     }
     // 12. Perform EnqueueJob ("PromiseJobs", PromiseResolveThenableJob, «promise, resolution, thenAction»)
-    // NOTE: Ignore resolution as Promise case for now
+    // TODO: Ignore resolution as Promise case
     // 13. Return undefined.
+    return undefined;
   }
   \\],
   10: [\\
@@ -274,19 +352,96 @@ Function: {
 
     // NOTE: No return. Inline TriggerPromiseReactions(reactions, argument).
     // 1. Repeat for each reaction in reactions, in original insertion order
-    //   a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-    // NOTE: simplifying EnqueueJob behaviour
-    // TODO: this might be oversimplified a bit too much
     for (var i = 0; i < reactions.length; i++) {
-      @Call(reactions[i], undefined, reason);
+      // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+      // NOTE: Simplify EnqueueJob behaviour
+      @Call(@getLoc("PromiseReactionJob"), undefined, [reactions[i], reason]);
     }
     // 2. Return undefined.
     return undefined;
   }
   \\],
   11: [\\
-  function FullfillPromise (promise, value) {
+  function PromiseReactionJob (reaction, argument) {
+    // 1. Assert: reaction is a PromiseReaction Record.
+    // 2. Let promiseCapability be reaction.[[Capabilities]].
+    var promiseCapability = reaction.Capabilities;
+    // 3. Let handler be reaction.[[Handler]].
+    var handler = reaction.Handler;
+    // 4. If handler is "Identity", let handlerResult be NormalCompletion(argument).
+    var handlerResult;
+    if (handler === "Identity") handlerResult = argument;
+    // 5. Else if handler is "Thrower", let handlerResult be Completion{[[type]]: throw, [[value]]: argument, [[target]]: empty}.
+    // TODO: Not sure what to do here... unit tests?
+    else if (handler === "Thrower") handlerResult = new Error(argument);
+    // 6. Else, let handlerResult be Call(handler, undefined, «argument»).
+    // TODO: try.. catch
+    else handlerResult = @Call(handler, undefined, argument);
+    // 7. If handlerResult is an abrupt completion, then
+       // a. Let status be Call(promiseCapability.[[Reject]], undefined, «handlerResult.[[value]]»).
+       // b. NextJob Completion(status).
+    // TODO
+    // 8. Let status be Call(promiseCapability.[[Resolve]], undefined, «handlerResult.[[value]]»).
+    var status = @Call(promiseCapability.Resolve, undefined, [handlerResult]);
+    // 9. NextJob Completion(status).
+  }
+  \\],
+  12: [\\
+  function (resolve, reject) {
+    // 1. Assert: F has a [[Capability]] internal slot whose value is a PromiseCapability Record.
+    // 2. Let promiseCapability be the value of F's [[Capability]] internal slot.
+    var promiseCapability = @Capability(arguments.callee);
+    // 3. If promiseCapability.[[Resolve]] is not undefined, throw a TypeError exception.
+    if (promiseCapability.Resolve !== undefined) throw new TypeError();
+    // 4. If promiseCapability.[[Reject]] is not undefined, throw a TypeError exception.
+    if (promiseCapability.Reject !== undefined) throw new TypeError();
+    // 5. Set promiseCapability.[[Resolve]] to resolve.
+    promiseCapability.Resolve = resolve;
+    // 6. Set promiseCapability.[[Reject]] to reject.
+    promiseCapability.Reject = reject;
+    // 7. Return undefined.
+    return undefined;
+  }
+  \\],
+  13: [\\
+  function NewPromiseCapability (C) {
+    // 1. If IsConstructor(C) is false, throw a TypeError exception.
+    // NOTE: Inline IsConstructor(C)
 
+    // 1. ReturnIfAbrupt(argument).
+    // 2. If Type(argument) is not Object, return false.
+    if (typeof(C) !== "object") throw new TypeError();
+    // 3. If argument has a [[Construct]] internal method, return true.
+    if (@HasConstruct(C) === false) throw new TypeError();
+    // 4. Return false.
+
+    // 2. NOTE C is assumed to be a constructor function that supports the parameter conventions of the Promise constructor (see 25.4.3.1).
+    // 3. Let promiseCapability be a new PromiseCapability { [[Promise]]: undefined, [[Resolve]]: undefined, [[Reject]]: undefined }.
+    var promiseCapability = { Promise: undefined, Resolve: undefined, Reject: undefined };
+    // 4. Let executor be a new built-in function object as defined in GetCapabilitiesExecutor Functions (25.4.1.5.1).
+    var executor = {};
+    @Class(executor, "Function");
+    @Prototype(executor, Function.prototype);
+    @Call(executor, @getLoc("GetCapabilitiesExecutor"));
+    @DefineOwnProperty(executor, "length", {
+      value: 2,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 5. Set the [[Capability]] internal slot of executor to promiseCapability.
+    @Capability(executor, promiseCapability);
+    // 6. Let promise be Construct(C, «executor»).
+    var promise = new C(executor);
+    // 7. ReturnIfAbrupt(promise).
+    // 8. If IsCallable(promiseCapability.[[Resolve]]) is false, throw a TypeError exception.
+    if (@IsCallable(promiseCapability.Resolve) === false) throw new TypeError();
+    // 9. If IsCallable(promiseCapability.[[Reject]]) is false, throw a TypeError exception.
+    if (@IsCallable(promiseCapability.Reject) === false) throw new TypeError();
+    // 10. Set promiseCapability.[[Promise]] to promise.
+    promiseCapability.Promise = promise;
+    // 11. Return promiseCapability.
+    return promiseCapability;
   }
   \\]
 }
