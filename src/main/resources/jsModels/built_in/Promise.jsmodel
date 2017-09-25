@@ -170,10 +170,225 @@ Function: {
   \\],
   5: [\\
   function reject (r) {
+    // 1. Let C be the this value.
+    // 2. If Type(C) is not Object, throw a TypeError exception.
+    if (typeof this !== "object") throw new TypeError();
+    // 3. Let promiseCapability be NewPromiseCapability(C).
+
+    // ---------------------- NewPromiseCapability(C) ----------------------- //
+
+    // 1. If IsConstructor(C) is false, throw a TypeError exception.
+    // 2. NOTE C is assumed to be a constructor function that supports the parameter conventions of the Promise constructor (see 25.4.3.1).
+    // 3. Let promiseCapability be a new PromiseCapability { [[Promise]]: undefined, [[Resolve]]: undefined, [[Reject]]: undefined }.
+    var promiseCapability = { Promise: undefined, Resolve: undefined, Reject: undefined };
+    // 4. Let executor be a new built-in function object as defined in GetCapabilitiesExecutor Functions (25.4.1.5.1).
+    var executor = {};
+    @Class(executor, "Function");
+    @Prototype(executor, Function.prototype);
+    @Call(executor, @getLoc("GetCapabilitiesExecutor"));
+    @DefineOwnProperty(executor, "length", {
+      value: 2,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 5. Set the [[Capability]] internal slot of executor to promiseCapability.
+    @Capability(executor, promiseCapability);
+    // 6. Let promise be Construct(C, «executor»).
+
+    // ----------------------- new Promise(executor) ------------------------ //
+
+    // 1. If NewTarget is undefined, throw a TypeError exception.
+    // 2. If IsCallable(executor) is false, throw a TypeError exception.
+    // 3. Let promise be OrdinaryCreateFromConstructor(NewTarget, "%PromisePrototype%",
+    // «[[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]]» ).
+    var promise = {};
+    @Prototype(promise, Promise);
+
+    // 5. Set promise's [[PromiseState]] internal slot to "pending".
+    @PromiseState(promise, "pending");
+    // 6. Set promise's [[PromiseFulfillReactions]] internal slot to a new empty List.
+    @PromiseFulfillReactions(promise, []);
+    // 7. Set promise's [[PromiseRejectReactions]] internal slot to a new empty List.
+    @PromiseRejectReactions(promise, []);
+    // 8. Let resolvingFunctions be CreateResolvingFunctions(promise).
+
+    // -------------- Inline CreateResolvingFunctions(promise) -------------- //
+
+    // 1. Let alreadyResolved be a new Record { [[value]]: false }.
+    // 2. Let resolve be a new built-in function object as defined in Promise Resolve Functions (25.4.1.3.2).
+    var resolve = {};
+    @Class(resolve, "Function");
+    @Prototype(resolve, Function.prototype);
+    @Call(resolve, @getLoc("PromiseResolveFunctions"));
+    @DefineOwnProperty(resolve, "length", {
+      value: 1,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 3. Set the [[Promise]] internal slot of resolve to promise.
+    @Promise(resolve, promise);
+    // 4. Set the [[AlreadyResolved]] internal slot of resolve to alreadyResolved.
+    @AlreadyResolved(resolve, false);
+    // 5. Let reject be a new built-in function object as defined in Promise Reject Functions (25.4.1.3.1).
+    var reject = {};
+    @Class(reject, "Function");
+    @Prototype(reject, Function.prototype);
+    @Call(reject, @getLoc("PromiseRejectFunctions"));
+    @DefineOwnProperty(reject, "length", {
+      value: 1,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 6. Set the [[Promise]] internal slot of reject to promise.
+    @Promise(reject, promise);
+    // 7. Set the [[AlreadyResolved]] internal slot of reject to alreadyResolved.
+    @AlreadyResolved(reject, false);
+    // 8. Return a new Record { [[Resolve]]: resolve, [[Reject]]: reject }.
+
+    // ---------------------------------------------------------------------- //
+
+    // 9. Let completion be Call(executor, undefined, «resolvingFunctions.[[Resolve]], resolvingFunctions.[[Reject]]»).
+    @Call(executor, undefined, [resolve, reject]);
+    // NOTE: Call to executor will not throw an exception.
+    // 10. If completion is an abrupt completion, then
+      // a. Let status be Call(resolvingFunctions.[[Reject]], undefined, «completion.[[value]]»).
+      // b. ReturnIfAbrupt(status).
+    // 11. Return promise.
+
+    // ---------------------------------------------------------------------- //
+
+    // 7. ReturnIfAbrupt(promise).
+    // 8. If IsCallable(promiseCapability.[[Resolve]]) is false, throw a TypeError exception.
+    // 9. If IsCallable(promiseCapability.[[Reject]]) is false, throw a TypeError exception.
+    // 10. Set promiseCapability.[[Promise]] to promise.
+    promiseCapability.Promise = promise;
+    // 11. Return promiseCapability.
+
+    // ---------------------------------------------------------------------- //
+
+    // 4. ReturnIfAbrupt(promiseCapability).
+    // 5. Let rejectResult be Call(promiseCapability.[[Reject]], undefined, «r»).
+    var rejectResult = @Call(promiseCapability.Reject, undefined, [r]);
+    // 6. ReturnIfAbrupt(rejectResult).
+    // 7. Return promiseCapability.[[Promise]].
+    return promiseCapability.Promise;
   }
   \\],
   6: [\\
-  function () {
+  function resolve (x) {
+    // NOTE: Assume "x" is not a Promise
+    // 1. Let C be the this value.
+    // 2. If Type(C) is not Object, throw a TypeError exception.
+    if (typeof this !== "object") throw new TypeError();
+    // 3. If IsPromise(x) is true,
+      // a. Let xConstructor be Get(x, "constructor").
+      // b. ReturnIfAbrupt(xConstructor).
+      // c. If SameValue(xConstructor, C) is true, return x.
+    // 4. Let promiseCapability be NewPromiseCapability(C).
+
+    // ---------------------- NewPromiseCapability(C) ----------------------- //
+
+    // 1. If IsConstructor(C) is false, throw a TypeError exception.
+    // 2. NOTE C is assumed to be a constructor function that supports the parameter conventions of the Promise constructor (see 25.4.3.1).
+    // 3. Let promiseCapability be a new PromiseCapability { [[Promise]]: undefined, [[Resolve]]: undefined, [[Reject]]: undefined }.
+    var promiseCapability = { Promise: undefined, Resolve: undefined, Reject: undefined };
+    // 4. Let executor be a new built-in function object as defined in GetCapabilitiesExecutor Functions (25.4.1.5.1).
+    var executor = {};
+    @Class(executor, "Function");
+    @Prototype(executor, Function.prototype);
+    @Call(executor, @getLoc("GetCapabilitiesExecutor"));
+    @DefineOwnProperty(executor, "length", {
+      value: 2,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 5. Set the [[Capability]] internal slot of executor to promiseCapability.
+    @Capability(executor, promiseCapability);
+    // 6. Let promise be Construct(C, «executor»).
+
+    // ----------------------- new Promise(executor) ------------------------ //
+
+    // 1. If NewTarget is undefined, throw a TypeError exception.
+    // 2. If IsCallable(executor) is false, throw a TypeError exception.
+    // 3. Let promise be OrdinaryCreateFromConstructor(NewTarget, "%PromisePrototype%",
+    // «[[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]]» ).
+    var promise = {};
+    @Prototype(promise, Promise);
+
+    // 5. Set promise's [[PromiseState]] internal slot to "pending".
+    @PromiseState(promise, "pending");
+    // 6. Set promise's [[PromiseFulfillReactions]] internal slot to a new empty List.
+    @PromiseFulfillReactions(promise, []);
+    // 7. Set promise's [[PromiseRejectReactions]] internal slot to a new empty List.
+    @PromiseRejectReactions(promise, []);
+    // 8. Let resolvingFunctions be CreateResolvingFunctions(promise).
+
+    // -------------- Inline CreateResolvingFunctions(promise) -------------- //
+
+    // 1. Let alreadyResolved be a new Record { [[value]]: false }.
+    // 2. Let resolve be a new built-in function object as defined in Promise Resolve Functions (25.4.1.3.2).
+    var resolve = {};
+    @Class(resolve, "Function");
+    @Prototype(resolve, Function.prototype);
+    @Call(resolve, @getLoc("PromiseResolveFunctions"));
+    @DefineOwnProperty(resolve, "length", {
+      value: 1,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 3. Set the [[Promise]] internal slot of resolve to promise.
+    @Promise(resolve, promise);
+    // 4. Set the [[AlreadyResolved]] internal slot of resolve to alreadyResolved.
+    @AlreadyResolved(resolve, false);
+    // 5. Let reject be a new built-in function object as defined in Promise Reject Functions (25.4.1.3.1).
+    var reject = {};
+    @Class(reject, "Function");
+    @Prototype(reject, Function.prototype);
+    @Call(reject, @getLoc("PromiseRejectFunctions"));
+    @DefineOwnProperty(reject, "length", {
+      value: 1,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 6. Set the [[Promise]] internal slot of reject to promise.
+    @Promise(reject, promise);
+    // 7. Set the [[AlreadyResolved]] internal slot of reject to alreadyResolved.
+    @AlreadyResolved(reject, false);
+    // 8. Return a new Record { [[Resolve]]: resolve, [[Reject]]: reject }.
+
+    // ---------------------------------------------------------------------- //
+
+    // 9. Let completion be Call(executor, undefined, «resolvingFunctions.[[Resolve]], resolvingFunctions.[[Reject]]»).
+    @Call(executor, undefined, [resolve, reject]);
+    // NOTE: Call to executor will not throw an exception.
+    // 10. If completion is an abrupt completion, then
+      // a. Let status be Call(resolvingFunctions.[[Reject]], undefined, «completion.[[value]]»).
+      // b. ReturnIfAbrupt(status).
+    // 11. Return promise.
+
+    // ---------------------------------------------------------------------- //
+
+    // 7. ReturnIfAbrupt(promise).
+    // 8. If IsCallable(promiseCapability.[[Resolve]]) is false, throw a TypeError exception.
+    // 9. If IsCallable(promiseCapability.[[Reject]]) is false, throw a TypeError exception.
+    // 10. Set promiseCapability.[[Promise]] to promise.
+    promiseCapability.Promise = promise;
+    // 11. Return promiseCapability.
+
+    // ---------------------------------------------------------------------- //
+
+    // 5. ReturnIfAbrupt(promiseCapability).
+    // 6. Let resolveResult be Call(promiseCapability.[[Resolve]], undefined, «x»).
+    var resolveResult = @Call(promiseCapability.Resolve, undefined, [x]);
+    // 7. ReturnIfAbrupt(resolveResult).
+    // 8. Return promiseCapability.[[Promise]].
+    return promiseCapability.Promise;
   }
   \\],
   7: [\\
