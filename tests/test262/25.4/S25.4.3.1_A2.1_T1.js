@@ -10,4 +10,14 @@ description: Promise.call("non-object") throws TypeError
 negative: TypeError
 ---*/
 
-Promise.call("non-object", function () {});
+var __result1 = false;
+
+try {
+    Promise.call("non-object", function () {});
+} catch (ex) {
+    if (ex instanceof TypeError) {
+        __result1 = true;
+    }
+}
+
+var __expect1 = true;

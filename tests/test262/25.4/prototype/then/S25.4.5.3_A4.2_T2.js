@@ -13,10 +13,17 @@ description: Promise.prototype.then treats non-callable arg1, arg2 as undefined
 var obj = {};
 var p = Promise.reject(obj);
 
+__result1 = true;
+__result2 = false;
+
 p.then(3, 5).then(function () {
-    $ERROR("Should not be called -- promise was rejected.");
+    __result1 = false;
 }, function (arg) {
-    if (arg !== obj) {
-        $ERROR("Expected resolution object to be passed through, got " + arg);
+    if (arg === obj) {
+        // $ERROR("Expected resolution object to be passed through, got " + arg);
+        __result2 = true;
     }
-}).then($DONE, $DONE);
+})
+
+__expect1 = true;
+__expect2 = true;

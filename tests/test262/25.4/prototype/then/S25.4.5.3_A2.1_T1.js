@@ -12,5 +12,14 @@ negative: TypeError
 
 var p = new Promise(function () {});
 
-p.then.call(3, function () {}, function () {});
+var __result1 = false;
 
+try {
+    p.then.call(3, function () {}, function () {});
+} catch (ex) {
+    if (ex instanceof TypeError) {
+        __result1 = true;
+    }
+}
+
+var __expect1 = true;

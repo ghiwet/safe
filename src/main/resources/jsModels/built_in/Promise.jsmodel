@@ -71,7 +71,7 @@ Heap: {
     [[Extensible]]: true,
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
-    "length": <1, F, F, F>
+    "length": <2, F, F, F>
   },
   #PromiseResolveFunctions: {
     [[Call]]: fun(9)
@@ -153,7 +153,7 @@ Function: {
     // 10. If completion is an abrupt completion, then
     catch (ex) {
       // a. Let status be Call(resolvingFunctions.[[Reject]], undefined, «completion.[[value]]»).
-      @Call(reject, undefined, ex);
+      @Call(reject, undefined, [ex]);
       // b. ReturnIfAbrupt(status).
     }
     // 11. Return promise.
@@ -400,6 +400,8 @@ Function: {
     // 1. Let promise be the this value.
     // NOTE: No! promise = this
     // 2. If IsPromise(promise) is false, throw a TypeError exception.
+    if (typeof this !== "object") throw new TypeError();
+    if (@PromiseState(this) === undefined) throw new TypeError();
     // 3. Let C be SpeciesConstructor(promise, %Promise%).
     // 4. ReturnIfAbrupt(C).
     // 5. Let resultCapability be NewPromiseCapability(C).

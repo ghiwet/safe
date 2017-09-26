@@ -13,10 +13,16 @@ description: Promise.prototype.then accepts 'undefined' as arg1, arg2
 var obj = {};
 var p = Promise.reject(obj);
 
+__result1 = true;
+__result2 = false;
+
 p.then(undefined, undefined).then(function () {
-        $ERROR("Should not be called -- promise was rejected.");
+        __result1 = false;
 }, function (arg) {
-        if (arg !== obj) {
-            $ERROR("Expected resolution object to be passed through, got " + arg);
+        if (arg === obj) {
+            __result2 = true;
         }
-    }).then($DONE, $DONE);
+    })
+
+__expect1 = true;
+__expect2 = true;

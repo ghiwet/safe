@@ -10,6 +10,11 @@ author: Sam Mikes
 description: Promise prototype exists
 ---*/
 
+var __result1 = true;
+
 if (Promise.prototype === undefined) {
-    $ERROR("Expected Promise.prototype to be defined.");
+    // $ERROR("Expected Promise.prototype to be defined.");
+    __result1 = false;
 }
+
+var __expect1 = true;

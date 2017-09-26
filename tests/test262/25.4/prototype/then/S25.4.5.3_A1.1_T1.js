@@ -9,10 +9,18 @@ author: Sam Mikes
 description: Promise.prototype.then is a function of two arguments
 ---*/
 
+var __result1 = true;
+
 if (!(Promise.prototype.then instanceof Function)) {
-    $ERROR("Expected Promise.prototype.then to be a function");
+    __result1 = false;
 }
 
+var __expect1 = true;
+
+var __result2 = true;
+
 if (Promise.prototype.then.length !== 2) {
-    $ERROR("Expected Promise.prototype.then to be a function of two arguments");
+    __result2 = false;
 }
+
+var __expect2 = true;

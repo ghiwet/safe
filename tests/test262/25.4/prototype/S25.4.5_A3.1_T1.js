@@ -9,7 +9,11 @@ author: Sam Mikes
 description: Promise.prototype.constructor is the Promise constructor
 ---*/
 
+var __result1 = true;
+
 if (Promise.prototype.constructor !== Promise) {
-    $ERROR("Expected Promise.prototype.constructor to be Promise");
+    // $ERROR("Expected Promise.prototype.constructor to be Promise");
+    __result1 = false;
 }
 
+var __expect1 = true;

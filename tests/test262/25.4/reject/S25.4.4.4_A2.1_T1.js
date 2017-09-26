@@ -11,14 +11,27 @@ description: Promise.reject creates a new settled promise
 
 var p = Promise.reject(3);
 
+var __result1 = true;
+
 if (!(p instanceof Promise)) {
-    $ERROR("Expected Promise.reject to return a promise.");
+    // $ERROR("Expected Promise.reject to return a promise.");
+    __result1 = false;
 }
 
+var __expect1 = true;
+
+__result2 = true;
+__result3 = false;
+
 p.then(function () {
-    $ERROR("Promise should not be fulfilled.");
+    // $ERROR("Promise should not be fulfilled.");
+    __result2 = false;
 }, function (arg) {
-    if (arg !== 3) {
-        $ERROR("Expected promise to be rejected with supplied arg, got " + arg);
+    if (arg === 3) {
+        // $ERROR("Expected promise to be rejected with supplied arg, got " + arg);
+        __result3 = true;
     }
-}).then($DONE, $DONE);
+})
+
+__expect2 = true;
+__expect3 = true;

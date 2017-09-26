@@ -10,4 +10,15 @@ description: Promise prototype does not have [[PromiseState]] internal slot
 negative: TypeError
 ---*/
 
-Promise.call(Promise.prototype, function () {});
+var __result1 = false;
+
+try {
+    Promise.call(Promise.prototype, function () {});
+} catch (ex) {
+    if (ex instanceof TypeError) {
+        __result1 = true;
+    }
+}
+
+var __expect1 = true;
+

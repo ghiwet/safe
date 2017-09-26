@@ -15,11 +15,18 @@ var errorObject = {},
         throw errorObject;
     });
 
-p.then(function() {
-    $ERROR("Unexpected fulfill -- promise should reject.");
-}, function (err) {
-    if (err !== errorObject) {
-        $ERROR("Expected promise rejection reason to be thrown errorObject, actually " + err);
-    }
-}).then($DONE, $DONE);
+__result1 = true;
+__result2 = false;
 
+p.then(function() {
+    // $ERROR("Unexpected fulfill -- promise should reject.");
+    __result1 = false;
+}, function (err) {
+    if (err === errorObject) {
+        // $ERROR("Expected promise rejection reason to be thrown errorObject, actually " + err);
+        __result2 = true;
+    }
+})
+
+__expect1 = true;
+__expect2 = true;
