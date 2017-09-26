@@ -15,14 +15,25 @@ flags: [onlyStrict]
 var expectedThis = undefined,
     obj = {};
 
+__result1 = true;
+__result2 = false;
+__result3 = false;
+
 var p = Promise.reject(obj).then(function () {
-    $ERROR("Unexpected fulfillment; expected rejection.");
+    // $ERROR("Unexpected fulfillment; expected rejection.");
+    __result1 = false;
 }, function(arg) {
-    if (this !== expectedThis) {
-        $ERROR("'this' must be undefined, got " + this);
+    if (this === expectedThis) {
+        // $ERROR("'this' must be undefined, got " + this);
+        __result2 = true;
     }
 
-    if (arg !== obj) {
-        $ERROR("Expected promise to be rejected with obj, actually " + arg);
+    if (arg === obj) {
+        // $ERROR("Expected promise to be rejected with obj, actually " + arg);
+        __result3 = true;
     }
-}).then($DONE, $DONE);
+})
+
+__expect1 = true;
+__expect2 = true;
+__expect3 = true;

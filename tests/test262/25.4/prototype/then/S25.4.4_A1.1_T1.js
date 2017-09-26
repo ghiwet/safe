@@ -33,7 +33,15 @@ p.then(function () {
 }).then(function () {
     sequence.push(8);
 }).then(function () {
-    checkSequence(sequence, "Sequence should be as expected");
-}).then($DONE, $DONE);
+    // checkSequence(sequence, "Sequence should be as expected");
+    __result1 = true;
+    for (var i = 0; i < sequence.length - 1; i++) {
+        if (sequence[i] + 1 !== sequence[i + 1]) {
+            __result1 = false;
+        }
+    }
+})
 
 sequence.push(2);
+
+__expect1 = true;

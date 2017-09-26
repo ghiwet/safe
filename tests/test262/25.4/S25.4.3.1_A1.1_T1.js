@@ -10,8 +10,13 @@ description: Promise === global.Promise
 includes: [fnGlobalObject.js]
 ---*/
 
-var global = fnGlobalObject();
+var global = (function () { return this; })();
+
+var __result1 = true;
 
 if (Promise !== global.Promise) {
-    $ERROR("Expected Promise === global.Promise.");
+    // $ERROR("Expected Promise === global.Promise.");
+    __result1 = false;
 }
+
+var __expect1 = true;

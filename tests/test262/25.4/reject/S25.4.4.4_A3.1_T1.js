@@ -13,4 +13,14 @@ negative: TypeError
 function ZeroArgConstructor() {
 }
 
-Promise.reject.call(ZeroArgConstructor, 4);
+var __result1 = false;
+
+try {
+    Promise.reject.call(ZeroArgConstructor, 4);
+} catch (ex) {
+    if (ex instanceof TypeError) {
+        __result1 = true;
+    }
+}
+
+var __expect1 = true;

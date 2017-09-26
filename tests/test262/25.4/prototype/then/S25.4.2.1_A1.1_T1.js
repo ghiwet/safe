@@ -11,9 +11,14 @@ description: argument passes through "Identity"
 
 var obj = {};
 
+__result1 = false;
+
 var p = Promise.resolve(obj).then(/*Identity, Thrower*/)
         .then(function (arg) {
-            if (arg !== obj) {
-                $ERROR("Expected promise to be fulfilled with obj, actually " + arg);
+            if (arg === obj) {
+                // $ERROR("Expected promise to be fulfilled with obj, actually " + arg);
+                __result1 = true;
             }
-        }).then($DONE, $DONE);
+        })
+
+__expect1 = true;

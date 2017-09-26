@@ -9,7 +9,11 @@ author: Sam Mikes
 description: Promise prototype is a standard built-in Object
 ---*/
 
+var __result1 = true;
+
 if (!(Promise.prototype instanceof Object)) {
-    $ERROR("Expected Promise.prototype to be an Object");
+    // $ERROR("Expected Promise.prototype to be an Object");
+    __result1 = false;
 }
 
+var __expect1 = true;

@@ -11,11 +11,19 @@ description: argument thrown through "Thrower"
 
 var obj = {};
 
+__result1 = true;
+__result2 = false;
+
 var p = Promise.reject(obj).then(/*Identity, Thrower*/)
         .then(function () {
-            $ERROR("Unexpected fulfillment - promise should reject.");
+            // $ERROR("Unexpected fulfillment - promise should reject.");
+            __result1 = false;
         }, function (arg) {
-            if (arg !== obj) {
-                $ERROR("Expected reject reason to be obj, actually " + arg);
+            if (arg === obj) {
+                // $ERROR("Expected reject reason to be obj, actually " + arg);
+                __result2 = true;
             }
-        }).then($DONE, $DONE);
+        })
+
+__expect1 = true;
+__expect2 = true;

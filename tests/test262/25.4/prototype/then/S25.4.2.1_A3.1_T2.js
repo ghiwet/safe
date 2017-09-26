@@ -13,11 +13,19 @@ flags: [onlyStrict]
 var expectedThis = undefined,
     obj = {};
 
+__result1 = false;
+__result2 = false;
+
 var p = Promise.resolve(obj).then(function(arg) {
-    if (this !== expectedThis) {
-        $ERROR("'this' must be undefined, got " + this);
+    if (this === expectedThis) {
+        // $ERROR("'this' must be undefined, got " + this);
+        __result1 = true;
     }
-    if (arg !== obj) {
-        $ERROR("Expected promise to be fulfilled by obj, actually " + arg);
+    if (arg === obj) {
+        // $ERROR("Expected promise to be fulfilled by obj, actually " + arg);
+        __result2 = true;
     }
-}).then($DONE, $DONE);
+})
+
+__expect1 = true;
+__expect2 = true;

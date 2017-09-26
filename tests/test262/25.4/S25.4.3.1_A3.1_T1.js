@@ -10,4 +10,14 @@ description: new Promise("not callable") throws TypeError
 negative: TypeError
 ---*/
 
-new Promise("not callable");
+var __result1 = false;
+
+try {
+    new Promise("not callable");
+} catch (ex) {
+    if (ex instanceof TypeError) {
+        __result1 = true;
+    }
+}
+
+var __expect1 = true;
