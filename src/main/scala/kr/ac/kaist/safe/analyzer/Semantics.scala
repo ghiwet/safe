@@ -1178,18 +1178,11 @@ class Semantics(
       (newSt, excSt + newExcSt)
     }
     case (NodeUtil.INTERNAL_HAS_CONST, List(expr), None) => {
+      val h = st.heap
       val (v, excSet) = V(expr, st)
-      val obj = st.heap.get(v.locset)
-      val isDomIn = obj.fold(AbsBool.False) { obj => (obj contains IConstruct) }
-      val b1 =
-        if (AbsBool.True <= isDomIn) AbsBool.True
-        else AbsBool.Bot
-      val b2 =
-        if (AbsBool.False <= isDomIn) AbsBool.False
-        else AbsBool.Bot
-
+      val isDomIn = v.locset.foldLeft(AbsBool.Bot)((tmpAbool, l) => tmpAbool + h.hasConstruct(l))
       val st1 =
-        if (!v.isBottom) st.varStore(lhs, AbsValue(b1 + b2))
+        if (!v.isBottom) st.varStore(lhs, AbsValue(isDomIn))
         else AbsState.Bot
 
       val newExcSt = st.raiseException(excSet)
