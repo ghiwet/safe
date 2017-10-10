@@ -1,0 +1,6 @@
+- [ ] Change "shape" of abstract object to return @IsCallable(obj) = true if obj has [[Call]] internal property (and not Top(Bool))
+  - [ ] function calls throw TypeError exception -> try-catch is also imprecise 
+- [ ] Scala Compile Server should run "sbt compile" in root project dir
+- [ ] Heap cloning
+- [ ] Model setTimeout(f,x) -> setTimeout(f,0) -> setImmediate(f)
+- [ ] Safe cli: Parse string as JS program
