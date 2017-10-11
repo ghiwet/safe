@@ -1,6 +1,10 @@
 - [ ] Change "shape" of abstract object to return @IsCallable(obj) = true if obj has [[Call]] internal property (and not Top(Bool))
-  - [ ] function calls throw TypeError exception -> try-catch is also imprecise 
-- [ ] Scala Compile Server should run "sbt compile" in root project dir
+    - Motivation:
+        - function calls throw TypeError exception (try-catch handled imprecisely)
+        - IsCallable checks in models handled imprecisely
 - [ ] Heap cloning
-- [ ] Model setTimeout(f,x) -> setTimeout(f,0) -> setImmediate(f)
-- [ ] Safe cli: Parse string as JS program
+    - Motivation: Callsite Sensitivity analyzes each function call seperately based on its callsite but objects created at a specific line number in function code are still represented by the same abstract object
+- [ ] Model setImmediate(f) (like setTimeout(f,0))
+    - Motivation: Delay Promise.prototype.then from executing handlers
+- [ ] Safe CLI: Parse string directly as JS code
+    - Motivation: Easier to analyze small test programs
