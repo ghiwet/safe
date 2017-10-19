@@ -1,0 +1,103 @@
+Heap: {
+  #Global: {
+    "Janus": <#Janus, T, F, T>
+  },
+  #Janus: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "Attachments": <#Attachments, T, F, T>,
+    "CONSTANT": <#CONSTANT, T, F, T>,
+    "Dialog": <#Dialog, T, F, T>,
+    "HTTP": <#HTTP, T, F, T>,
+    "User": <#User, T, F, T>,
+    "ListItem": <#ListItem, T, F, T>,
+    "PresenterItem": <#PresenterItem, T, F, T>,
+    "Screen": <#Screen, T, F, T>,
+    "ConcatListAdapter": <#ConcatListAdapter, T, F, T>,
+    "ListAdapter": <#ListAdapter, T, F, T>,
+    "PresenterAdapter": <#PresenterAdapter, T, F, T>,
+    "BaseCard": <#BaseCard, T, F, T>,
+    "ContainerCard": <#ContainerCard, T, F, T>,
+    "DefaultCard": <#DefaultCard, T, F, T>,
+    "GalleryCard": <#GalleryCard, T, F, T>,
+    "GridCard": <#GridCard, T, F, T>,
+    "HomeCard": <#HomeCard, T, F, T>,
+    "LinearCard": <#LinearCard, T, F, T>,
+    "ListAdapterCard": <#ListAdapterCard, T, F, T>,
+    "RecordAudioCard": <#RecordAudioCard, T, F, T>,
+    "RecordImageVideoCard": <#RecordImageVideoCard, T, F, T>,
+    "TableCard": <#TableCard, T, F, T>,
+    "TabsCard": <#TabsCard, T, F, T>,
+    "VideoconferenceCard": <#VideoconferenceCard, T, F, T>,
+    "WebViewCard": <#WebViewCard, T, F, T>,
+    "Dbw": <#Dbw, T, F, T>,
+    "Dba": <#Dba, T, F, T>,
+    "Dbr": <#Dbr, T, F, T>,
+    "Action": <#Action, T, F, T>,
+    "Camera": <#Camera, T, F, T>,
+    "ApprologicDialog": <#ApprologicDialog, T, F, T>,
+    "PresenterCropDialog": <#PresenterCropDialog, T, F, T>,
+    "PresenterPreviewDialog": <#PresenterPreviewDialog, T, F, T>,
+    "Field": <#Field, T, F, T>,
+    "Session": <#Session, T, F, T>,
+    "FilePresenter": <#FilePresenter, T, F, T>,
+    "FileResource": <#FileResource, T, F, T>,
+    "Location": <#Location, T, F, T>,
+    "InputDialog": <#InputDialog, T, F, T>,
+    "ListPopup": <#ListPopup, T, F, T>
+  },
+  #Attachments: {
+    [[Call]]: fun(1),
+    [[Class]]: "Function",
+    [[Construct]]: fun(2),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#Attachments.prototype, F, F, F>
+  },
+  #Attachments.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "getPossibleSources": <#Attachments.prototype.getPossibleSources, T, F, T>,
+    "getFiles": <#Attachments.prototype.getFiles, T, F, T>
+  },
+  #Attachments.prototype.getPossibleSources: {
+    [[Call]]: fun(3),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Attachments.prototype.getFiles: {
+    [[Call]]: fun(4),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  }
+}
+
+Function: {
+  1: [\\
+  function () {
+  }
+  \\],
+  2: [\\
+  function () {
+  }
+  \\],
+  3: [\\
+  function () {
+  }
+  \\],
+  4: [\\
+  function () {
+  }
+  \\]
+}
