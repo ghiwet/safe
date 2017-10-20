@@ -1275,26 +1275,15 @@ class Semantics(
       val newExcSt = st.raiseException(excSet)
       (st1, excSt + newExcSt)
     }
-    case (NodeUtil.INTERNAL_PRO_STATE, List(exprO, exprP), None) => {
-      val (v, excSetO) = V(exprO, st)
-      val (p, excSetP) = V(exprP, st)
-      val newH = v.locset.foldLeft(st.heap) {
-        case (h, loc) => {
-          val obj = st.heap.get(loc)
-          val newObj = obj.update(IPromiseState, AbsIValueUtil(p))
-          h.update(loc, newObj)
-        }
-      }
-      val newSt = AbsState(newH, st.context).varStore(lhs, p)
-      val newExcSt = st.raiseException(excSetO ++ excSetP)
-      (newSt, excSt + newExcSt)
-    }
-    case (NodeUtil.INTERNAL_PRO_STATE, List(expr), None) => {
+    case (NodeUtil.INTERNAL_HAS_PRO_STATE, List(expr), None) => {
       val (v, excSet) = V(expr, st)
       val obj = st.heap.get(v.locset)
       val value = obj(IPromiseState).value
+      val boolVal =
+        if (value.isBottom) AF
+        else AT
       val st1 =
-        if (!v.isBottom) st.varStore(lhs, value)
+        if (!v.isBottom) st.varStore(lhs, AbsValue(boolVal))
         else AbsState.Bot
 
       val newExcSt = st.raiseException(excSet)
