@@ -7,19 +7,29 @@ Heap: {
     [[Extensible]]: true,
     [[Prototype]]: #Object.prototype,
     "Attachments": <#Attachments, T, F, T>,
-    "CONSTANT": <#CONSTANT, T, F, T>,
     "Dialog": <#Dialog, T, F, T>,
     "HTTP": <#HTTP, T, F, T>,
     "User": <#User, T, F, T>,
+    "Screen": <#Screen, T, F, T>,
+    "ListAdapter": <#ListAdapter, T, F, T>,
+    "DefaultCard": <#DefaultCard, T, F, T>,
+    "Dbw": <#Dbw, T, F, T>,
+    "Dba": <#Dba, T, F, T>,
+    "Action": <#Action, T, F, T>,
+    "ApprologicDialog": <#ApprologicDialog, T, F, T>,
+    "Field": <#Field, T, F, T>,
+    "Session": <#Session, T, F, T>,
+    "FilePresenter": <#FilePresenter, T, F, T>,
+    "FileResource": <#FileResource, T, F, T>,
+    "InputDialog": <#InputDialog, T, F, T>,
+    "ListPopup": <#ListPopup, T, F, T>,
+    "CONSTANT": <#CONSTANT, T, F, T>,
     "ListItem": <#ListItem, T, F, T>,
     "PresenterItem": <#PresenterItem, T, F, T>,
-    "Screen": <#Screen, T, F, T>,
     "ConcatListAdapter": <#ConcatListAdapter, T, F, T>,
-    "ListAdapter": <#ListAdapter, T, F, T>,
     "PresenterAdapter": <#PresenterAdapter, T, F, T>,
     "BaseCard": <#BaseCard, T, F, T>,
     "ContainerCard": <#ContainerCard, T, F, T>,
-    "DefaultCard": <#DefaultCard, T, F, T>,
     "GalleryCard": <#GalleryCard, T, F, T>,
     "GridCard": <#GridCard, T, F, T>,
     "HomeCard": <#HomeCard, T, F, T>,
@@ -31,21 +41,11 @@ Heap: {
     "TabsCard": <#TabsCard, T, F, T>,
     "VideoconferenceCard": <#VideoconferenceCard, T, F, T>,
     "WebViewCard": <#WebViewCard, T, F, T>,
-    "Dbw": <#Dbw, T, F, T>,
-    "Dba": <#Dba, T, F, T>,
     "Dbr": <#Dbr, T, F, T>,
-    "Action": <#Action, T, F, T>,
     "Camera": <#Camera, T, F, T>,
-    "ApprologicDialog": <#ApprologicDialog, T, F, T>,
     "PresenterCropDialog": <#PresenterCropDialog, T, F, T>,
     "PresenterPreviewDialog": <#PresenterPreviewDialog, T, F, T>,
-    "Field": <#Field, T, F, T>,
-    "Session": <#Session, T, F, T>,
-    "FilePresenter": <#FilePresenter, T, F, T>,
-    "FileResource": <#FileResource, T, F, T>,
-    "Location": <#Location, T, F, T>,
-    "InputDialog": <#InputDialog, T, F, T>,
-    "ListPopup": <#ListPopup, T, F, T>
+    "Location": <#Location, T, F, T>
   },
   #Attachments: {
     [[Call]]: fun(1),
@@ -80,6 +80,901 @@ Heap: {
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "length": <2, F, F, F>
+  },
+  #Dialog: {
+    [[Call]]: fun(5),
+    [[Class]]: "Function",
+    [[Construct]]: fun(6),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#Dialog.prototype, F, F, F>
+  },
+  #Dialog.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "show": <#Dialog.prototype.show, T, F, T>
+  },
+  #Dialog.prototype.show: {
+    [[Call]]: fun(7),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #ApprologicDialog: {
+    [[Call]]: fun(8),
+    [[Class]]: "Function",
+    [[Construct]]: fun(9),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#ApprologicDialog.prototype, F, F, F>
+  },
+  #ApprologicDialog.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "render": <#ApprologicDialog.prototype.render, T, F, T>,
+    "show": <#ApprologicDialog.prototype.show, T, F, T>,
+    "showView": <#ApprologicDialog.prototype.showView, T, F, T>,
+    "onHidden": <#ApprologicDialog.prototype.onHidden, T, F, T>,
+    "modalOptions": <#ApprologicDialog.prototype.modalOptions, T, F, T>,
+    "setActions": <#ApprologicDialog.prototype.setActions, T, F, T>,
+    "setTitle": <#ApprologicDialog.prototype.setTitle, T, F, T>,
+    "setView": <#ApprologicDialog.prototype.setView, T, F, T>
+  },
+  #ApprologicDialog.prototype.render: {
+    [[Call]]: fun(10),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #ApprologicDialog.prototype.show: {
+    [[Call]]: fun(11),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #ApprologicDialog.prototype.showView: {
+    [[Call]]: fun(12),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #ApprologicDialog.prototype.onHidden: {
+    [[Call]]: fun(13),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #ApprologicDialog.prototype.modalOptions: {
+    [[Call]]: fun(14),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #ApprologicDialog.prototype.setActions: {
+    [[Call]]: fun(15),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #ApprologicDialog.prototype.setTitle: {
+    [[Call]]: fun(16),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #ApprologicDialog.prototype.setView: {
+    [[Call]]: fun(17        ),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #HTTP: {
+    [[Call]]: fun(18),
+    [[Class]]: "Function",
+    [[Construct]]: fun(19),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#HTTP.prototype, F, F, F>
+  },
+  #HTTP.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "request": <#HTTP.prototype.request, T, F, T>
+  },
+  #HTTP.prototype.request: {
+    [[Call]]: fun(20),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #User: {
+    [[Call]]: fun(21),
+    [[Class]]: "Function",
+    [[Construct]]: fun(22),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#User.prototype, F, F, F>
+  },
+  #User.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "_prepareUserData": <#User.prototype._prepareUserData, T, F, T>,
+    "login": <#User.prototype.login, T, F, T>,
+    "logout": <#User.prototype.logout, T, F, T>
+  },
+  #User.prototype._prepareUserData: {
+    [[Call]]: fun(23),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #User.prototype.login: {
+    [[Call]]: fun(24),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #User.prototype.logout: {
+    [[Call]]: fun(25),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Screen: {
+    [[Call]]: fun(26),
+    [[Class]]: "Function",
+    [[Construct]]: fun(27),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#Screen.prototype, F, F, F>
+  },
+  #Screen.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "display": <#Screen.prototype.display, T, F, T>,
+    "replace": <#Screen.prototype.replace, T, F, T>,
+    "navigateTo": <#Screen.prototype.navigateTo, T, F, T>,
+    "navigateBack": <#Screen.prototype.navigateBack, T, F, T>,
+    "clearNavigationStack": <#Screen.prototype.clearNavigationStack, T, F, T>,
+    "exit": <#Screen.prototype.exit, T, F, T>,
+    "restart": <#Screen.prototype.restart, T, F, T>
+  },
+  #Screen.prototype.display: {
+    [[Call]]: fun(28),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #Screen.prototype.replace: {
+    [[Call]]: fun(29),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #Screen.prototype.navigateTo: {
+    [[Call]]: fun(30),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #Screen.prototype.navigateBack: {
+    [[Call]]: fun(31),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Screen.prototype.clearNavigationStack: {
+    [[Call]]: fun(32),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Screen.prototype.exit: {
+    [[Call]]: fun(33),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Screen.prototype.restart: {
+    [[Call]]: fun(34),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #ListAdapter: {
+    [[Call]]: fun(35),
+    [[Class]]: "Function",
+    [[Construct]]: fun(36),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#ListAdapter.prototype, F, F, F>
+  },
+  #ListAdapter.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "getInterfaceObject": <#ListAdapter.prototype.getInterfaceObject, T, F, T>,
+    "init": <#ListAdapter.prototype.init, T, F, T>,
+    "notifyAdapterConsumer": <#ListAdapter.prototype.notifyAdapterConsumer, T, F, T>
+  },
+  #ListAdapter.prototype.getInterfaceObject: {
+    [[Call]]: fun(37),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #ListAdapter.prototype.init: {
+    [[Call]]: fun(38),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #ListAdapter.prototype.notifyAdapterConsumer: {
+    [[Call]]: fun(39),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #DefaultCard: {
+    [[Call]]: fun(40),
+    [[Class]]: "Function",
+    [[Construct]]: fun(41),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>,
+    "prototype": <#DefaultCard.prototype, F, F, F>
+  },
+  #DefaultCard.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "registerListeners": <#DefaultCard.prototype.registerListeners, T, F, T>,
+    "trigger": <#DefaultCard.prototype.trigger, T, F, T>,
+    "off": <#DefaultCard.prototype.off, T, F, T>,
+    "on": <#DefaultCard.prototype.on, T, F, T>,
+    "init": <#DefaultCard.prototype.init, T, F, T>,
+    "_setupNativeListeners": <#DefaultCard.prototype._setupNativeListeners, T, F, T>,
+    "setTitle": <#DefaultCard.prototype.navigateTo, T, F, T>,
+    "setActions": <#DefaultCard.prototype.setActions, T, F, T>,
+    "setHeader": <#DefaultCard.prototype.setHeader, T, F, T>,
+    "setFooter": <#DefaultCard.prototype.setFooter, T, F, T>
+  },
+  #DefaultCard.prototype.registerListeners: {
+    [[Call]]: fun(42),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #DefaultCard.prototype.trigger: {
+    [[Call]]: fun(43),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #DefaultCard.prototype.off: {
+    [[Call]]: fun(44),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #DefaultCard.prototype.on: {
+    [[Call]]: fun(45),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #DefaultCard.prototype.init: {
+    [[Call]]: fun(46),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #DefaultCard.prototype._setupNativeListeners: {
+    [[Call]]: fun(47),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #DefaultCard.prototype.setTitle: {
+    [[Call]]: fun(48),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #DefaultCard.prototype.setActions: {
+    [[Call]]: fun(49),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #DefaultCard.prototype.setHeader: {
+    [[Call]]: fun(50),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #DefaultCard.prototype.setFooter: {
+    [[Call]]: fun(51),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Dbw: {
+    [[Call]]: fun(52),
+    [[Class]]: "Function",
+    [[Construct]]: fun(53),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>,
+    "prototype": <#Dbw.prototype, F, F, F>
+  },
+  #Dbw.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "_getNativeDB": <#Dbw.prototype._getNativeDB, T, F, T>,
+    "getLocal": <#Dbw.prototype.getLocal, T, F, T>,
+    "putLocal": <#Dbw.prototype.putLocal, T, F, T>,
+    "forceOrPut": <#Dbw.prototype.forceOrPut, T, F, T>,
+    "saveResource": <#Dbw.prototype.saveResource, T, F, T>
+  },
+  #Dbw.prototype._getNativeDB: {
+    [[Call]]: fun(54),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Dbw.prototype.getLocal: {
+    [[Call]]: fun(55),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Dbw.prototype.putLocal: {
+    [[Call]]: fun(56),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Dbw.prototype.forceOrPut: {
+    [[Call]]: fun(57),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Dbw.prototype.saveResource: {
+    [[Call]]: fun(58),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #Dba: {
+    [[Call]]: fun(59),
+    [[Class]]: "Function",
+    [[Construct]]: fun(60),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Dbw.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>,
+    "prototype": <#Dba.prototype, F, F, F>
+  },
+  #Dba.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "existsDatabase": <#Dba.prototype.existsDatabase, T, F, T>,
+    "batchImport": <#Dba.prototype.batchImport, T, F, T>,
+    "getActiveReplications": <#Dba.prototype.getActiveReplications, T, F, T>,
+    "getDatabases": <#Dba.prototype.getDatabases, T, F, T>,
+    "createDatabase": <#Dba.prototype.createDatabase, T, F, T>,
+    "startReplication": <#Dba.prototype.startReplication, T, F, T>
+  },
+  #Dba.prototype.existsDatabase: {
+    [[Call]]: fun(61),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Dba.prototype.batchImport: {
+    [[Call]]: fun(62),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Dba.prototype.getActiveReplications: {
+    [[Call]]: fun(63),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Dba.prototype.getDatabases: {
+    [[Call]]: fun(64),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Dba.prototype.createDatabase: {
+    [[Call]]: fun(65),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Dba.prototype.startReplication: {
+    [[Call]]: fun(66),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #Action: {
+    [[Call]]: fun(67),
+    [[Class]]: "Function",
+    [[Construct]]: fun(68),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#Action.prototype, F, F, F>
+  },
+  #Action.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "initialize": <#Action.prototype.initialize, T, F, T>,
+    "getId": <#Action.prototype.getId, T, F, T>,
+    "setId": <#Action.prototype.setId, T, F, T>,
+    "getIcon": <#Action.prototype.getIcon, T, F, T>,
+    "setIcon": <#Action.prototype.setIcon, T, F, T>,
+    "getTitle": <#Action.prototype.getTitle, T, F, T>,
+    "setTitle": <#Action.prototype.setTitle, T, F, T>
+  },
+  #Action.prototype.initialize: {
+    [[Call]]: fun(69),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Action.prototype.getId: {
+    [[Call]]: fun(70),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Action.prototype.setId: {
+    [[Call]]: fun(71),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Action.prototype.getIcon: {
+    [[Call]]: fun(72),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Action.prototype.setIcon: {
+    [[Call]]: fun(73),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Action.prototype.getTitle: {
+    [[Call]]: fun(74),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Action.prototype.setTitle: {
+    [[Call]]: fun(75),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+#Field: {
+    [[Call]]: fun(76),
+    [[Class]]: "Function",
+    [[Construct]]: fun(77),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>,
+    "prototype": <#Field.prototype, F, F, F>
+  },
+  #Field.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "registerListeners": <#Field.prototype.registerListeners, T, F, T>,
+    "trigger": <#Field.prototype.trigger, T, F, T>,
+    "off": <#Field.prototype.off, T, F, T>,
+    "on": <#Field.prototype.on, T, F, T>,
+    "getNativeField": <#Field.prototype.getNativeField, T, F, T>,
+    "initialize": <#Field.prototype.initialize, T, F, T>,
+    "onFieldClick": <#Field.prototype.onFieldClick, T, F, T>,
+    "onValueChange": <#Field.prototype.onValueChange, T, F, T>
+  },
+  #Field.prototype.registerListeners: {
+    [[Call]]: fun(78),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Field.prototype.trigger: {
+    [[Call]]: fun(79),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Field.prototype.off: {
+    [[Call]]: fun(80),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #Field.prototype.on: {
+    [[Call]]: fun(81),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #Field.prototype.getNativeField: {
+    [[Call]]: fun(82),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Field.prototype.initialize: {
+    [[Call]]: fun(83),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Field.prototype.onFieldClick: {
+    [[Call]]: fun(84),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Field.prototype.onValueChange: {
+    [[Call]]: fun(85),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Session: {
+    [[Call]]: fun(86),
+    [[Class]]: "Function",
+    [[Construct]]: fun(87),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #Session.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#Session.prototype, F, F, F>
+  },
+  #Session.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "init": <#Session.prototype.init, T, F, T>,
+    "trigger": <#Session.prototype.trigger, T, F, T>,
+    "destroy": <#Session.prototype.destroy, T, F, T>
+  },
+  #Session.prototype.init: {
+    [[Call]]: fun(88),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #Session.prototype.trigger: {
+    [[Call]]: fun(89),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #Session.prototype.destroy: {
+    [[Call]]: fun(90),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #FilePresenter: {
+    [[Call]]: fun(91),
+    [[Class]]: "Function",
+    [[Construct]]: fun(92),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #FilePresenter.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>,
+    "prototype": <#FilePresenter.prototype, F, F, F>
+  },
+  #FilePresenter.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "delete": <#FilePresenter.prototype.delete, T, F, T>,
+    "getResource": <#FilePresenter.prototype.getResource, T, F, T>,
+    "getViewData": <#FilePresenter.prototype.getViewData, T, F, T>
+  },
+  #FilePresenter.prototype.delete: {
+    [[Call]]: fun(93),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #FilePresenter.prototype.getResource: {
+    [[Call]]: fun(94),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #FilePresenter.prototype.getViewData: {
+    [[Call]]: fun(95),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #FileResource: {
+    [[Call]]: fun(96),
+    [[Class]]: "Function",
+    [[Construct]]: fun(97),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #FileResource.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#FileResource.prototype, F, F, F>
+  },
+  #FileResource.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "setSource": <#FileResource.prototype.setSource, T, F, T>,
+    "getSource": <#FileResource.prototype.getSource, T, F, T>,
+    "setOrigin": <#FileResource.prototype.setOrigin, T, F, T>,
+    "getOrigin": <#FileResource.prototype.getOrigin, T, F, T>
+  },
+  #FileResource.prototype.setSource: {
+    [[Call]]: fun(98),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #FileResource.prototype.getSource: {
+    [[Call]]: fun(99),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #FileResource.prototype.setOrigin: {
+    [[Call]]: fun(100),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #FileResource.prototype.getOrigin: {
+    [[Call]]: fun(101),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>
+  },
+  #InputDialog: {
+    [[Call]]: fun(102),
+    [[Class]]: "Function",
+    [[Construct]]: fun(103),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #InputDialog.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#InputDialog.prototype, F, F, F>
+  },
+  #InputDialog.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "show": <#FileResource.prototype.show, T, F, T>
+  },
+  #InputDialog.prototype.show: {
+    [[Call]]: fun(104),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #ListPopup: {
+    [[Call]]: fun(105),
+    [[Class]]: "Function",
+    [[Construct]]: fun(106),
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Prototype]]: #ListPopup.prototype,
+    [[Scope]]: null,
+    "length": <0, F, F, F>,
+    "prototype": <#ListPopup.prototype, F, F, F>
+  },
+  #ListPopup.prototype: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "show": <#ListPopup.prototype.show, T, F, T>
+  },
+  #ListPopup.prototype.show: {
+    [[Call]]: fun(107),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
   }
 }
 
@@ -93,11 +988,533 @@ Function: {
   }
   \\],
   3: [\\
-  function () {
+  function getPossibleSources () {
+    return Promise.resolve([]);
   }
   \\],
   4: [\\
-  function () {
+  function getFiles () {
+    return Promise.resolve();
+  }
+  \\],
+  5: [\\
+  function Dialog () {
+
+  }
+  \\],
+  6: [\\
+  function Dialog() {
+
+  }
+  \\],
+  7: [\\
+  function show (options) {
+
+  }
+  \\],
+  8: [\\
+  function ApprologicDialog () {
+
+  }
+  \\],
+  9: [\\
+  function ApprologicDialog() {
+
+  }
+  \\],
+  10: [\\
+  function render () {
+
+  }
+  \\],
+  11: [\\
+  function show (options) {
+    return Promise.resolve("result");
+  }
+  \\],
+  12: [\\
+  function showView () {
+  }
+  \\],
+  13: [\\
+  function onHidden () {
+  }
+  \\],
+  14: [\\
+  function modalOptions () {
+    return Promise.resolve([]);
+  }
+  \\],
+  15: [\\
+  function setActions () {
+    return Promise.resolve();
+  }
+  \\],
+  16: [\\
+  function setTitle () {
+
+   }
+   \\],
+  17: [\\
+  function setView () {
+
+  }
+  \\],
+  18: [\\
+  function HTTP () {
+
+  }
+  \\],
+  19: [\\
+  function HTTP() {
+
+  }
+  \\],
+  20: [\\
+  function request (options) {
+    return Promise.resolve({
+            status: 200,
+            statusText: "OK",
+            response: "this is my data"
+        });
+  }
+  \\],
+  21: [\\
+  function User () {
+
+  }
+  \\],
+  22: [\\
+  function User() {
+
+  }
+  \\],
+  23: [\\
+  function _prepareUserData () {
+
+  }
+  \\],
+  24: [\\
+  function login (credentials) {
+        return Promise.resolve({
+                data: "this is my data",
+                code: 200
+            });
+  }
+  \\],
+  25: [\\
+  function logout() {
+
+  }
+  \\],
+  26: [\\
+  function Screen() {
+
+  }
+  \\],
+  27: [\\
+  function Screen() {
+
+  }
+  \\],
+  28: [\\
+  function display() {
+
+  }
+  \\],
+  29: [\\
+  function replace() {
+
+  }
+  \\],
+  30: [\\
+  function navigateTo() {
+
+  }
+  \\],
+  31: [\\
+  function navigateBack() {
+
+  }
+  \\],
+  32: [\\
+  function clearNavigationStack() {
+
+  }
+  \\],
+  33: [\\
+  function exit() {
+
+  }
+  \\],
+  34: [\\
+  function restart() {
+
+  }
+  \\],
+  35: [\\
+  function ListAdapter() {
+
+  }
+  \\],
+  36: [\\
+  function ListAdapter() {
+
+  }
+  \\],
+  37: [\\
+  function getInterfaceObject() {
+
+  }
+  \\],
+  38: [\\
+  function init(config) {
+
+  }
+  \\],
+  39: [\\
+  function notifyAdapterConsumer() {
+
+  }
+  \\],
+  40: [\\
+  function DefaultCard(config) {
+
+  }
+  \\],
+  41: [\\
+  function DefaultCard(config) {
+
+  }
+  \\],
+  42: [\\
+  function registerListeners() {
+
+  }
+  \\],
+  43: [\\
+  function trigger() {
+
+  }
+  \\],
+  44: [\\
+  function off() {
+
+  }
+  \\],
+  45: [\\
+  function on() {
+
+  }
+  \\],
+  46: [\\
+  function init() {
+
+  }
+  \\],
+  47: [\\
+  function _setupNativeListeners() {
+
+  }
+  \\],
+  48: [\\
+  function setTitle() {
+
+  }
+  \\],
+  49: [\\
+  function setActions() {
+
+  }
+  \\],
+  50: [\\
+  function setHeader(config) {
+
+  }
+  \\],
+  51: [\\
+  function setFooter() {
+
+  }
+  \\],
+  52: [\\
+  function Dbw(name) {
+    this.dbname = name;
+  }
+  \\],
+  53: [\\
+  function Dbw(name) {
+    this.dbname = name;
+  }
+  \\],
+  54: [\\
+  function _getNativeDB() {
+
+  }
+  \\],
+  55: [\\
+  function getLocal() {
+
+  }
+  \\],
+  56: [\\
+  function putLocal() {
+
+  }
+  \\],
+  57: [\\
+  function forceOrPut(config) {
+
+  }
+  \\],
+  58: [\\
+  function saveResource() {
+
+  }
+  \\],
+  59: [\\
+  function Dba(name) {
+    this.dbname = name;
+  }
+  \\],
+  60: [\\
+  function Dbw(name) {
+    this.dbname = name;
+  }
+  \\],
+  61: [\\
+  function existsDatabase() {
+
+  }
+  \\],
+  62: [\\
+  function batchImport() {
+
+  }
+  \\],
+  63: [\\
+  function getActiveReplications() {
+
+  }
+  \\],
+  64: [\\
+  function getDatabases() {
+
+  }
+  \\],
+  65: [\\
+  function createDatabase() {
+
+  }
+  \\],
+  66: [\\
+  function startReplication() {
+
+  }
+  \\],
+  67: [\\
+  function Action() {
+
+  }
+  \\],
+  68: [\\
+  function Action() {
+
+  }
+  \\],
+  69: [\\
+  function initialize() {
+
+  }
+  \\],
+  70: [\\
+  function getId() {
+
+  }
+  \\],
+  71: [\\
+  function setId() {
+
+  }
+  \\],
+  72: [\\
+  function getIcon() {
+
+  }
+  \\],
+  73: [\\
+  function setIcon() {
+
+  }
+  \\],
+  74: [\\
+  function getTitle() {
+
+  }
+  \\],
+  75: [\\
+  function setTitle() {
+
+  }
+  \\],
+  76: [\\
+  function Field(config) {
+
+  }
+  \\],
+  77: [\\
+  function Field(config) {
+
+  }
+  \\],
+  78: [\\
+  function registerListeners() {
+
+  }
+  \\],
+  79: [\\
+  function trigger() {
+
+  }
+  \\],
+  80: [\\
+  function off() {
+
+  }
+  \\],
+  81: [\\
+  function on() {
+
+  }
+  \\],
+  82: [\\
+  function getNativeField() {
+
+  }
+  \\],
+  83: [\\
+  function initialize() {
+
+  }
+  \\],
+  84: [\\
+  function onFieldClick() {
+
+  }
+  \\],
+  85: [\\
+  function onValueChange() {
+
+  }
+  \\],
+  86: [\\
+  function Session() {
+
+  }
+  \\],
+  87: [\\
+  function Session() {
+
+  }
+  \\],
+  88: [\\
+  function init() {
+
+  }
+  \\],
+  89: [\\
+  function trigger() {
+
+  }
+  \\],
+  90: [\\
+  function destroy() {
+
+  }
+  \\],
+  91: [\\
+  function FilePresenter() {
+
+  }
+  \\],
+  92: [\\
+  function FilePresenter() {
+
+  }
+  \\],
+  93: [\\
+  function del() {
+
+  }
+  \\],
+  94: [\\
+  function getResource() {
+
+  }
+  \\],
+  95: [\\
+  function getViewData() {
+
+  }
+  \\],
+  96: [\\
+  function FileResource() {
+
+  }
+  \\],
+  97: [\\
+  function FileResource() {
+
+  }
+  \\],
+  98: [\\
+  function setSource() {
+
+  }
+  \\],
+  99: [\\
+  function getSource() {
+
+  }
+  \\],
+  100: [\\
+  function setOrigin() {
+
+  }
+  \\],
+  101: [\\
+  function getOrigin() {
+
+  }
+  \\],
+  96: [\\
+  function InputDialog() {
+
+  }
+  \\],
+  97: [\\
+  function InputDialog() {
+
+  }
+  \\],
+  98: [\\
+  function show() {
+
+  }
+  \\],
+  99: [\\
+  function ListPopup() {
+
+  }
+  \\],
+  100: [\\
+  function ListPopup() {
+
+  }
+  \\],
+  101: [\\
+  function show() {
+
   }
   \\]
 }
