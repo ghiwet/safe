@@ -149,7 +149,6 @@ Function: {
     try {
       @Call(executor, undefined, [resolve, reject]);
     }
-    // TODO: Call to executor always seems to throw TypeError Exception
     // 10. If completion is an abrupt completion, then
     catch (ex) {
       // a. Let status be Call(resolvingFunctions.[[Reject]], undefined, «completion.[[value]]»).
@@ -521,13 +520,15 @@ Function: {
       onRejected = "Thrower";
     }
     // 5. Let fulfillReaction be the PromiseReaction { [[Capabilities]]: resultCapability, [[Handler]]: onFulfilled }.
+    var fulfillReaction = { Capabilities: promiseCapability, Handler: onFulfilled };
     // 6. Let rejectReaction be the PromiseReaction { [[Capabilities]]: resultCapability, [[Handler]]: onRejected}.
+    var rejectReaction = { Capabilities: promiseCapability, Handler: onRejected };
     // 7. If the value of promise's [[PromiseState]] internal slot is "pending",
     if (@PromiseState(this) === "pending") {
       // a. Append fulfillReaction as the last element of the List that is the value of promise's [[PromiseFulfillReactions]] internal slot.
-      @PromiseFulfillReactions(this).push(onFulfilled);
+      @PromiseFulfillReactions(this).push(fulfillReaction);
       // b. Append rejectReaction as the last element of the List that is the value of promise's [[PromiseRejectReactions]] internal slot.
-      @PromiseRejectReactions(this).push(onRejected);
+      @PromiseRejectReactions(this).push(rejectReaction);
     }
     // 8. Else if the value of promise's [[PromiseState]] internal slot is "fulfilled",
     else if (@PromiseState(this) === "fulfilled") {
@@ -535,22 +536,36 @@ Function: {
       var value = @PromiseResult(this);
       // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «fulfillReaction, value»).
       // TODO
-      var handlerResult = value;
-      if (onFulfilled !== "Identity") {
-        handlerResult = @Call(onFulfilled, undefined, [value]);
+      if (onFulfilled === "Identity") {
+        @Call(promiseCapability.Resolve, undefined, [value]);
       }
-      @Call(promiseCapability.Resolve, undefined, [handlerResult]);
+      else {
+        try {
+          var handlerResult = @Call(onFulfilled, undefined, [value]);
+          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
+        }
+        catch (ex) {
+          @Call(promiseCapability.Reject, undefined, [ex]);
+        }
+      }
     }
     else if (@PromiseState(this) === "rejected") {
       // a. Let reason be the value of promise's [[PromiseResult]] internal slot.
       var reason = @PromiseResult(this);
       // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «rejectReaction, reason»).
       // TODO
-      var handlerResult = reason;
-      if (onRejected !== "Thrower") {
-        handlerResult = @Call(onRejected, undefined, [reason]);
+      if (onRejected === "Thrower") {
+        @Call(promiseCapability.Reject, undefined, [reason]);
       }
-      @Call(promiseCapability.Reject, undefined, [handlerResult]);
+      else {
+        try {
+          var handlerResult = @Call(onRejected, undefined, [reason]);
+          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
+        }
+        catch (ex) {
+          @Call(promiseCapability.Reject, undefined, [ex]);
+        }
+      }
     }
     // 10. Return resultCapability.[[Promise]].
     return promiseCapability.Promise;
@@ -582,7 +597,7 @@ Function: {
     // 11. If IsCallable(thenAction) is false, then
       // a. Return FulfillPromise(promise, resolution).
 
-    // ------------------- FulfillPromise(promise, reason) ------------------ //
+    // ------------------- FulfillPromise(promise, value) ------------------ //
 
     // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
     // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
@@ -602,10 +617,22 @@ Function: {
     // 1. Repeat for each reaction in reactions, in original insertion order
     for (var i = 0; i < reactions.length; i++) {
       // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-      // TODO: Check if reaction is "Identity"
-      // TODO: Call promiseCapability.Resolve
-      // NOTE: Reactions will always be triggered in Promise.prototype.then (synchronous)
-      var handlerResult = @Call(reactions[i], undefined, [resolution]);
+      // TODO
+      var reaction = reactions[i];
+      var promiseCapability = reaction.Capabilities;
+      var handler = reaction.Handler;
+      if (handler === "Identity") {
+        @Call(promiseCapability.Resolve, undefined, [resolution]);
+      }
+      else {
+        try {
+          var handlerResult = @Call(handler, undefined, [resolution]);
+          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
+        }
+        catch (ex) {
+          @Call(promiseCapability.Reject, undefined, [ex]);
+        }
+      }
     }
     // 2. Return undefined.
     return undefined;
@@ -651,10 +678,22 @@ Function: {
     // 1. Repeat for each reaction in reactions, in original insertion order
     for (var i = 0; i < reactions.length; i++) {
       // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-      // TODO: SYNCHRONOUS! Reactions will always get triggered in Promise.prototype.then call
-      // TODO: Check if reaction is "Thrower"
-      // TODO: Call promiseCapability.Reject
-      var handlerResult = @Call(reactions[i], undefined, [reason]);
+      // TODO
+      var reaction = reactions[i];
+      var promiseCapability = reaction.Capabilities;
+      var handler = reaction.Handler;
+      if (handler === "Thrower") {
+        @Call(promiseCapability.Reject, undefined, [reason]);
+      }
+      else {
+        try {
+          var handlerResult = @Call(handler, undefined, [reason]);
+          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
+        }
+        catch (ex) {
+          @Call(promiseCapability.Reject, undefined, [ex]);
+        }
+      }
     }
     // 2. Return undefined.
     return undefined;
