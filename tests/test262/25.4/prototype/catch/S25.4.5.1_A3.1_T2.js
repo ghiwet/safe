@@ -10,14 +10,20 @@ description: catch is implemented in terms of then
 ---*/
 
 var obj = {};
+var __result1 = true;
+var __result2 = false;
 
 var p = Promise.reject(obj);
 
 p.then(function () {
-    $ERROR("Should not be called: did not expect promise to be fulfilled");
+    //$ERROR("Should not be called: did not expect promise to be fulfilled");
+    __result1 = false;
 }).catch(function (arg) {
-    if (arg !== obj) {
-        $ERROR("Should have been rejected with reason obj, got " + arg);
+    if (arg === obj) {
+        //$ERROR("Should have been rejected with reason obj, got " + arg);
+        __result2 = true;
     }
-}).then($DONE, $DONE);
+})
 
+var __expect1 = true;
+var __expect2 = true;

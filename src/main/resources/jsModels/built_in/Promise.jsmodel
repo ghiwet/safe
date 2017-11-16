@@ -393,7 +393,11 @@ Function: {
   }
   \\],
   7: [\\
-  function () {
+  function catchP(onRejected) {
+   //1. Let promise be the this value.
+   // NOTE: No! promise = this
+   //2. Return Invoke(promise, "then", « undefined, onRejected »).
+   return @Call(@getLoc("Promise.prototype.then"), this, [undefined, onRejected]);
   }
   \\],
   8: [\\
