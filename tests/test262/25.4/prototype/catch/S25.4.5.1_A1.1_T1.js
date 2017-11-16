@@ -9,6 +9,9 @@ author: Sam Mikes
 description: Promise.prototype.catch is a function
 ---*/
 
+var __result1 = true;
 if (!(Promise.prototype.catch instanceof Function)) {
-    $ERROR("Expected Promise.prototype.catch to be a function");
+    //$ERROR("Expected Promise.prototype.catch to be a function");
+    __result1 = false;
 }
+var __expect1 = true;
