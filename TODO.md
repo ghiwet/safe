@@ -6,5 +6,9 @@
     - Motivation: Callsite Sensitivity analyzes each function call seperately based on its callsite but objects created at a specific line number in function code are still represented by the same abstract object
 - [ ] Model setImmediate(f) (like setTimeout(f,0))
     - Motivation: Delay Promise.prototype.then from executing handlers
+    - Idea: Implement an internal API call @DelayedCall that first executes the AfterCall instruction
 - [ ] Safe CLI: Parse string directly as JS code
     - Motivation: Easier to analyze small test programs
+- [ ] Fix tests that fail for configuration with increased loop-sensitivity
+    - /tests/test262/15.2/15.2.3/15.2.3.14/15.2.3.14-5-13.js
+    - /tests/test262/7.4/S7.4_A6.js
