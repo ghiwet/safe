@@ -1,0 +1,307 @@
+Heap: {
+  #Global: {
+    "_": <#lodash, T, F, T>
+  },
+  #lodash: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "clone": <#lodash.clone, T, F, T>,
+    "cloneDeep": <#lodash.cloneDeep, T, F, T>,
+    "defaults": <#lodash.defaults, T, F, T>,
+    "defaultsDeep": <#lodash.defaultsDeep, T, F, T>,
+    "each": <#lodash.each, T, F, T>,
+    "filter": <#lodash.filter, T, F, T>,
+    "find": <#lodash.find, T, F, T>,
+    "forEach": <#lodash.forEach, T, F, T>,
+    "get": <#lodash.get, T, F, T>,
+    "invert": <#lodash.invert, T, F, T>,
+    "isArray": <#lodash.isArray, T, F, T>,
+    "isEmpty": <#lodash.isEmpty, T, F, T>,
+    "isObject": <#lodash.isObject, T, F, T>,
+    "isPlainObject": <#lodash.isPlainObject, T, F, T>,
+    "isString": <#lodash.isString, T, F, T>,
+    "isUndefined": <#lodash.isUndefined, T, F, T>,
+    "keys": <#lodash.keys, T, F, T>,
+    "map": <#lodash.map, T, F, T>,
+    "merge": <#lodash.merge, T, F, T>,
+    "mixin": <#lodash.mixin, T, F, T>,
+    "reduce": <#lodash.reduce, T, F, T>
+  },
+  #lodash.clone: {
+    [[Call]]: fun(1),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <4, F, F, F>
+  },
+  #lodash.cloneDeep: {
+    [[Call]]: fun(2),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #lodash.defaults: {
+    [[Call]]: fun(3),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #lodash.defaultsDeep: {
+    [[Call]]: fun(4),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #lodash.each: {
+    [[Call]]: fun(5),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #lodash.filter: {
+    [[Call]]: fun(6),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #lodash.find: {
+    [[Call]]: fun(7),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #lodash.forEach: {
+    [[Call]]: fun(8),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #lodash.get: {
+    [[Call]]: fun(9),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #lodash.invert: {
+    [[Call]]: fun(10),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #lodash.isArray: {
+    [[Call]]: fun(11),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #lodash.isEmpty: {
+    [[Call]]: fun(12),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #lodash.isObject: {
+    [[Call]]: fun(13),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #lodash.isPlainObject: {
+    [[Call]]: fun(14),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #lodash.isString: {
+    [[Call]]: fun(15),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #lodash.isUndefined: {
+    [[Call]]: fun(16),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #lodash.keys: {
+    [[Call]]: fun(17),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #lodash.map: {
+    [[Call]]: fun(18),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #lodash.merge: {
+    [[Call]]: fun(19),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
+  },
+  #lodash.mixin: {
+    [[Call]]: fun(20),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #lodash.reduce: {
+    [[Call]]: fun(21),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  }
+}
+
+Function: {
+  1: [\\
+  function clone (value, isDeep, customizer, thisArg) {
+    // TODO model me
+  }
+  \\],
+  2: [\\
+  function cloneDeep (value, customizer, thisArg) {
+    // TODO model me
+  }
+  \\],
+  3: [\\
+  function defaults (assign, assignDefaults) {
+    // TODO model me
+  }
+  \\],
+  4: [\\
+  function defaultsDeep (merge, mergeDefaults) {
+    // TODO model me
+  }
+  \\],
+  5: [\\
+  function each (collection, iteratee) {
+    // TODO model me
+  }
+  \\],
+  6: [\\
+  function filter (collection, predicate, thisArg) {
+    // TODO model me
+  }
+  \\],
+  7: [\\
+  function find (collection, predicate, fromIndex) {
+    // TODO model me
+  }
+  \\],
+  8: [\\
+  function forEach (collection, iteratee) {
+    // TODO model me
+  }
+  \\],
+  9: [\\
+  function get (object, path, defaultValue) {
+    // TODO model me
+  }
+  \\],
+  10: [\\
+  function invert (object, multiValue, guard) {
+    // TODO model me
+  }
+  \\],
+  11: [\\
+  function isArray (value) {
+    // TODO model me
+  }
+  \\],
+  12: [\\
+  function isEmpty (value) {
+    // TODO model me
+  }
+  \\],
+  13: [\\
+  function isObject (value) {
+    // TODO model me
+  }
+  \\],
+  14: [\\
+  function isPlainObject (value) {
+    // TODO model me
+  }
+  \\],
+  15: [\\
+  function isString (value) {
+    // TODO model me
+  }
+  \\],
+  16: [\\
+  function isUndefined (value) {
+    // TODO model me
+  }
+  \\],
+  17: [\\
+  function keys (object) {
+    // TODO model me
+  }
+  \\],
+  18: [\\
+  function map (array, iteratee) {
+    // TODO model me
+  }
+  \\],
+  19: [\\
+  function merge (object, source, customizer) {
+    // TODO model me
+  }
+  \\],
+  20: [\\
+  function mixin (context) {
+    // TODO model me
+  }
+  \\],
+  21: [\\
+  function reduce (collection, iteratee) {
+    // TODO model me
+  }
+  \\]
+}
