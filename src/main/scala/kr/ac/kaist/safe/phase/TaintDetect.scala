@@ -43,12 +43,13 @@ package kr.ac.kaist.safe.phase
 import scala.util.{ Failure, Success, Try }
 import kr.ac.kaist.safe.SafeConfig
 import kr.ac.kaist.safe.analyzer._
+import kr.ac.kaist.safe.analyzer.domain.DefaultBool.True
 import kr.ac.kaist.safe.analyzer.domain._
 import kr.ac.kaist.safe.nodes.cfg._
 import kr.ac.kaist.safe.analyzer.models.builtin.BuiltinGlobal
 import kr.ac.kaist.safe.nodes.ir.IRNode
 import kr.ac.kaist.safe.util._
-
+import kr.ac.kaist.safe.analyzer.domain.DefaultObject.{ ObjMap, Top }
 // Taint analysis prototype: detector phase
 // MISSING: check non-primitive object arguments.
 // MISSING: detecting property stores to sensitive (DOM) properties.
@@ -74,6 +75,28 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
   private def isReachableUserCode(sem: Semantics, block: CFGBlock): Boolean =
     !sem.getState(block).isEmpty && !NodeUtil.isModeled(block)
 
+  private def isTainted(argVal: AbsValue, h: AbsHeap): Boolean = {
+    argVal.locset match {
+      case loc: AbsLoc if loc.isBottom => argVal.pvalue.strval.isTop
+      case loc: AbsLoc => {
+        var bVal = false
+        val obj = h.get(loc);
+        obj match {
+          case ObjMap(amap, imap) => {
+            val map = amap.getMap
+
+            map.foreach({
+              case (str, dataprop) => {
+                bVal = bVal || dataprop.value.pvalue.strval.isTop
+              }
+            })
+
+          }
+        }
+        bVal
+      }
+    }
+  }
   private def checkBlock(block: CFGBlock, semantics: Semantics): BugList =
     if (isReachableUserCode(semantics, block) && !block.getInsts.isEmpty) {
       val (_, st) = semantics.getState(block).head
@@ -101,8 +124,8 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
                 args ++ (0 until len.getOrElse(0)).filter { i =>
                   // Lookup argument value in argument object
                   val argVal = argsObj.Get(i.toString, state.heap)
-                  // An argument that may be string-top may be tainted
-                  argVal.pvalue.strval.isTop
+                  // An argument that may be string-top or that contains string-top property may be tainted
+                  isTainted(argVal, state.heap)
                 }
               }
 
