@@ -12,3 +12,4 @@
 - [ ] Fix tests that fail for configuration with increased loop-sensitivity
     - /tests/test262/15.2/15.2.3/15.2.3.14/15.2.3.14-5-13.js
     - /tests/test262/7.4/S7.4_A6.js
+- [ ] Useful source locations for functions defined in jsmodel files
