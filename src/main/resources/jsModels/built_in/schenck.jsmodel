@@ -1,8 +1,9 @@
 Heap: {
   #Global: {
-    "Janus": <#Janus, T, F, T>
+    "global": <#Global, F, T, F>,
+    "janus": <#janus, T, F, T>
   },
-  #Janus: {
+  #janus: {
     [[Class]]: "Object",
     [[Extensible]]: true,
     [[Prototype]]: #Object.prototype,
@@ -28,7 +29,7 @@ Heap: {
     "PresenterItem": <#PresenterItem, T, F, T>,
     "ConcatListAdapter": <#ConcatListAdapter, T, F, T>,
     "PresenterAdapter": <#PresenterAdapter, T, F, T>,
-    "BaseCard": <#BaseCard, T, F, T>,
+    "Card": <#Card, T, F, T>,
     "ContainerCard": <#ContainerCard, T, F, T>,
     "GalleryCard": <#GalleryCard, T, F, T>,
     "GridCard": <#GridCard, T, F, T>,
@@ -384,33 +385,36 @@ Heap: {
     [[Scope]]: null,
     "length": <0, F, F, F>
   },
-  #DefaultCard: {
+  #Card: {
     [[Call]]: fun(40),
     [[Class]]: "Function",
-    [[Construct]]: fun(41),
+    [[Construct]]: fun(40),
     [[Extensible]]: true,
     [[HasInstance]]: null,
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "length": <1, F, F, F>,
-    "prototype": <#DefaultCard.prototype, F, F, F>
+    "prototype": <#Card.prototype, F, F, F>
   },
-  #DefaultCard.prototype: {
+  #Card.prototype: {
     [[Class]]: "Object",
     [[Extensible]]: true,
     [[Prototype]]: #Object.prototype,
-    "registerListeners": <#DefaultCard.prototype.registerListeners, T, F, T>,
-    "trigger": <#DefaultCard.prototype.trigger, T, F, T>,
-    "off": <#DefaultCard.prototype.off, T, F, T>,
-    "on": <#DefaultCard.prototype.on, T, F, T>,
-    "init": <#DefaultCard.prototype.init, T, F, T>,
-    "_setupNativeListeners": <#DefaultCard.prototype._setupNativeListeners, T, F, T>,
-    "setTitle": <#DefaultCard.prototype.navigateTo, T, F, T>,
-    "setActions": <#DefaultCard.prototype.setActions, T, F, T>,
-    "setHeader": <#DefaultCard.prototype.setHeader, T, F, T>,
-    "setFooter": <#DefaultCard.prototype.setFooter, T, F, T>
+    "init": <#Card.prototype.init, T, F, T>,
+    "setTitle": <#Card.prototype.navigateTo, T, F, T>,
+    "setActions": <#Card.prototype.setActions, T, F, T>,
+    "setHeader": <#Card.prototype.setHeader, T, F, T>,
+    "setFooter": <#Card.prototype.setFooter, T, F, T>
   },
-  #DefaultCard.prototype.registerListeners: {
+  #Card.prototype.init: {
+    [[Call]]: fun(41),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
+  #Card.prototype.setTitle: {
     [[Call]]: fun(42),
     [[Class]]: "Function",
     [[Extensible]]: true,
@@ -418,7 +422,7 @@ Heap: {
     [[Scope]]: null,
     "length": <1, F, F, F>
   },
-  #DefaultCard.prototype.trigger: {
+  #Card.prototype.setActions: {
     [[Call]]: fun(43),
     [[Class]]: "Function",
     [[Extensible]]: true,
@@ -426,69 +430,32 @@ Heap: {
     [[Scope]]: null,
     "length": <1, F, F, F>
   },
-  #DefaultCard.prototype.off: {
+  #Card.prototype.setHeader: {
     [[Call]]: fun(44),
     [[Class]]: "Function",
     [[Extensible]]: true,
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
-    "length": <2, F, F, F>
+    "length": <1, F, F, F>
   },
-  #DefaultCard.prototype.on: {
+  #Card.prototype.setFooter: {
     [[Call]]: fun(45),
     [[Class]]: "Function",
     [[Extensible]]: true,
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
-    "length": <3, F, F, F>
+    "length": <1, F, F, F>
   },
-  #DefaultCard.prototype.init: {
+  #DefaultCard: {
     [[Call]]: fun(46),
     [[Class]]: "Function",
+    [[Construct]]: fun(46),
     [[Extensible]]: true,
+    [[HasInstance]]: null,
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
-    "length": <1, F, F, F>
-  },
-  #DefaultCard.prototype._setupNativeListeners: {
-    [[Call]]: fun(47),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <0, F, F, F>
-  },
-  #DefaultCard.prototype.setTitle: {
-    [[Call]]: fun(48),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <0, F, F, F>
-  },
-  #DefaultCard.prototype.setActions: {
-    [[Call]]: fun(49),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <0, F, F, F>
-  },
-  #DefaultCard.prototype.setHeader: {
-    [[Call]]: fun(50),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <1, F, F, F>
-  },
-  #DefaultCard.prototype.setFooter: {
-    [[Call]]: fun(51),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <1, F, F, F>
+    "length": <1, F, F, F>,
+    "prototype": <#Card.prototype, F, F, F>
   },
   #Dbw: {
     [[Call]]: fun(52),
@@ -700,7 +667,7 @@ Heap: {
     [[Scope]]: null,
     "length": <1, F, F, F>
   },
-#Field: {
+  #Field: {
     [[Call]]: fun(76),
     [[Class]]: "Function",
     [[Construct]]: fun(77),
@@ -929,10 +896,10 @@ Heap: {
   #InputDialog: {
     [[Call]]: fun(102),
     [[Class]]: "Function",
-    [[Construct]]: fun(103),
+    [[Construct]]: fun(102),
     [[Extensible]]: true,
     [[HasInstance]]: null,
-    [[Prototype]]: #InputDialog.prototype,
+    [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "length": <0, F, F, F>,
     "prototype": <#InputDialog.prototype, F, F, F>
@@ -944,7 +911,7 @@ Heap: {
     "show": <#FileResource.prototype.show, T, F, T>
   },
   #InputDialog.prototype.show: {
-    [[Call]]: fun(104),
+    [[Call]]: fun(103),
     [[Class]]: "Function",
     [[Extensible]]: true,
     [[Prototype]]: #Function.prototype,
@@ -952,12 +919,12 @@ Heap: {
     "length": <1, F, F, F>
   },
   #ListPopup: {
-    [[Call]]: fun(105),
+    [[Call]]: fun(104),
     [[Class]]: "Function",
-    [[Construct]]: fun(106),
+    [[Construct]]: fun(104),
     [[Extensible]]: true,
     [[HasInstance]]: null,
-    [[Prototype]]: #ListPopup.prototype,
+    [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "length": <0, F, F, F>,
     "prototype": <#ListPopup.prototype, F, F, F>
@@ -969,7 +936,7 @@ Heap: {
     "show": <#ListPopup.prototype.show, T, F, T>
   },
   #ListPopup.prototype.show: {
-    [[Call]]: fun(107),
+    [[Call]]: fun(105),
     [[Class]]: "Function",
     [[Extensible]]: true,
     [[Prototype]]: #Function.prototype,
@@ -1178,63 +1145,44 @@ Function: {
   }
   \\],
   40: [\\
-  function DefaultCard(config) {
-
+  function Card (config) {
   }
   \\],
   41: [\\
-  function DefaultCard(config) {
+  function init (config) {
+    var Events = _mod_Events({ exports: {} });
+    var util = _mod_utility({ exports: {} });
 
+    this.EVENTS = [ "cardVisible", "destroy", "back" ];
+    var events = new Events();
+
+//    var self = this;
+//    for (var p in events) {
+//      self[p] = events[p];
+//    }
+    util.extendObj(this, events);
+    this.registerListeners(this);
   }
   \\],
   42: [\\
-  function registerListeners() {
-
+  function setTitle (title) {
   }
   \\],
   43: [\\
-  function trigger() {
-
+  function setActions (actions) {
   }
   \\],
   44: [\\
-  function off() {
-
+  function setHeader (headerField) {
   }
   \\],
   45: [\\
-  function on() {
-
+  function setFooter (footerField) {
   }
   \\],
   46: [\\
-  function init() {
-
-  }
-  \\],
-  47: [\\
-  function _setupNativeListeners() {
-
-  }
-  \\],
-  48: [\\
-  function setTitle() {
-
-  }
-  \\],
-  49: [\\
-  function setActions() {
-
-  }
-  \\],
-  50: [\\
-  function setHeader(config) {
-
-  }
-  \\],
-  51: [\\
-  function setFooter() {
-
+  function DefaultCard (config) {
+    @Call(@getLoc("Card"), this, arguments);
   }
   \\],
   52: [\\
@@ -1493,26 +1441,16 @@ Function: {
   }
   \\],
   103: [\\
-  function InputDialog() {
-
-  }
-  \\],
-  104: [\\
   function show() {
 
   }
   \\],
+  104: [\\
+  function ListPopup() {
+
+  }
+  \\],
   105: [\\
-  function ListPopup() {
-
-  }
-  \\],
-  106: [\\
-  function ListPopup() {
-
-  }
-  \\],
-  107: [\\
   function show() {
 
   }
