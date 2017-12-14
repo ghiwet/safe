@@ -32,13 +32,14 @@ case object CmdPrint extends Command("print", "Print out various information.") 
     println("       " + name + " worklist")
     println("       " + name + " ipsucc")
     println("       " + name + " trace")
+    println("       " + name + " function ({fid})")
     println("       " + name + " cfg {name}")
     println("       " + name + " html {name}")
   }
 
   def run(c: Console, args: List[String]): Option[Target] = {
-    val idPattern = "(\\d+):(\\d+)".r
-    val spPattern = "(\\d+):(entry|exit|exit-exc)".r
+    val idPattern = "(-?\\d+):(\\d+)".r
+    val spPattern = "(-?\\d+):(entry|exit|exit-exc)".r
     args match {
       case Nil => help
       case subcmd :: rest => subcmd match {
@@ -118,7 +119,7 @@ case object CmdPrint extends Command("print", "Print out various information.") 
                 val name = func.simpleName
                 println(s"[$fid] $name")
             }
-          case fidStr :: Nil if fidStr.forall(_.isDigit) =>
+          case fidStr :: Nil if fidStr.matches("-?\\d+") =>
             val fid = fidStr.toInt
             c.cfg.getFunc(fid) match {
               case Some(func) =>
@@ -188,6 +189,22 @@ case object CmdPrint extends Command("print", "Print out various information.") 
               f(0, c.getCurCP)
             case _ => help
           }
+        case "function" => rest match {
+          case Nil =>
+            val fid = c.getCurCP.block.func.id
+
+            c.cfg.getFunc(fid) match {
+              case Some(func) => println(func.toString(0))
+              case None =>
+            }
+          case fidStr :: Nil if fidStr.matches("-?\\d+") =>
+            val fid = fidStr.toInt
+            c.cfg.getFunc(fid) match {
+              case Some(func) => println(func.toString(0))
+              case None => println(s"unknown fid: $fid")
+            }
+          case _ => help
+        }
         case "cfg" => rest match {
           case name :: Nil => {
             // computes reachable fid_set
