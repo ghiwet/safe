@@ -202,106 +202,193 @@ Function: {
   1: [\\
   function clone (value, isDeep, customizer, thisArg) {
     // TODO model me
+    return value;
   }
   \\],
   2: [\\
   function cloneDeep (value, customizer, thisArg) {
     // TODO model me
+    return value;
   }
   \\],
   3: [\\
-  function defaults (assign, assignDefaults) {
-    // TODO model me
+  function defaults (object, source) {
+    object = @ToObject(object);
+    if (source != null) {
+      source = @ToObject(source);
+      for (var key in source) {
+        var value = object[key];
+        if (value === undefined ||
+            (@SameValue(value, Object.prototype[key]) && !Object.prototype.hasOwnProperty.call(object, key))) {
+          object[key] = source[key];
+        }
+      }
+    }
   }
   \\],
   4: [\\
-  function defaultsDeep (merge, mergeDefaults) {
+  function defaultsDeep (object, source) {
     // TODO model me
+    return _.defaults(object, source);
   }
   \\],
   5: [\\
   function each (collection, iteratee) {
-    // TODO model me
+    // NOTE: collection is an array
+    var array = collection;
+    _.forEach(array, iteratee);
   }
   \\],
   6: [\\
   function filter (collection, predicate, thisArg) {
-    // TODO model me
+    // NOTE: collection is an array
+    var array = collection;
+    return array.filter(predicate);
   }
   \\],
   7: [\\
   function find (collection, predicate, fromIndex) {
-    // TODO model me
+    // NOTE: collection instanceof Array
+    var array = collection;
+    var index = -1,
+        length = array.length;
+
+    while (++index < length) {
+      if (predicate(array[index], index, array)) {
+        return array[index];
+      }
+    }
   }
   \\],
   8: [\\
   function forEach (collection, iteratee) {
-    // TODO model me
+    // NOTE: collection is an array
+    var array = collection
+    array.forEach(iteratee);
   }
   \\],
   9: [\\
   function get (object, path, defaultValue) {
-    // TODO model me
+    // NOTE: defaultValue === undefined, path is a path array
+    if (object == null) {
+      return;
+    }
+
+    var index = 0,
+        length = path.length;
+
+    while (object != null && index < length) {
+      object = object[path[index++]];
+    }
+    return (index && index == length) ? object : undefined;
   }
   \\],
   10: [\\
   function invert (object, multiValue, guard) {
-    // TODO model me
+    // NOTE: multiValue === undefined, guard === undefined
+
+    // if (guard && isIterateeCall(object, multiValue, guard)) {
+    //   multiValue = undefined;
+    // }
+    var index = -1,
+        props = Object.keys(object),
+        length = props.length,
+        result = {};
+
+    while (++index < length) {
+      var key = props[index],
+          value = object[key];
+
+      // if (multiValue) {
+      //  if (hasOwnProperty.call(result, value)) {
+      //    result[value].push(key);
+      //  } else {
+      //    result[value] = [key];
+      //  }
+      //}
+      //else {
+      result[value] = key;
+      //}
+    }
+    return result;
   }
   \\],
   11: [\\
   function isArray (value) {
-    // TODO model me
+    return Array.isArray(value);
   }
   \\],
   12: [\\
   function isEmpty (value) {
-    // TODO model me
+    if (value == null) return true;
+    if (_.isObject(value)) return !Object.keys(value).length;
+    return !value.length;
   }
   \\],
   13: [\\
   function isObject (value) {
-    // TODO model me
+    return value !== null && typeof value === 'object' && value instanceof Object;
   }
   \\],
   14: [\\
   function isPlainObject (value) {
-    // TODO model me
+    return _.isObject(value) || @Prototype(value) === null;
   }
   \\],
   15: [\\
   function isString (value) {
-    // TODO model me
+    return typeof value === 'string' || value instanceof String;
   }
   \\],
   16: [\\
   function isUndefined (value) {
-    // TODO model me
+    return typeof value === 'undefined';
   }
   \\],
   17: [\\
   function keys (object) {
-    // TODO model me
+    return Object.keys(object);
   }
   \\],
   18: [\\
-  function map (array, iteratee) {
-    // TODO model me
+  function map (collection, iteratee) {
+    if (Array.isArray(collection)) {
+      var array = collection;
+      return array.map(iteratee);
+    }
+    else {
+      var index = -1,
+          result = Array(collection.length);
+
+      for (var key in collection) {
+        if (Object.prototype.hasOwnProperty.call(collection, key)) {
+          result[++index] = iteratee(collection[key], key, collection);
+        }
+      }
+
+      return collection;
+    }
   }
   \\],
   19: [\\
   function merge (object, source, customizer) {
     // TODO model me
+    return object;
   }
   \\],
   20: [\\
   function mixin (context) {
-    // TODO model me
+    for (key in context) {
+      if (Object.prototype.hasOwnProperty.call(context, key)) {
+        _[key] = context[key];
+      }
+    }
   }
   \\],
   21: [\\
   function reduce (collection, iteratee) {
     // TODO model me
+    return {};
   }
   \\]
 }
