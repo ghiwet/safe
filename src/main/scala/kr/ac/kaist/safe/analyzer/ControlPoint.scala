@@ -24,6 +24,8 @@ case class ControlPoint(
   }
   override def toString: String = {
     val fid = block.func.id
-    s"($fid:$block, $tracePartition)"
+    val func = block.func.simpleName
+    val span = block.span
+    s"($func[$fid]: $block, $tracePartition) @${span.toString}"
   }
 }

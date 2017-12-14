@@ -75,7 +75,7 @@ case class Worklist(cfg: CFG) {
   def getOrderMap: Map[CFGBlock, Int] = orderMap
 
   override def toString: String = {
-    worklist.map(work => work.toString).mkString(", ")
+    worklist.map(work => work.toString).mkString("\n")
   }
 
   def has(block: CFGBlock): Boolean = worklist.exists {

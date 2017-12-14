@@ -28,6 +28,8 @@ class Fixpoint(
       consoleOpt.fold() { _.runFixpoint }
       val cp = worklist.pop
       val st = semantics.getState(cp)
+      println("Iter[" + (iters - 1) + "]: " + cp)
+      if (!worklist.isEmpty) worklist.getWorklist.foreach(work => println("\t\t+ " + work.toString))
       val (nextSt, nextExcSt) = semantics.C(cp, st)
       propagateNormal(cp, nextSt)
       propagateException(cp, nextExcSt)

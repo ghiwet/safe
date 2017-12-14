@@ -170,9 +170,10 @@ class Console(
   private def toString(cp: ControlPoint): String = {
     val block = cp.block
     val func = block.func.simpleName
+    val fid = block.func.id
     val span = block.span
     val tp = cp.tracePartition
-    s"<$func: $block, $tp> @${span.toString}"
+    s"<$func[$fid]: $block, $tp> @${span.toString}"
   }
 
   private def setPrompt: Unit = {
