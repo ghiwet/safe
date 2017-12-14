@@ -26,3 +26,8 @@ lib/xtc.jar
 lib/debugger/webix.js
 lib/debugger/css/webix.css
 doc/safe.pdf
+
+experiments
+
+# Intellij IDEA
+.idea
