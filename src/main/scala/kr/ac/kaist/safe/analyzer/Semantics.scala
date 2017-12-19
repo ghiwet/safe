@@ -1004,7 +1004,7 @@ class Semantics(
         case ConFin(idxSet) => idxSet.foldLeft(AbsBool.Bot) {
           case (b, idx) => locset.foldLeft(b) {
             case (b, loc) => {
-              val (strList, astr) = heap.get(loc).keySetPair
+              val (strList, astr) = heap.get(loc).keySetPair(heap)
               if (idx < strList.length) b + AbsBool.True
               else b + astr.fold(AbsBool.False) { _ => AbsBool.Top }
             }
@@ -1023,7 +1023,7 @@ class Semantics(
       val strV = locset.foldLeft(AbsString.Bot) {
         case (str, loc) => {
           val obj = heap.get(loc)
-          val (strList, astr) = heap.get(loc).keySetPair
+          val (strList, astr) = heap.get(loc).keySetPair(heap)
           cur.gamma match {
             case ConInf() => str + AbsString(strList.toSet) + astr
             case ConFin(idxSet) => idxSet.foldLeft(str) {
