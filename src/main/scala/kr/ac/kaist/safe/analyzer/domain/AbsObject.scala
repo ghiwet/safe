@@ -76,7 +76,7 @@ trait AbsObject extends AbsDomain[Object, AbsObject] {
   def abstractKeySet: ConSet[AbsString]
   def abstractKeySet(filter: (AbsString, AbsDataProp) => Boolean): ConSet[AbsString]
   def collectKeySet(prefix: String): ConSet[String]
-  def keySetPair: (List[String], AbsString)
+  def keySetPair(heap: AbsHeap): (List[String], AbsString)
   def isDefinite(str: AbsString): Boolean
 
   ////////////////////////////////////////////////////////////////
@@ -383,12 +383,27 @@ object DefaultObject extends AbsObjectUtil {
       case Top => ConInf()
       case ObjMap(amap, _) => amap.collectKeySet(prefix)
     }
-    def keySetPair: (List[String], AbsString) = this match {
-      case Top => (Nil, AbsString.Top)
-      case ObjMap(amap, _) => {
-        val (strSet, astr) = amap.keySetPair
-        (strSet.toList.sortBy { _.toString }, astr) // TODO for-in order
+    def keySetPair(h: AbsHeap): (List[String], AbsString) = {
+      var visited = HashSet[Loc]()
+      def visit(currObj: AbsObject): (Set[String], AbsString) = {
+        val pair = currObj match {
+          case Top => (HashSet[String](), AbsString.Top)
+          case ObjMap(amap, _) => amap.keySetPair
+        }
+        val proto = currObj(IPrototype)
+        proto.value.locset.foldLeft(pair) {
+          case ((strSet, astr), loc) => {
+            if (visited contains loc) (strSet, astr)
+            else {
+              visited += loc
+              val (newStrSet, newAStr) = visit(h.get(loc))
+              (strSet ++ newStrSet, astr + newAStr)
+            }
+          }
+        }
       }
+      val (strSet, astr) = visit(this)
+      (strSet.toList.sortBy { _.toString }, astr) // TODO for-in order
     }
     def isDefinite(str: AbsString): Boolean = this match {
       case Top => false
