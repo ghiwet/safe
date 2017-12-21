@@ -404,7 +404,8 @@ Heap: {
     "setTitle": <#Card.prototype.navigateTo, T, F, T>,
     "setActions": <#Card.prototype.setActions, T, F, T>,
     "setHeader": <#Card.prototype.setHeader, T, F, T>,
-    "setFooter": <#Card.prototype.setFooter, T, F, T>
+    "setFooter": <#Card.prototype.setFooter, T, F, T>,
+    "setFields": <#Card.prototype.setFields, T, F, T>
   },
   #Card.prototype.init: {
     [[Call]]: fun(41),
@@ -446,6 +447,14 @@ Heap: {
     [[Scope]]: null,
     "length": <1, F, F, F>
   },
+  #Card.prototype.setFields: {
+    [[Call]]: fun(47),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <1, F, F, F>
+  },
   #DefaultCard: {
     [[Call]]: fun(46),
     [[Class]]: "Function",
@@ -455,12 +464,14 @@ Heap: {
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "length": <1, F, F, F>,
-    "prototype": <#Card.prototype, F, F, F>
+    "prototype": <#Card.prototype, F, F, F>,
+    "getFields": <#DefaultCard.getFields, T, F, T>,
+    "setFields": <#DefaultCard.setFields, T, F, T>
   },
   #Dbw: {
     [[Call]]: fun(52),
     [[Class]]: "Function",
-    [[Construct]]: fun(53),
+    [[Construct]]: fun(52),
     [[Extensible]]: true,
     [[HasInstance]]: null,
     [[Prototype]]: #Function.prototype,
@@ -472,19 +483,10 @@ Heap: {
     [[Class]]: "Object",
     [[Extensible]]: true,
     [[Prototype]]: #Object.prototype,
-    "_getNativeDB": <#Dbw.prototype._getNativeDB, T, F, T>,
     "getLocal": <#Dbw.prototype.getLocal, T, F, T>,
     "putLocal": <#Dbw.prototype.putLocal, T, F, T>,
     "forceOrPut": <#Dbw.prototype.forceOrPut, T, F, T>,
     "saveResource": <#Dbw.prototype.saveResource, T, F, T>
-  },
-  #Dbw.prototype._getNativeDB: {
-    [[Call]]: fun(54),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <1, F, F, F>
   },
   #Dbw.prototype.getLocal: {
     [[Call]]: fun(55),
@@ -670,7 +672,7 @@ Heap: {
   #Field: {
     [[Call]]: fun(76),
     [[Class]]: "Function",
-    [[Construct]]: fun(77),
+    [[Construct]]: fun(76),
     [[Extensible]]: true,
     [[HasInstance]]: null,
     [[Prototype]]: #Function.prototype,
@@ -682,73 +684,10 @@ Heap: {
     [[Class]]: "Object",
     [[Extensible]]: true,
     [[Prototype]]: #Object.prototype,
-    "registerListeners": <#Field.prototype.registerListeners, T, F, T>,
-    "trigger": <#Field.prototype.trigger, T, F, T>,
-    "off": <#Field.prototype.off, T, F, T>,
-    "on": <#Field.prototype.on, T, F, T>,
-    "getNativeField": <#Field.prototype.getNativeField, T, F, T>,
-    "initialize": <#Field.prototype.initialize, T, F, T>,
-    "onFieldClick": <#Field.prototype.onFieldClick, T, F, T>,
-    "onValueChange": <#Field.prototype.onValueChange, T, F, T>
-  },
-  #Field.prototype.registerListeners: {
-    [[Call]]: fun(78),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <1, F, F, F>
-  },
-  #Field.prototype.trigger: {
-    [[Call]]: fun(79),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <1, F, F, F>
-  },
-  #Field.prototype.off: {
-    [[Call]]: fun(80),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <2, F, F, F>
-  },
-  #Field.prototype.on: {
-    [[Call]]: fun(81),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <3, F, F, F>
+    "getNativeField": <#Field.prototype.getNativeField, T, F, T>
   },
   #Field.prototype.getNativeField: {
     [[Call]]: fun(82),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <0, F, F, F>
-  },
-  #Field.prototype.initialize: {
-    [[Call]]: fun(83),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <1, F, F, F>
-  },
-  #Field.prototype.onFieldClick: {
-    [[Call]]: fun(84),
-    [[Class]]: "Function",
-    [[Extensible]]: true,
-    [[Prototype]]: #Function.prototype,
-    [[Scope]]: null,
-    "length": <0, F, F, F>
-  },
-  #Field.prototype.onValueChange: {
-    [[Call]]: fun(85),
     [[Class]]: "Function",
     [[Extensible]]: true,
     [[Prototype]]: #Function.prototype,
@@ -1161,7 +1100,8 @@ Function: {
 //      self[p] = events[p];
 //    }
     util.extendObj(this, events);
-    this.registerListeners(this);
+    // Skip this step and call event handlers directly by name
+    //this.registerListeners(this);
   }
   \\],
   42: [\\
@@ -1185,24 +1125,18 @@ Function: {
     @Call(@getLoc("Card"), this, arguments);
   }
   \\],
+  47: [\\
+  function setFields (fields) {
+  }
+  \\],
   52: [\\
   function Dbw(name) {
     this.dbname = name;
   }
   \\],
-  53: [\\
-  function Dbw(name) {
-    this.dbname = name;
-  }
-  \\],
-  54: [\\
-  function _getNativeDB() {
-
-  }
-  \\],
   55: [\\
   function getLocal() {
-
+    return Promise.reject();
   }
   \\],
   56: [\\
@@ -1306,13 +1240,8 @@ Function: {
   }
   \\],
   76: [\\
-  function Field(config) {
-
-  }
-  \\],
-  77: [\\
-  function Field(config) {
-
+  function Field(config, overRides, additionalProps) {
+    this.id = config.id;
   }
   \\],
   78: [\\
