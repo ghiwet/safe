@@ -294,7 +294,9 @@ Heap: {
     [[Class]]: "Object",
     [[Extensible]]: true,
     [[Prototype]]: #Object.prototype,
-    "userAgent": <string, T, T, T>
+    "userAgent": <string, T, T, T>,
+    "language": <string, T, T, T>,
+    "browserLanguage": <string, T, T, T>
   },
   #HTMLElement: {
     [[Call]]: fun(18),
