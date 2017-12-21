@@ -321,6 +321,7 @@ Heap: {
     "RangeError": <#RangeError, T, F, T>,
     "ReferenceError": <#ReferenceError, T, F, T>,
     "encodeURIComponent": <#Global.encodeURIComponent, T, F, T>,
+    "escape": <#Global.escape, T, F, T>,
     "EvalError": <#EvalError, T, F, T>,
     "encodeURI": <#Global.encodeURI, T, F, T>,
     "eval": <#Global.eval, T, F, T>,
@@ -338,7 +339,8 @@ Heap: {
     "Infinity": <Infinity, F, F, F>,
     "SyntaxError": <#SyntaxError, T, F, T>,
     "<>Global<>true": <true, F, F, F>,
-    "undefined": <undefined, F, F, F>
+    "undefined": <undefined, F, F, F>,
+    "unescape": <#Global.unescape, T, F, T>
   },
   #Math.min: {
     [[Class]]: "Function",
@@ -550,6 +552,22 @@ Heap: {
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     [[Call]]: fun(8),
+    "length": <1.0, F, F, F>
+  },
+  #Global.escape: {
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    [[Call]]: fun(139),
+    "length": <1.0, F, F, F>
+  },
+  #Global.unescape: {
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    [[Call]]: fun(140),
     "length": <1.0, F, F, F>
   },
   #Function.prototype: {
@@ -1302,18 +1320,26 @@ Function: {
   \\],
   6: [\\
   function () {
+    // TODO
+    return @StrTop;
   }
   \\],
   7: [\\
   function () {
+    // TODO
+    return @StrTop;
   }
   \\],
   8: [\\
   function () {
+    // TODO
+    return @StrTop;
   }
   \\],
   9: [\\
   function () {
+    // TODO
+    return @StrTop;
   }
   \\],
   10: [\\
@@ -5283,6 +5309,18 @@ Function: {
     }
     // 5. Return the result of calling the [[Construct]] internal method of target providing args as the arguments.
     return @Construct(target, this, args);
+  }
+  \\],
+  139: [\\
+  function escape () {
+    // TODO
+    return @StrTop;
+  }
+  \\],
+  140: [\\
+  function unescape () {
+    // TODO
+    return @StrTop;
   }
   \\]
 }

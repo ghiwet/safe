@@ -265,6 +265,7 @@ object ModelParser extends RegexParsers with JavaTokenParsers {
       }
       case Fail(e) => {
         println(ModelParseError(e.toString))
+        println(fun)
         Fail(e)
       }
     }

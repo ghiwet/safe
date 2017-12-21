@@ -401,15 +401,22 @@ Function: {
   }
   \\],
   10: [\\
-  function () {
+  function match () {
+    // TODO model me
+    // NOTE: Return value of match() with no parameter
+    return [""];
   }
   \\],
   11: [\\
-  function () {
+  function replace () {
+    // TODO model me
+    return @StrTop;
   }
   \\],
   12: [\\
-  function () {
+  function search () {
+    // TODO model me
+    return @NumTop;
   }
   \\],
   13: [\\
@@ -453,7 +460,10 @@ Function: {
   }
   \\],
   14: [\\
-  function () {
+  function split () {
+    // TODO model me
+    // NOTE: Return value of split() empty string
+    return [""];
   }
   \\],
   15: [\\
