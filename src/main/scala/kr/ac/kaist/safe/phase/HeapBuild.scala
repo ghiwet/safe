@@ -42,6 +42,8 @@ case object HeapBuild extends PhaseObj[CFG, HeapBuildConfig, (CFG, Semantics, Tr
     )
     var initSt = Initialize(cfg, config.jsModel)
 
+    Loc.heapCloning = config.heapCloning
+
     // handling snapshot mode
     config.snapshot.map(str =>
       initSt = Initialize.addSnapshot(initSt, str))
@@ -83,6 +85,8 @@ case object HeapBuild extends PhaseObj[CFG, HeapBuildConfig, (CFG, Semantics, Tr
     //   // TODO case "flat" => c.AbsNum = FlatNumber
     //   case str => throw NoChoiceError(s"there is no abstract number domain with name '$str'.")
     // }), "analysis with a selected number domain."),
+    ("heapCloning", BoolOption(c => c.heapCloning = true),
+      "analysis with heap cloning."),
     ("jsModel", BoolOption(c => c.jsModel = true),
       "analysis with JavaScript models.")
   )
@@ -103,5 +107,6 @@ case class HeapBuildConfig(
   var loopSensitivity: LoopSensitivity = LoopSensitivity(0, 0),
   var snapshot: Option[String] = None,
   var jsModel: Boolean = false,
+  var heapCloning: Boolean = false,
   var aaddrType: AAddrType = RecencyAAddr
 ) extends Config

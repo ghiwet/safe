@@ -40,6 +40,8 @@ object Loc {
     PredAllocSite.GLOBAL_ENV,
     PredAllocSite.PURE_LOCAL
   )
+  // heap cloning flag
+  var heapCloning = false
 
   def parse(str: String): Try[Loc] = {
     val recency = "(R|O)(.+)".r
