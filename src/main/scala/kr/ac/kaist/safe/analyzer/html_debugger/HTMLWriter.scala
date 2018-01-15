@@ -52,7 +52,7 @@ object HTMLWriter {
       case Some(inst) => {
         val st = inst match {
           case inst: CFGAssert => {
-            val (st, _) = sem.I(inst, oldSt, AbsState.Bot)
+            val (st, _) = sem.I(inst, oldSt, AbsState.Bot, tp)
             st
           }
           case _ => oldSt

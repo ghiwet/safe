@@ -43,8 +43,9 @@ object HeapClone {
     Try(heapClones(index))
   }
 
-  def apply(loc: Loc, cc: CallSiteContext): Loc = cc.callsiteList match {
-    case csList @ (_ :: _) => loc match {
+  def add(loc: Loc, csList: List[Call]): Loc = csList match {
+    case Nil => loc
+    case _ => loc match {
       case Recency(subLoc, Recent) =>
         val hc = HeapClone(subLoc, csList)
         heapClones += hc
@@ -54,7 +55,7 @@ object HeapClone {
         heapClones += hc
         hc
     }
-    case Nil => loc
+
   }
 
 }

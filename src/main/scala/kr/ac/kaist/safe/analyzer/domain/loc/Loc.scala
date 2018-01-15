@@ -71,7 +71,7 @@ object Loc {
     case RecencyAAddr => Recency(asite, Recent)
   }
   def apply(asite: AllocSite, tp: TracePartition): Loc = if (!heapCloning) apply(asite) else tp match {
-    case csContext @ CallSiteContext(_, _) => HeapClone(apply(asite), csContext)
+    case CallSiteContext(csList, _) => HeapClone.add(apply(asite), csList)
     case ProductTP(csContext, _) => apply(asite, csContext)
     case _ => apply(asite)
   }
