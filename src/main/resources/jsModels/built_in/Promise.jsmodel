@@ -81,6 +81,14 @@ Heap: {
   },
   #GetCapabilitiesExecutor: {
     [[Call]]: fun(11)
+  },
+  #PromiseReactionJob: {
+    [[Call]]: fun(12),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
   }
 }
 
@@ -539,37 +547,13 @@ Function: {
       // a. Let value be the value of promise's [[PromiseResult]] internal slot.
       var value = @PromiseResult(this);
       // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «fulfillReaction, value»).
-      // TODO
-      if (onFulfilled === "Identity") {
-        @Call(promiseCapability.Resolve, undefined, [value]);
-      }
-      else {
-        try {
-          var handlerResult = @Call(onFulfilled, undefined, [value]);
-          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
-        }
-        catch (ex) {
-          @Call(promiseCapability.Reject, undefined, [ex]);
-        }
-      }
+      @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [fulfillReaction, value]);
     }
     else if (@PromiseState(this) === "rejected") {
       // a. Let reason be the value of promise's [[PromiseResult]] internal slot.
       var reason = @PromiseResult(this);
       // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «rejectReaction, reason»).
-      // TODO
-      if (onRejected === "Thrower") {
-        @Call(promiseCapability.Reject, undefined, [reason]);
-      }
-      else {
-        try {
-          var handlerResult = @Call(onRejected, undefined, [reason]);
-          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
-        }
-        catch (ex) {
-          @Call(promiseCapability.Reject, undefined, [ex]);
-        }
-      }
+      @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [rejectReaction, reason]);
     }
     // 10. Return resultCapability.[[Promise]].
     return promiseCapability.Promise;
@@ -620,23 +604,9 @@ Function: {
 
     // 1. Repeat for each reaction in reactions, in original insertion order
     for (var i = 0; i < reactions.length; i++) {
-      // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-      // TODO
       var reaction = reactions[i];
-      var promiseCapability = reaction.Capabilities;
-      var handler = reaction.Handler;
-      if (handler === "Identity") {
-        @Call(promiseCapability.Resolve, undefined, [resolution]);
-      }
-      else {
-        try {
-          var handlerResult = @Call(handler, undefined, [resolution]);
-          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
-        }
-        catch (ex) {
-          @Call(promiseCapability.Reject, undefined, [ex]);
-        }
-      }
+      // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+      @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [reaction, resolution]);
     }
     // 2. Return undefined.
     return undefined;
@@ -681,23 +651,9 @@ Function: {
 
     // 1. Repeat for each reaction in reactions, in original insertion order
     for (var i = 0; i < reactions.length; i++) {
-      // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-      // TODO
       var reaction = reactions[i];
-      var promiseCapability = reaction.Capabilities;
-      var handler = reaction.Handler;
-      if (handler === "Thrower") {
-        @Call(promiseCapability.Reject, undefined, [reason]);
-      }
-      else {
-        try {
-          var handlerResult = @Call(handler, undefined, [reason]);
-          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
-        }
-        catch (ex) {
-          @Call(promiseCapability.Reject, undefined, [ex]);
-        }
-      }
+      // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+      @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [reaction, reason]);
     }
     // 2. Return undefined.
     return undefined;
@@ -717,6 +673,38 @@ Function: {
     promiseCapability.Reject = reject;
     // 7. Return undefined.
     return undefined;
+  }
+  \\],
+  12: [\\
+  function PromiseReactionJob (reaction, argument) {
+    // 1. Assert: reaction is a PromiseReaction Record.
+    // 2. Let promiseCapability be reaction.[[Capabilities]].
+    var promiseCapability = reaction.Capabilities;
+    // 3. Let handler be reaction.[[Handler]].
+    var handler = reaction.Handler;
+    // 4. If handler is "Identity", let handlerResult be NormalCompletion(argument).
+    if (handler === "Identity") {
+      @Call(promiseCapability.Resolve, undefined, [argument]);
+    }
+    // 5. Else if handler is "Thrower", let handlerResult be Completion{[[type]]: throw, [[value]]: argument, [[target]]: empty}.
+    else if (handler === "Thrower") {
+      @Call(promiseCapability.Reject, undefined, [argument]);
+    }
+    // 6. Else, let handlerResult be Call(handler, undefined, «argument»).
+    else {
+      try {
+        var handlerResult = @Call(handler, undefined, [argument]);
+        // 8. Let status be Call(promiseCapability.[[Resolve]], undefined, «handlerResult.[[value]]»).
+        @Call(promiseCapability.Resolve, undefined, [handlerResult]);
+        // 9. NextJob Completion(status).
+      }
+      // 7. If handlerResult is an abrupt completion, then
+      catch (ex) {
+        // a. Let status be Call(promiseCapability.[[Reject]], undefined, «handlerResult.[[value]]»).
+        @Call(promiseCapability.Resolve, undefined, [ex]);
+        // b. NextJob Completion(status).
+      }
+    }
   }
   \\]
 }
