@@ -682,7 +682,7 @@ case class Semantics(
         if (v.isBottom) {
           (AbsState.Bot, excSet1)
         } else {
-          val (v1, st1, excSet2) = TypeConversionHelper.ToObject(v, st, aNew)
+          val (v1, st1, excSet2) = TypeConversionHelper.ToObject(v, st, aNew, tp)
           val st2 =
             if (!v1.isBottom) st1.varStore(lhs, v1)
             else AbsState.Bot
@@ -1044,7 +1044,7 @@ case class Semantics(
         undefval = AbsUndef.Bot,
         nullval = AbsNull.Bot
       ), v.locset)
-      val (locset, st1, excSet2) = TypeConversionHelper.ToObject(vObj, st, aNew)
+      val (locset, st1, excSet2) = TypeConversionHelper.ToObject(vObj, st, aNew, tp)
       val (locset2, st2) =
         if (v.pvalue.undefval.isTop || v.pvalue.nullval.isTop) {
           val heap = st.heap
