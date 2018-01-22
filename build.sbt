@@ -1,6 +1,6 @@
 import java.io.File
 
-lazy val checkCopyrights = taskKey[Unit]("Checks copyrights of source files")
+//lazy val checkCopyrights = taskKey[Unit]("Checks copyrights of source files")
 lazy val buildParsers = taskKey[Unit]("Builds parsers")
 lazy val deleteParserDir = taskKey[Unit]("Delete java parser directory")
 
@@ -21,12 +21,12 @@ lazy val root = (project in file(".")).
     version := "2.0",
     organization := "kr.ac.kaist.safe",
     scalaVersion := "2.12.3",
-    checkCopyrights in Compile := {
+    /*checkCopyrights in Compile := {
       val violated: String = (baseDirectory.value + "/bin/checkCopyrights.sh" !!)
       if (violated != "") {
         throw new Error("\nFix the copyright(s) of the following:\n" + violated)
       }
-    },
+    },*/
     buildParsers in Compile := {
       // xtc
       val xtcFile = new File("./lib/xtc.jar")
@@ -63,7 +63,7 @@ lazy val root = (project in file(".")).
       cache(file(inDir).asFile.listFiles.toSet)
     },
     testOptions in Test += Tests.Argument("-fDG", baseDirectory.value + "/tests/detail"),
-    compile <<= (compile in Compile) dependsOn (buildParsers in Compile, checkCopyrights in Compile),
+    compile <<= (compile in Compile) dependsOn (buildParsers in Compile /*, checkCopyrights in Compile*/),
     test <<= (testOnly in Test).toTask(s" -- -n ParseTest -n ASTRewriteTest -n CompileTest -n CFGBuildTest -n AnalyzeTest -n HtmlTest") dependsOn compile,
     parseTest <<= (testOnly in Test).toTask(s" -- -n ParseTest") dependsOn compile,
     astRewriteTest <<= (testOnly in Test).toTask(s" -- -n ASTRewriteTest") dependsOn compile,
@@ -80,7 +80,8 @@ scalacOptions in ThisBuild ++= Seq("-deprecation", "-feature",
                                    "-language:postfixOps",
                                    "-language:implicitConversions")
 
-unmanagedJars in Compile ++= Seq(file("lib/xtc.jar"), file("lib/jline-2.12.jar"), file("lib/jericho-html-3.3.jar"))
+unmanagedJars in Compile ++= Seq(file("lib/xtc.jar"), file("lib/jline-2.12.jar"), file("lib/spray-json_2.11-1.3.2.jar"), file("lib/jericho-html-3.3.jar"), file("lib/org.eclipse.core.runtime-3.10.0.v20140318-2214.jar"))
+
 cleanFiles ++= Seq(file("src/main/java/kr/ac/kaist/safe/parser/"))
 
 libraryDependencies ++= Seq(
