@@ -322,12 +322,19 @@ public class JSCallGraphUtil extends com.ibm.wala.cast.ipa.callgraph.CAstCallGra
 
   @SuppressWarnings("resource")
   public static Module getPrologueFile(final String name) {
-    ClassLoader test = JSCallGraphUtil.class.getClassLoader();
-    URL url = test.getResource(name);
-    InputStream io = test.getResourceAsStream(name);
-    io.getClass();
-    url.toString();
-    return new Bootstrap(name, JSCallGraphUtil.class.getClassLoader().getResourceAsStream(name), JSCallGraphUtil.class.getClassLoader().getResource(name));
+    Class util =  JSCallGraphUtil.class;
+    ClassLoader loader = util.getClassLoader();
+    File initialFile = new File("src/main/java/com/ibm/wala/cast/js/dat/prologue.js");
+    InputStream io=null;
+    URL url =null;
+    try {
+      io = new FileInputStream(initialFile);
+      url = initialFile.toURI().toURL();
+    }catch (Exception e){
+
+    }
+
+    return new Bootstrap (name, io, url);
   }
 
 }
