@@ -35,8 +35,8 @@ p.then(function () {
 }).then(function () {
     // checkSequence(sequence, "Sequence should be as expected");
     __result1 = true;
-    for (var i = 0; i < sequence.length - 1; i++) {
-        if (sequence[i] + 1 !== sequence[i + 1]) {
+    for (var i = 0; i < sequence.length; i++) {
+        if (sequence[i] !== i + 1) {
             __result1 = false;
         }
     }
@@ -44,4 +44,5 @@ p.then(function () {
 
 sequence.push(2);
 
+__result1 = false;
 __expect1 = true;

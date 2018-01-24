@@ -33,10 +33,19 @@ Promise.resolve().then(function () {
     p2.catch(function (msg) {
         sequence.push(msg);
     }).then(function () {
-        checkSequence(sequence, "Expected 1,2,3");
-    }).then($DONE, $DONE);
+        // checkSequence(sequence, "Expected 1,2,3");
+        __result1 = true;
+        for (var i = 0; i < sequence.length; i++) {
+            if (sequence[i] !== i + 1) {
+                __result1 = false;
+            }
+        }
+    });
 });
 
 sequence.push(1);
+
+__result1 = false;
+__expect1 = true;
 
 
