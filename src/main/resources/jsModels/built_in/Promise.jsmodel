@@ -701,7 +701,7 @@ Function: {
       // 7. If handlerResult is an abrupt completion, then
       catch (ex) {
         // a. Let status be Call(promiseCapability.[[Reject]], undefined, «handlerResult.[[value]]»).
-        @Call(promiseCapability.Resolve, undefined, [ex]);
+        @Call(promiseCapability.Reject, undefined, [ex]);
         // b. NextJob Completion(status).
       }
     }
