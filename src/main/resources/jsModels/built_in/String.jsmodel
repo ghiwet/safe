@@ -401,22 +401,15 @@ Function: {
   }
   \\],
   10: [\\
-  function match () {
-    // TODO model me
-    // NOTE: Return value of match() with no parameter
-    return [""];
+  function () {
   }
   \\],
   11: [\\
-  function replace () {
-    // TODO model me
-    return @StrTop;
+  function () {
   }
   \\],
   12: [\\
-  function search () {
-    // TODO model me
-    return @NumTop;
+  function () {
   }
   \\],
   13: [\\
@@ -460,10 +453,28 @@ Function: {
   }
   \\],
   14: [\\
-  function split () {
-    // TODO model me
-    // NOTE: Return value of split() empty string
-    return [""];
+  function split (separator) {
+    // TODO it is not following the formal semantics
+    var S = this;
+    var sep = separator;
+    var len = S.length;
+    var idx = 0;
+    var cur = 0;
+    var str = "";
+    var arr = [];
+    while (cur < len) {
+      var c = S[cur];
+      if (c == sep) {
+        arr[idx++] = str;
+        str = "";
+      } else {
+        str += c;
+      }
+      cur++;
+    }
+    arr[idx++] = str;
+    arr.length = idx;
+    return arr;
   }
   \\],
   15: [\\
