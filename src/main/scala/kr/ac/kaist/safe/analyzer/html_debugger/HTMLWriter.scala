@@ -309,8 +309,9 @@ object HTMLWriter {
     try {
       // copy libraries
       val src = new File(Useful.path("src", "main", "resources", "assets"))
-      val dest = new File("debugger" + SEP + "assets")
+      val dest = new File("debugger" + SEP + "assets-old")
       FileUtils.copyDirectory(src, dest)
+
       println("* copy debugger libraries.")
 
       val f = new File("debugger" + SEP + htmlfile)
