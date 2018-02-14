@@ -23,7 +23,6 @@ import kr.ac.kaist.safe.analyzer.domain._
 import kr.ac.kaist.safe.web.domain._
 import kr.ac.kaist.safe.{ LINE_SEP, SEP }
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.filefilter.{ FalseFileFilter, IOFileFilter, NameFileFilter }
 
 object HTMLWriter {
   val EXC_EDGE = ", width: 2, style: 'dashed', arrow: 'triangle', label:'exc'"
@@ -310,15 +309,8 @@ object HTMLWriter {
     try {
       // copy libraries
       val src = new File(Useful.path("src", "main", "resources", "assets"))
-      val dest = new File("debugger" + SEP + "assets")
+      val dest = new File("debugger" + SEP + "assets-old")
       FileUtils.copyDirectory(src, dest)
-
-      val coreFile = new File("debugger" + SEP + "assets" + SEP + "js" + SEP + "core.js")
-      val oldCoreFile = new File(Useful.path("src", "main", "resources", "assets-old", "core.js"))
-      FileUtils.copyFile(oldCoreFile, coreFile)
-
-      val wsFile = new File("debugger" + SEP + "assets" + SEP + "js" + SEP + "ws.js")
-      FileUtils.forceDelete(wsFile)
 
       println("* copy debugger libraries.")
 
