@@ -194,6 +194,23 @@ object TypeConversionHelper {
     (obj3 ⊔ obj4 ⊔ obj5, excSet)
   }
 
+  def ToObject(value: AbsValue, st: AbsState, asite: AllocSite, tp: TracePartition): (AbsLoc, AbsState, Set[Exception]) = {
+    val locSet = value.locset
+    val (obj, excSet) = ToObject(value.pvalue)
+
+    val (locSet1, st1) =
+      if (!obj.isBottom) {
+        val loc = Loc(asite, tp)
+        val state = st.oldify(loc)
+        (AbsLoc(loc), AbsState(state.heap.update(loc, obj), state.context))
+      } else (AbsLoc.Bot, AbsState.Bot)
+    val (locSet2, st2) =
+      if (!locSet.isBottom) (locSet, st)
+      else (AbsLoc.Bot, AbsState.Bot)
+
+    (locSet1 ⊔ locSet2, st1 ⊔ st2, excSet)
+  }
+
   def ToObject(value: AbsValue, st: AbsState, asite: AllocSite): (AbsLoc, AbsState, Set[Exception]) = {
     val locSet = value.locset
     val (obj, excSet) = ToObject(value.pvalue)

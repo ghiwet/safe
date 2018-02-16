@@ -78,7 +78,7 @@ case object BugDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), Bu
   private def checkBlock(block: CFGBlock, semantics: Semantics): List[String] =
     if (isReachableUserCode(semantics, block) && !block.getInsts.isEmpty) {
       // TODO it is working only when for each CFGBlock has only one control point.
-      val (_, st) = semantics.getState(block).head
+      val (tp, st) = semantics.getState(block).head
       val (bugs, _) =
         block.getInsts.foldRight(List[String](), st)((inst, r) => {
           val (bs, state) = r
@@ -87,7 +87,7 @@ case object BugDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), Bu
               val exprBugs = checkExpr(cond, state, semantics)
               val (v, _) = semantics.V(cond, state)
               val bv = TypeConversionHelper.ToBoolean(v)
-              val (res, _) = semantics.I(i, state, AbsState.Bot)
+              val (res, _) = semantics.I(i, state, AbsState.Bot, tp)
               if (!bv.isBottom && ((bv StrictEquals AbsBool.True) ⊑ AbsBool.True))
                 (always(cond, true) :: exprBugs ++ bs, res)
               else if (!bv.isBottom && ((bv StrictEquals AbsBool.False) ⊑ AbsBool.True))
@@ -97,7 +97,7 @@ case object BugDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), Bu
             case i: CFGNormalInst =>
               val exprsBugs = collectExprs(i).foldRight(bs)((e, r) =>
                 checkExpr(e, state, semantics) ++ r)
-              val (res, _) = semantics.I(i, state, AbsState.Bot)
+              val (res, _) = semantics.I(i, state, AbsState.Bot, EmptyTP)
               (exprsBugs, res)
 
             case _ => r
