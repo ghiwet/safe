@@ -1,0 +1,31 @@
+Heap: {
+  #Global: {
+    [[AsyncCalls]]: #loop,
+    "eventLoop": <#eventLoop, T, F, T>
+  },
+  #eventLoop: {
+    [[Call]]: fun(1),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[HasInstance]]: null,
+    [[Scope]]: null
+  },
+  #loop: {
+    [[Class]]: "Array",
+    [[Extensible]]: true,
+    [[Prototype]]: #Array.prototype,
+    "length": <0, T, F, F>
+  }
+}
+
+Function: {
+  1: [\\
+  function eventLoop() {
+    var loop = @AsyncCall();
+    while (loop.length !== 0) {
+      var o = loop.shift();
+      @Call(o.func, undefined, o.args);
+    }
+  }
+  \\]
+}

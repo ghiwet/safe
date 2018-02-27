@@ -51,6 +51,8 @@ case object HeapBuild extends PhaseObj[CFG, HeapBuildConfig, (CFG, Semantics, Tr
     val sens = config.callsiteSensitivity * config.loopSensitivity
     val initTP = sens.initTP
     val entryCP = ControlPoint(cfg.globalFunc.entry, initTP)
+    val eventLoop = cfg.getAllFuncs.filter(_.name == "eventLoop").head
+    cfg.addEdge(cfg.globalFunc.exit, eventLoop.entry)
 
     val worklist = Worklist(cfg)
     worklist.add(entryCP)
