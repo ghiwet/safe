@@ -1633,6 +1633,12 @@ case class Semantics(
       val newExcSt = st.raiseException(excSet)
       (st1, excSt ⊔ newExcSt)
     }
+    case (NodeUtil.INTERNAL_ASYNC_CALL, Nil, None) => {
+      val obj = st.heap.get(BuiltinGlobal.loc)
+      val value = obj(IAsyncCalls).value
+      val st1 = st.varStore(lhs, value)
+      (st1, excSt)
+    }
     case _ =>
       excLog.signal(SemanticsNotYetImplementedError(ir))
       (AbsState.Bot, AbsState.Bot)
