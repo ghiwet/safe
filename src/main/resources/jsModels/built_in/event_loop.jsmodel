@@ -21,7 +21,7 @@ Heap: {
 Function: {
   1: [\\
   function eventLoop() {
-    var loop = @AsyncCall();
+    var loop = @getLoop();
     while (loop.length !== 0) {
       var o = loop.shift();
       @Call(o.func, undefined, o.args);

@@ -1633,7 +1633,7 @@ case class Semantics(
       val newExcSt = st.raiseException(excSet)
       (st1, excSt ⊔ newExcSt)
     }
-    case (NodeUtil.INTERNAL_ASYNC_CALL, Nil, None) => {
+    case (NodeUtil.INTERNAL_GET_LOOP, Nil, None) => {
       val obj = st.heap.get(BuiltinGlobal.loc)
       val value = obj(IAsyncCalls).value
       val st1 = st.varStore(lhs, value)
