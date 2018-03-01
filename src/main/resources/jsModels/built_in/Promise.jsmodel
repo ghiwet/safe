@@ -555,13 +555,13 @@ Function: {
       // a. Let value be the value of promise's [[PromiseResult]] internal slot.
       var value = @PromiseResult(this);
       // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «fulfillReaction, value»).
-      @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [fulfillReaction, value]);
+      @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [fulfillReaction, value] });
     }
     else if (@PromiseState(this) === "rejected") {
       // a. Let reason be the value of promise's [[PromiseResult]] internal slot.
       var reason = @PromiseResult(this);
       // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «rejectReaction, reason»).
-      @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [rejectReaction, reason]);
+      @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [rejectReaction, reason] });
     }
     // 10. Return resultCapability.[[Promise]].
     return promiseCapability.Promise;
@@ -615,7 +615,7 @@ Function: {
       for (var i = 0; i < reactions.length; i++) {
         var reaction = reactions[i];
         // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-        @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [reaction, resolution]);
+        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, resolution] });
       }
       // 2. Return undefined.
       return undefined;
@@ -645,13 +645,13 @@ Function: {
       for (var i = 0; i < reactions.length; i++) {
         var reaction = reactions[i];
         // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-        @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [reaction, resolution]);
+        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, resolution] });
       }
       // 2. Return undefined.
       return undefined;
     }
 
-    @AsyncCall(@getLoc("PromiseResolveThenableJob"), undefined, [promise, resolution, thenAction]);
+    @getLoop().push({ func: PromiseResolveThenableJob, args: [promise, resolution, thenAction] });
 
     // ---------------------------------------------------------------------- //
 
@@ -695,7 +695,7 @@ Function: {
     for (var i = 0; i < reactions.length; i++) {
       var reaction = reactions[i];
       // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-      @AsyncCall(@getLoc("PromiseReactionJob"), undefined, [reaction, reason]);
+      @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, reason] });
     }
     // 2. Return undefined.
     return undefined;
