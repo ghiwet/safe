@@ -14,7 +14,7 @@ package kr.ac.kaist.safe.analyzer.console
 import kr.ac.kaist.safe.nodes.cfg.CFGBlock
 
 sealed abstract class Target
-case class TargetIter(iter: Int) extends Target
+case class TargetIter(iter: Int, show: Boolean = false) extends Target
 case class TargetBlock(block: CFGBlock) extends Target
 case object TargetStart extends Target
 case object NoTarget extends Target

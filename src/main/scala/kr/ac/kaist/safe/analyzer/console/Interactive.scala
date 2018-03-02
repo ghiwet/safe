@@ -23,6 +23,7 @@ trait Interactive {
   val sem: Semantics
   val config: HeapBuildConfig
   var iter: Int = -1
+  var showIter: Boolean = false
 
   ////////////////////////////////////////////////////////////////
   // private variables
@@ -46,7 +47,8 @@ trait Interactive {
     val block = cur.block
     (target match {
       case TargetStart => iter == 0
-      case TargetIter(k) => iter == k
+      case TargetIter(k, b) =>
+        showIter = b; iter == k
       case _ => false
     }) || breakList(block)
   }

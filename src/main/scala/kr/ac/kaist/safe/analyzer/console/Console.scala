@@ -45,6 +45,7 @@ class Console(
 
   override def runFixpoint(): Unit = {
     if (prepareToRunFixpoint) {
+      showIter = false
       setPrompt()
       while ({
         println
@@ -64,7 +65,7 @@ class Console(
         out.flush()
         loop
       }) {}
-    }
+    } else if (showIter) println(s" Iter[$iter]: " + formatCP)
   }
   override def goHome(): Unit = {
     if (cur == home) {
@@ -115,14 +116,16 @@ class Console(
     }
   }
 
-  override def getPrompt: String = {
+  private def formatCP: String = {
     val block = cur.block
     val fname = block.func.simpleName
     val fid = block.func.id
     val span = block.span
     val tp = cur.tracePartition
-    s"<$fname[$fid]: $block, $tp> @${span.toString} $LINE_SEP Iter[$iter] > "
+    s"<$fname[$fid]: $block, $tp> @${span.toString} $LINE_SEP"
   }
+
+  override def getPrompt: String = formatCP + s" Iter[$iter] > "
 
   ////////////////////////////////////////////////////////////////
   // private helper

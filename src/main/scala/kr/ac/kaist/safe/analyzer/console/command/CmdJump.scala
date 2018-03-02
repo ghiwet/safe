@@ -12,11 +12,20 @@
 package kr.ac.kaist.safe.analyzer.console.command
 
 import kr.ac.kaist.safe.analyzer.console._
+import kr.ac.kaist.safe.analyzer.console.command.CmdRun.printResult
 
 // jump
 case object CmdJump extends Command("jump", "Continue to analyze until the given iteration.") {
   override val help: String = "usage: " + name + " {#iteration}"
   def run(c: Interactive, args: List[String]): Option[Target] = args match {
+    case iter :: subcmd :: Nil if iter.forall(_.isDigit) =>
+      (iter.toInt, c.getIter) match {
+        case (i, ci) if i > ci => subcmd match {
+          case "-v" => Some(TargetIter(i, true))
+          case _ => printResult("* '" + subcmd + "' is not a valid sub command."); None
+        }
+        case (i, ci) => printResult(s"* illlegal iteration #: $i (must > $ci)"); None
+      }
     case iter :: Nil if iter.forall(_.isDigit) =>
       (iter.toInt, c.getIter) match {
         case (i, ci) if i > ci => Some(TargetIter(i))
