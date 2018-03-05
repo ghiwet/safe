@@ -40,6 +40,8 @@ case object Analyze extends PhaseObj[(CFG, Semantics, TracePartition, HeapBuildC
       if (config.console) Some(new Console(cfg, sem, heapConfig, iter))
       else None
 
+    val eventLoop = cfg.getAllFuncs.filter(_.name == "eventLoop").head
+
     // calculate fixpoint
     val fixpoint = new Fixpoint(sem, interOpt)
     iters = fixpoint.compute(iter + 1)
@@ -64,7 +66,7 @@ case object Analyze extends PhaseObj[(CFG, Semantics, TracePartition, HeapBuildC
 
     // dump exit state
     if (config.exitDump) {
-      val exitCP = ControlPoint(cfg.globalFunc.exit, initTP)
+      val exitCP = ControlPoint(eventLoop.exit, initTP)
       val state = sem.getState(exitCP)
       println(state.toString)
     }
