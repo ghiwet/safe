@@ -401,15 +401,21 @@ Function: {
   }
   \\],
   10: [\\
-  function () {
+  function match () {
+    // TODO
+    return [""];
   }
   \\],
   11: [\\
-  function () {
+  function replace () {
+    // TODO
+    return @StrTop;
   }
   \\],
   12: [\\
-  function () {
+  function search () {
+    // TODO
+    return -1;
   }
   \\],
   13: [\\
