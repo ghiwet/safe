@@ -70,11 +70,7 @@ object Loc {
     case NormalAAddr => asite
     case RecencyAAddr => Recency(asite, Recent)
   }
-  def apply(asite: AllocSite, tp: TracePartition): Loc = if (!heapCloning) apply(asite) else tp match {
-    case CallSiteContext(csList, _) => HeapClone.add(apply(asite), csList)
-    case ProductTP(csContext, _) => apply(asite, csContext)
-    case _ => apply(asite)
-  }
+  def apply(asite: AllocSite, tp: TracePartition): Loc = if (!heapCloning) apply(asite) else HeapClone.add(apply(asite), tp)
 
   implicit def ordering[B <: Loc]: Ordering[B] = Ordering.by({
     case addrPart => addrPart.toString

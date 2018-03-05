@@ -11,9 +11,8 @@
 
 package kr.ac.kaist.safe.util
 
-import kr.ac.kaist.safe.analyzer.CallSiteContext
+import kr.ac.kaist.safe.analyzer.{ CallSiteContext, ProductTP, TracePartition }
 import kr.ac.kaist.safe.analyzer.domain.Loc
-import kr.ac.kaist.safe.nodes.cfg.Call
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Try
@@ -21,7 +20,7 @@ import spray.json._
 
 case class HeapClone(
     loc: Loc,
-    csList: List[Call]
+    tp: TracePartition
 ) extends Loc {
   override def toString: String = s"${loc}_${HeapClone.getIndex(this)}"
   def toJson: JsValue = JsObject(
@@ -43,19 +42,24 @@ object HeapClone {
     Try(heapClones(index))
   }
 
-  def add(loc: Loc, csList: List[Call]): Loc = csList match {
-    case Nil => loc
-    case _ => loc match {
-      case Recency(subLoc, Recent) =>
-        val hc = HeapClone(subLoc, csList)
-        heapClones += hc
-        Recency(hc, Recent)
-      case _ =>
-        val hc = HeapClone(loc, csList)
-        heapClones += hc
-        hc
-    }
+  private def addHC(loc: Loc, tp: TracePartition) = loc match {
+    case Recency(subLoc, Recent) =>
+      val hc = HeapClone(subLoc, tp)
+      heapClones += hc
+      Recency(hc, Recent)
+    case _ =>
+      val hc = HeapClone(loc, tp)
+      heapClones += hc
+      hc
+  }
 
+  def add(loc: Loc, tp: TracePartition): Loc = tp match {
+    case CallSiteContext(csList, _) => csList match {
+      case Nil => loc
+      case _ => addHC(loc, tp)
+    }
+    case ProductTP(ltp, _) => add(loc, ltp)
+    case _ => loc
   }
 
 }
