@@ -19,13 +19,14 @@ var resolveP1, rejectP2, sequence = [];
 })).then(function (msg) {
     sequence.push(msg);
 }).then(function () {
+    // checkSequence(sequence, "Expected 1,2,3");
     __result1 = true;
-    for (var i = 0; i < sequence.length - 1; i++) {
-        if (sequence[i] + 1 !== sequence[i + 1]) {
+    for (var i = 0; i < sequence.length; i++) {
+        if (sequence[i] !== i + 1) {
             __result1 = false;
         }
     }
-})
+});
 
 (new Promise(function (resolve, reject) {
     rejectP2 = reject;
@@ -38,4 +39,5 @@ resolveP1(3);
 
 sequence.push(1);
 
+__result1 = false;
 __expect1 = true;

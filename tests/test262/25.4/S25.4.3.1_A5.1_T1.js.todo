@@ -13,12 +13,15 @@ flags: [noStrict]
 includes: [fnGlobalObject.js]
 ---*/
 
-var expectedThis = fnGlobalObject();
+var expectedThis = this;
 
 var p = new Promise(function (resolve) {
-    if (this !== expectedThis) {
-        $ERROR("'this' must be global object, got " + this);
+    if (this === expectedThis) {
+        // $ERROR("'this' must be global object, got " + this);
+        __result1 = true;
     }
 
     resolve();
-}).then($DONE, $DONE);
+});
+
+__expect1 = false;

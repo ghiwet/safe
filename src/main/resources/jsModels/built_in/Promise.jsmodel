@@ -81,6 +81,22 @@ Heap: {
   },
   #GetCapabilitiesExecutor: {
     [[Call]]: fun(11)
+  },
+  #PromiseReactionJob: {
+    [[Call]]: fun(12),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <2, F, F, F>
+  },
+  #PromiseResolveThenableJob: {
+    [[Call]]: fun(13),
+    [[Class]]: "Function",
+    [[Extensible]]: true,
+    [[Prototype]]: #Function.prototype,
+    [[Scope]]: null,
+    "length": <3, F, F, F>
   }
 }
 
@@ -539,37 +555,13 @@ Function: {
       // a. Let value be the value of promise's [[PromiseResult]] internal slot.
       var value = @PromiseResult(this);
       // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «fulfillReaction, value»).
-      // TODO
-      if (onFulfilled === "Identity") {
-        @Call(promiseCapability.Resolve, undefined, [value]);
-      }
-      else {
-        try {
-          var handlerResult = @Call(onFulfilled, undefined, [value]);
-          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
-        }
-        catch (ex) {
-          @Call(promiseCapability.Reject, undefined, [ex]);
-        }
-      }
+      @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [fulfillReaction, value] });
     }
     else if (@PromiseState(this) === "rejected") {
       // a. Let reason be the value of promise's [[PromiseResult]] internal slot.
       var reason = @PromiseResult(this);
       // b. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «rejectReaction, reason»).
-      // TODO
-      if (onRejected === "Thrower") {
-        @Call(promiseCapability.Reject, undefined, [reason]);
-      }
-      else {
-        try {
-          var handlerResult = @Call(onRejected, undefined, [reason]);
-          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
-        }
-        catch (ex) {
-          @Call(promiseCapability.Reject, undefined, [ex]);
-        }
-      }
+      @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [rejectReaction, reason] });
     }
     // 10. Return resultCapability.[[Promise]].
     return promiseCapability.Promise;
@@ -601,45 +593,65 @@ Function: {
     // 11. If IsCallable(thenAction) is false, then
       // a. Return FulfillPromise(promise, resolution).
 
-    // ------------------- FulfillPromise(promise, value) ------------------ //
+    if (!@isObject(resolution)) {
+      // ------------------- FulfillPromise(promise, value) ------------------ //
 
-    // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
-    // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
-    var reactions = @PromiseFulfillReactions(promise);
-    // 3. Set the value of promise's [[PromiseResult]] internal slot to value.
-    @PromiseResult(promise, resolution);
-    // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
-    @PromiseFulfillReactions(promise, undefined);
-    // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
-    @PromiseRejectReactions(promise, undefined);
-    // 6. Set the value of promise's [[PromiseState]] internal slot to "fulfilled".
-    @PromiseState(promise, "fulfilled");
-    // 7. Return TriggerPromiseReactions(reactions, value).
+      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
+      // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
+      var reactions = @PromiseFulfillReactions(promise);
+      // 3. Set the value of promise's [[PromiseResult]] internal slot to value.
+      @PromiseResult(promise, resolution);
+      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
+      @PromiseFulfillReactions(promise, undefined);
+      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
+      @PromiseRejectReactions(promise, undefined);
+      // 6. Set the value of promise's [[PromiseState]] internal slot to "fulfilled".
+      @PromiseState(promise, "fulfilled");
+      // 7. Return TriggerPromiseReactions(reactions, value).
 
-    // ------------- TriggerPromiseReactions(reactions, value) -------------- //
+      // ------------- TriggerPromiseReactions(reactions, value) -------------- //
 
-    // 1. Repeat for each reaction in reactions, in original insertion order
-    for (var i = 0; i < reactions.length; i++) {
-      // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-      // TODO
-      var reaction = reactions[i];
-      var promiseCapability = reaction.Capabilities;
-      var handler = reaction.Handler;
-      if (handler === "Identity") {
-        @Call(promiseCapability.Resolve, undefined, [resolution]);
+      // 1. Repeat for each reaction in reactions, in original insertion order
+      for (var i = 0; i < reactions.length; i++) {
+        var reaction = reactions[i];
+        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, resolution] });
       }
-      else {
-        try {
-          var handlerResult = @Call(handler, undefined, [resolution]);
-          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
-        }
-        catch (ex) {
-          @Call(promiseCapability.Reject, undefined, [ex]);
-        }
-      }
+      // 2. Return undefined.
+      return undefined;
     }
-    // 2. Return undefined.
-    return undefined;
+
+    var thenAction = resolution["then"];
+
+    if (!@IsCallable(thenAction)) {
+      // ------------------- FulfillPromise(promise, value) ------------------ //
+
+      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
+      // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
+      var reactions = @PromiseFulfillReactions(promise);
+      // 3. Set the value of promise's [[PromiseResult]] internal slot to value.
+      @PromiseResult(promise, resolution);
+      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
+      @PromiseFulfillReactions(promise, undefined);
+      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
+      @PromiseRejectReactions(promise, undefined);
+      // 6. Set the value of promise's [[PromiseState]] internal slot to "fulfilled".
+      @PromiseState(promise, "fulfilled");
+      // 7. Return TriggerPromiseReactions(reactions, value).
+
+      // ------------- TriggerPromiseReactions(reactions, value) -------------- //
+
+      // 1. Repeat for each reaction in reactions, in original insertion order
+      for (var i = 0; i < reactions.length; i++) {
+        var reaction = reactions[i];
+        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, resolution] });
+      }
+      // 2. Return undefined.
+      return undefined;
+    }
+
+    @getLoop().push({ func: PromiseResolveThenableJob, args: [promise, resolution, thenAction] });
 
     // ---------------------------------------------------------------------- //
 
@@ -681,23 +693,9 @@ Function: {
 
     // 1. Repeat for each reaction in reactions, in original insertion order
     for (var i = 0; i < reactions.length; i++) {
-      // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-      // TODO
       var reaction = reactions[i];
-      var promiseCapability = reaction.Capabilities;
-      var handler = reaction.Handler;
-      if (handler === "Thrower") {
-        @Call(promiseCapability.Reject, undefined, [reason]);
-      }
-      else {
-        try {
-          var handlerResult = @Call(handler, undefined, [reason]);
-          @Call(promiseCapability.Resolve, undefined, [handlerResult]);
-        }
-        catch (ex) {
-          @Call(promiseCapability.Reject, undefined, [ex]);
-        }
-      }
+      // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+      @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, reason] });
     }
     // 2. Return undefined.
     return undefined;
@@ -717,6 +715,92 @@ Function: {
     promiseCapability.Reject = reject;
     // 7. Return undefined.
     return undefined;
+  }
+  \\],
+  12: [\\
+  function PromiseReactionJob (reaction, argument) {
+    // 1. Assert: reaction is a PromiseReaction Record.
+    // 2. Let promiseCapability be reaction.[[Capabilities]].
+    var promiseCapability = reaction.Capabilities;
+    // 3. Let handler be reaction.[[Handler]].
+    var handler = reaction.Handler;
+    // 4. If handler is "Identity", let handlerResult be NormalCompletion(argument).
+    if (handler === "Identity") {
+      @Call(promiseCapability.Resolve, undefined, [argument]);
+    }
+    // 5. Else if handler is "Thrower", let handlerResult be Completion{[[type]]: throw, [[value]]: argument, [[target]]: empty}.
+    else if (handler === "Thrower") {
+      @Call(promiseCapability.Reject, undefined, [argument]);
+    }
+    // 6. Else, let handlerResult be Call(handler, undefined, «argument»).
+    else {
+      try {
+        var handlerResult = @Call(handler, undefined, [argument]);
+        // 8. Let status be Call(promiseCapability.[[Resolve]], undefined, «handlerResult.[[value]]»).
+        @Call(promiseCapability.Resolve, undefined, [handlerResult]);
+        // 9. NextJob Completion(status).
+      }
+      // 7. If handlerResult is an abrupt completion, then
+      catch (ex) {
+        // a. Let status be Call(promiseCapability.[[Reject]], undefined, «handlerResult.[[value]]»).
+        @Call(promiseCapability.Reject, undefined, [ex]);
+        // b. NextJob Completion(status).
+      }
+    }
+  }
+  \\],
+  13: [\\
+  function PromiseResolveThenableJob (promiseToResolve, thenable, then) {
+    // 1. Let resolvingFunctions be CreateResolvingFunctions(promiseToResolve).
+
+    // -------------- Inline CreateResolvingFunctions(promise) -------------- //
+
+    // 1. Let alreadyResolved be a new Record { [[value]]: false }.
+    // 2. Let resolve be a new built-in function object as defined in Promise Resolve Functions (25.4.1.3.2).
+    var resolve = {};
+    @Class(resolve, "Function");
+    @Prototype(resolve, Function.prototype);
+    @Call(resolve, @getLoc("PromiseResolveFunctions"));
+    @DefineOwnProperty(resolve, "length", {
+      value: 1,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 3. Set the [[Promise]] internal slot of resolve to promise.
+    @Promise(resolve, promiseToResolve);
+    // 4. Set the [[AlreadyResolved]] internal slot of resolve to alreadyResolved.
+    @AlreadyResolved(resolve, false);
+    // 5. Let reject be a new built-in function object as defined in Promise Reject Functions (25.4.1.3.1).
+    var reject = {};
+    @Class(reject, "Function");
+    @Prototype(reject, Function.prototype);
+    @Call(reject, @getLoc("PromiseRejectFunctions"));
+    @DefineOwnProperty(reject, "length", {
+      value: 1,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+    // 6. Set the [[Promise]] internal slot of reject to promise.
+    @Promise(reject, promiseToResolve);
+    // 7. Set the [[AlreadyResolved]] internal slot of reject to alreadyResolved.
+    @AlreadyResolved(reject, false);
+    // 8. Return a new Record { [[Resolve]]: resolve, [[Reject]]: reject }.
+
+    // ---------------------------------------------------------------------- //
+
+    // 2. Let thenCallResult be Call(then, thenable, «resolvingFunctions.[[Resolve]], resolvingFunctions.[[Reject]]»).
+    try {
+      var thenCallResult = @Call(then, thenable, [resolve, reject]);
+    }
+    // 3. If thenCallResult is an abrupt completion,
+    catch (ex) {
+      // a. Let status be Call(resolvingFunctions.[[Reject]], undefined, «thenCallResult.[[value]]»).
+      @Call(reject, undefined, [ex]);
+      // b. NextJob Completion(status).
+    }
+    // 4. NextJob Completion(thenCallResult).
   }
   \\]
 }
