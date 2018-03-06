@@ -651,7 +651,7 @@ Function: {
       return undefined;
     }
 
-    @getLoop().push({ func: PromiseResolveThenableJob, args: [promise, resolution, thenAction] });
+    @getLoop().push({ func: @getLoc("PromiseResolveThenableJob"), args: [promise, resolution, thenAction] });
 
     // ---------------------------------------------------------------------- //
 
