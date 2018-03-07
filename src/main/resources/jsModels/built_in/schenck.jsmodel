@@ -1242,6 +1242,7 @@ Function: {
   76: [\\
   function Field(config, overRides, additionalProps) {
     this.id = config.id;
+    this.EVENTS = [ "click" ];
   }
   \\],
   78: [\\
