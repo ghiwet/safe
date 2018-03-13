@@ -15,9 +15,11 @@ var resolveP,
 resolveP(p);
 
 p.then(function () {
-    $ERROR("Should not fulfill: should reject with TypeError.");
+    __result1 = false;
 }, function (err) {
-    if (!(err instanceof TypeError)) {
-        $ERROR("Expected TypeError, got " + err);
+    if (err instanceof TypeError) {
+       __result1 = true;
     }
-}).then($DONE, $DONE);
+});
+
+__expect1 = true;

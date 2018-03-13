@@ -303,6 +303,7 @@ Function: {
       // a. Let xConstructor be Get(x, "constructor").
       // b. ReturnIfAbrupt(xConstructor).
       // c. If SameValue(xConstructor, C) is true, return x.
+    // TODO
     // 4. Let promiseCapability be NewPromiseCapability(C).
 
     // ---------------------- NewPromiseCapability(C) ----------------------- //
@@ -569,7 +570,7 @@ Function: {
   \\],
   9: [\\
   function bindResolve (resolution) {
-    // NOTE: No selfResolutionError, no PromiseResolveThenableJob
+    // NOTE: No selfResolutionError
     // 1. Assert: F has a [[Promise]] internal slot whose value is an Object.
     // 2. Let promise be the value of F's [[Promise]] internal slot.
     var promise = @Promise(arguments.callee);
@@ -582,48 +583,81 @@ Function: {
     @AlreadyResolved(arguments.callee, true);
 
     // 6. If SameValue(resolution, promise) is true, then
+    if (@SameValue(resolution, promise)) {
       // a. Let selfResolutionError be a newly created TypeError object.
+      var selfResolutionError = new TypeError();
       // b. Return RejectPromise(promise, selfResolutionError).
+
+      // ------------------- RejectPromise(promise, selfResolutionError) ------------------- //
+
+
+      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
+      // 2. Let reactions be the value of promise's [[PromiseRejectReactions]] internal slot.
+      var reactions = @PromiseRejectReactions(promise);
+      // 3. Set the value of promise's [[PromiseResult]] internal slot to reason.
+      @PromiseResult(promise, selfResolutionError);
+      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
+      @PromiseFulfillReactions(promise, undefined);
+      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
+      @PromiseRejectReactions(promise, undefined);
+      // 6. Set the value of promise's [[PromiseState]] internal slot to "rejected".
+      @PromiseState(promise, "rejected");
+      // 7. Return TriggerPromiseReactions(reactions, reason).
+
+      // ------------- TriggerPromiseReactions(reactions, reason) ------------- //
+
+      // 1. Repeat for each reaction in reactions, in original insertion order
+      for (var i = 0; i < reactions.length; i++) {
+        var reaction = reactions[i];
+        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, selfResolutionError] });
+      }
+      // 2. Return undefined.
+      return undefined;
+    }
+
     // 7. If Type(resolution) is not Object, then
+    if (!@isObject(resolution)) {
       // a. Return FulfillPromise(promise, resolution).
+
+      // ------------------- FulfillPromise(promise, value) ------------------ //
+
+      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
+      // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
+      var reactions = @PromiseFulfillReactions(promise);
+      // 3. Set the value of promise's [[PromiseResult]] internal slot to value.
+      @PromiseResult(promise, resolution);
+      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
+      @PromiseFulfillReactions(promise, undefined);
+      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
+      @PromiseRejectReactions(promise, undefined);
+      // 6. Set the value of promise's [[PromiseState]] internal slot to "fulfilled".
+      @PromiseState(promise, "fulfilled");
+      // 7. Return TriggerPromiseReactions(reactions, value).
+
+      // ------------- TriggerPromiseReactions(reactions, value) -------------- //
+
+      // 1. Repeat for each reaction in reactions, in original insertion order
+      for (var i = 0; i < reactions.length; i++) {
+        var reaction = reactions[i];
+        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, resolution] });
+      }
+      // 2. Return undefined.
+      return undefined;
+    }
+
     // 8. Let then be Get(resolution, "then").
     // 9. If then is an abrupt completion, then
       // a. Return RejectPromise(promise, then.[[value]]).
+    // TODO
     // 10. Let thenAction be then.[[value]].
-    // 11. If IsCallable(thenAction) is false, then
-      // a. Return FulfillPromise(promise, resolution).
-
-    if (!@isObject(resolution)) {
-      // ------------------- FulfillPromise(promise, value) ------------------ //
-
-      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
-      // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
-      var reactions = @PromiseFulfillReactions(promise);
-      // 3. Set the value of promise's [[PromiseResult]] internal slot to value.
-      @PromiseResult(promise, resolution);
-      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
-      @PromiseFulfillReactions(promise, undefined);
-      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
-      @PromiseRejectReactions(promise, undefined);
-      // 6. Set the value of promise's [[PromiseState]] internal slot to "fulfilled".
-      @PromiseState(promise, "fulfilled");
-      // 7. Return TriggerPromiseReactions(reactions, value).
-
-      // ------------- TriggerPromiseReactions(reactions, value) -------------- //
-
-      // 1. Repeat for each reaction in reactions, in original insertion order
-      for (var i = 0; i < reactions.length; i++) {
-        var reaction = reactions[i];
-        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, resolution] });
-      }
-      // 2. Return undefined.
-      return undefined;
-    }
-
     var thenAction = resolution["then"];
 
+    // 11. If IsCallable(thenAction) is false, then
     if (!@IsCallable(thenAction)) {
+      // a. Return FulfillPromise(promise, resolution).
+
       // ------------------- FulfillPromise(promise, value) ------------------ //
 
       // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
@@ -651,12 +685,10 @@ Function: {
       return undefined;
     }
 
-    @getLoop().push({ func: @getLoc("PromiseResolveThenableJob"), args: [promise, resolution, thenAction] });
-
-    // ---------------------------------------------------------------------- //
-
     // 12. Perform EnqueueJob ("PromiseJobs", PromiseResolveThenableJob, «promise, resolution, thenAction»)
+    @getLoop().push({ func: @getLoc("PromiseResolveThenableJob"), args: [promise, resolution, thenAction] });
     // 13. Return undefined.
+    return undefined;
   }
   \\],
   10: [\\
