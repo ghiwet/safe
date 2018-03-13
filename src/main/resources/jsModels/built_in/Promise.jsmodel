@@ -8,7 +8,7 @@ Heap: {
     [[Construct]]: fun(2),
     [[Extensible]]: true,
     [[HasInstance]]: null,
-    [[Prototype]]: #Promise.prototype,
+    [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "all": <#Promise.all, T, F, T>,
     "length": <1, F, F, F>,
