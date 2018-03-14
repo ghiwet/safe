@@ -190,8 +190,9 @@ Function: {
   5: [\\
   function reject (r) {
     // 1. Let C be the this value.
+    var C = this;
     // 2. If Type(C) is not Object, throw a TypeError exception.
-    if (typeof this !== 'function' && typeof this !== 'object' || this === null) throw new TypeError();
+    if (!@isObject(C)) throw new TypeError();
     // 3. Let promiseCapability be NewPromiseCapability(C).
 
     // ---------------------- NewPromiseCapability(C) ----------------------- //
@@ -302,8 +303,9 @@ Function: {
   6: [\\
   function resolve (x) {
     // 1. Let C be the this value.
+    var C = this;
     // 2. If Type(C) is not Object, throw a TypeError exception.
-    if (typeof this !== 'function' && typeof this !== 'object' || this === null) throw new TypeError();
+    if (!@isObject(C)) throw new TypeError();
     // 3. If IsPromise(x) is true,
       // a. Let xConstructor be Get(x, "constructor").
       // b. ReturnIfAbrupt(xConstructor).
@@ -430,7 +432,7 @@ Function: {
     // 1. Let promise be the this value.
     // NOTE: No! promise = this
     // 2. If IsPromise(promise) is false, throw a TypeError exception.
-    if (typeof this !== 'function' && typeof this !== 'object' || this === null) throw new TypeError();
+    if (!@isObject(this)) throw new TypeError();
     if (!@HasPromiseState(this)) throw new TypeError();
     // 3. Let C be SpeciesConstructor(promise, %Promise%).
     // TODO
