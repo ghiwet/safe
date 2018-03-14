@@ -8,7 +8,7 @@ Heap: {
     [[Construct]]: fun(2),
     [[Extensible]]: true,
     [[HasInstance]]: null,
-    [[Prototype]]: #Promise.prototype,
+    [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "all": <#Promise.all, T, F, T>,
     "length": <1, F, F, F>,
@@ -108,13 +108,15 @@ Function: {
   2: [\\
   function Promise (executor) {
     // 1. If NewTarget is undefined, throw a TypeError exception.
-    // TODO: NewTarget is the ´this´ value?
     if (this === undefined) throw new TypeError();
     // 2. If IsCallable(executor) is false, throw a TypeError exception.
     if (@IsCallable(executor) === false) throw new TypeError();
     // 3. Let promise be OrdinaryCreateFromConstructor(NewTarget, "%PromisePrototype%",
     // «[[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]]» ).
-    var promise = this;
+    // TODO
+    var promise = {};
+    @Prototype(promise, Promise.prototype);
+    @Extensible(promise, true);
 
     // 5. Set promise's [[PromiseState]] internal slot to "pending".
     @PromiseState(promise, "pending");
@@ -176,25 +178,28 @@ Function: {
   }
   \\],
   3: [\\
-  function () {
+  function all () {
+    // TODO
   }
   \\],
   4: [\\
-  function () {
+  function race () {
+    // TODO
   }
   \\],
   5: [\\
   function reject (r) {
     // 1. Let C be the this value.
+    var C = this;
     // 2. If Type(C) is not Object, throw a TypeError exception.
-    if (typeof this !== 'function' && typeof this !== 'object' || this === null) throw new TypeError();
+    if (!@isObject(C)) throw new TypeError();
     // 3. Let promiseCapability be NewPromiseCapability(C).
 
     // ---------------------- NewPromiseCapability(C) ----------------------- //
 
     // 1. If IsConstructor(C) is false, throw a TypeError exception.
     // 2. NOTE C is assumed to be a constructor function that supports the parameter conventions of the Promise constructor (see 25.4.3.1).
-    if (!(this instanceof Promise)) throw new TypeError();
+    // TODO
     // 3. Let promiseCapability be a new PromiseCapability { [[Promise]]: undefined, [[Resolve]]: undefined, [[Reject]]: undefined }.
     var promiseCapability = { Promise: undefined, Resolve: undefined, Reject: undefined };
     // 4. Let executor be a new built-in function object as defined in GetCapabilitiesExecutor Functions (25.4.1.5.1).
@@ -219,7 +224,8 @@ Function: {
     // 3. Let promise be OrdinaryCreateFromConstructor(NewTarget, "%PromisePrototype%",
     // «[[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]]» ).
     var promise = {};
-    @Prototype(promise, Promise);
+    @Prototype(promise, Promise.prototype);
+    @Extensible(promise, true);
 
     // 5. Set promise's [[PromiseState]] internal slot to "pending".
     @PromiseState(promise, "pending");
@@ -279,6 +285,7 @@ Function: {
     // 7. ReturnIfAbrupt(promise).
     // 8. If IsCallable(promiseCapability.[[Resolve]]) is false, throw a TypeError exception.
     // 9. If IsCallable(promiseCapability.[[Reject]]) is false, throw a TypeError exception.
+    // TODO
     // 10. Set promiseCapability.[[Promise]] to promise.
     promiseCapability.Promise = promise;
     // 11. Return promiseCapability.
@@ -295,21 +302,22 @@ Function: {
   \\],
   6: [\\
   function resolve (x) {
-    // NOTE: Assume "x" is not a Promise
     // 1. Let C be the this value.
+    var C = this;
     // 2. If Type(C) is not Object, throw a TypeError exception.
-    if (typeof this !== 'function' && typeof this !== 'object' || this === null) throw new TypeError();
+    if (!@isObject(C)) throw new TypeError();
     // 3. If IsPromise(x) is true,
       // a. Let xConstructor be Get(x, "constructor").
       // b. ReturnIfAbrupt(xConstructor).
       // c. If SameValue(xConstructor, C) is true, return x.
+    // TODO
     // 4. Let promiseCapability be NewPromiseCapability(C).
 
     // ---------------------- NewPromiseCapability(C) ----------------------- //
 
     // 1. If IsConstructor(C) is false, throw a TypeError exception.
     // 2. NOTE C is assumed to be a constructor function that supports the parameter conventions of the Promise constructor (see 25.4.3.1).
-
+    // TODO
     // 3. Let promiseCapability be a new PromiseCapability { [[Promise]]: undefined, [[Resolve]]: undefined, [[Reject]]: undefined }.
     var promiseCapability = { Promise: undefined, Resolve: undefined, Reject: undefined };
     // 4. Let executor be a new built-in function object as defined in GetCapabilitiesExecutor Functions (25.4.1.5.1).
@@ -334,7 +342,8 @@ Function: {
     // 3. Let promise be OrdinaryCreateFromConstructor(NewTarget, "%PromisePrototype%",
     // «[[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]]» ).
     var promise = {};
-    @Prototype(promise, Promise);
+    @Prototype(promise, Promise.prototype);
+    @Extensible(promise, true);
 
     // 5. Set promise's [[PromiseState]] internal slot to "pending".
     @PromiseState(promise, "pending");
@@ -394,6 +403,7 @@ Function: {
     // 7. ReturnIfAbrupt(promise).
     // 8. If IsCallable(promiseCapability.[[Resolve]]) is false, throw a TypeError exception.
     // 9. If IsCallable(promiseCapability.[[Reject]]) is false, throw a TypeError exception.
+    // TODO
     // 10. Set promiseCapability.[[Promise]] to promise.
     promiseCapability.Promise = promise;
     // 11. Return promiseCapability.
@@ -413,6 +423,7 @@ Function: {
    //1. Let promise be the this value.
    // NOTE: No! promise = this
    //2. Return Invoke(promise, "then", « undefined, onRejected »).
+   // TODO
    return @Call(@getLoc("Promise.prototype.then"), this, [undefined, onRejected]);
   }
   \\],
@@ -421,9 +432,10 @@ Function: {
     // 1. Let promise be the this value.
     // NOTE: No! promise = this
     // 2. If IsPromise(promise) is false, throw a TypeError exception.
-    if (typeof this !== 'function' && typeof this !== 'object' || this === null) throw new TypeError();
+    if (!@isObject(this)) throw new TypeError();
     if (!@HasPromiseState(this)) throw new TypeError();
     // 3. Let C be SpeciesConstructor(promise, %Promise%).
+    // TODO
     // 4. ReturnIfAbrupt(C).
     // 5. Let resultCapability be NewPromiseCapability(C).
 
@@ -431,6 +443,7 @@ Function: {
 
     // 1. If IsConstructor(C) is false, throw a TypeError exception.
     // 2. NOTE C is assumed to be a constructor function that supports the parameter conventions of the Promise constructor (see 25.4.3.1).
+    // TODO
     // 3. Let promiseCapability be a new PromiseCapability { [[Promise]]: undefined, [[Resolve]]: undefined, [[Reject]]: undefined }.
     var promiseCapability = { Promise: undefined, Resolve: undefined, Reject: undefined };
     // 4. Let executor be a new built-in function object as defined in GetCapabilitiesExecutor Functions (25.4.1.5.1).
@@ -455,7 +468,8 @@ Function: {
     // 3. Let promise be OrdinaryCreateFromConstructor(NewTarget, "%PromisePrototype%",
     // «[[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]]» ).
     var promise = {};
-    @Prototype(promise, Promise);
+    @Prototype(promise, Promise.prototype);
+    @Extensible(promise, true);
 
     // 5. Set promise's [[PromiseState]] internal slot to "pending".
     @PromiseState(promise, "pending");
@@ -515,6 +529,7 @@ Function: {
     // 7. ReturnIfAbrupt(promise).
     // 8. If IsCallable(promiseCapability.[[Resolve]]) is false, throw a TypeError exception.
     // 9. If IsCallable(promiseCapability.[[Reject]]) is false, throw a TypeError exception.
+    // TODO
     // 10. Set promiseCapability.[[Promise]] to promise.
     promiseCapability.Promise = promise;
     // 11. Return promiseCapability.
@@ -569,7 +584,6 @@ Function: {
   \\],
   9: [\\
   function bindResolve (resolution) {
-    // NOTE: No selfResolutionError, no PromiseResolveThenableJob
     // 1. Assert: F has a [[Promise]] internal slot whose value is an Object.
     // 2. Let promise be the value of F's [[Promise]] internal slot.
     var promise = @Promise(arguments.callee);
@@ -582,48 +596,81 @@ Function: {
     @AlreadyResolved(arguments.callee, true);
 
     // 6. If SameValue(resolution, promise) is true, then
+    if (@SameValue(resolution, promise)) {
       // a. Let selfResolutionError be a newly created TypeError object.
+      var selfResolutionError = new TypeError();
       // b. Return RejectPromise(promise, selfResolutionError).
+
+      // ------------------- RejectPromise(promise, selfResolutionError) ------------------- //
+
+
+      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
+      // 2. Let reactions be the value of promise's [[PromiseRejectReactions]] internal slot.
+      var reactions = @PromiseRejectReactions(promise);
+      // 3. Set the value of promise's [[PromiseResult]] internal slot to reason.
+      @PromiseResult(promise, selfResolutionError);
+      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
+      @PromiseFulfillReactions(promise, undefined);
+      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
+      @PromiseRejectReactions(promise, undefined);
+      // 6. Set the value of promise's [[PromiseState]] internal slot to "rejected".
+      @PromiseState(promise, "rejected");
+      // 7. Return TriggerPromiseReactions(reactions, reason).
+
+      // ------------- TriggerPromiseReactions(reactions, reason) ------------- //
+
+      // 1. Repeat for each reaction in reactions, in original insertion order
+      for (var i = 0; i < reactions.length; i++) {
+        var reaction = reactions[i];
+        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, selfResolutionError] });
+      }
+      // 2. Return undefined.
+      return undefined;
+    }
+
     // 7. If Type(resolution) is not Object, then
+    if (!@isObject(resolution)) {
       // a. Return FulfillPromise(promise, resolution).
+
+      // ------------------- FulfillPromise(promise, value) ------------------ //
+
+      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
+      // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
+      var reactions = @PromiseFulfillReactions(promise);
+      // 3. Set the value of promise's [[PromiseResult]] internal slot to value.
+      @PromiseResult(promise, resolution);
+      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
+      @PromiseFulfillReactions(promise, undefined);
+      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
+      @PromiseRejectReactions(promise, undefined);
+      // 6. Set the value of promise's [[PromiseState]] internal slot to "fulfilled".
+      @PromiseState(promise, "fulfilled");
+      // 7. Return TriggerPromiseReactions(reactions, value).
+
+      // ------------- TriggerPromiseReactions(reactions, value) -------------- //
+
+      // 1. Repeat for each reaction in reactions, in original insertion order
+      for (var i = 0; i < reactions.length; i++) {
+        var reaction = reactions[i];
+        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
+        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, resolution] });
+      }
+      // 2. Return undefined.
+      return undefined;
+    }
+
     // 8. Let then be Get(resolution, "then").
     // 9. If then is an abrupt completion, then
       // a. Return RejectPromise(promise, then.[[value]]).
+    // TODO
     // 10. Let thenAction be then.[[value]].
-    // 11. If IsCallable(thenAction) is false, then
-      // a. Return FulfillPromise(promise, resolution).
-
-    if (!@isObject(resolution)) {
-      // ------------------- FulfillPromise(promise, value) ------------------ //
-
-      // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
-      // 2. Let reactions be the value of promise's [[PromiseFulfillReactions]] internal slot.
-      var reactions = @PromiseFulfillReactions(promise);
-      // 3. Set the value of promise's [[PromiseResult]] internal slot to value.
-      @PromiseResult(promise, resolution);
-      // 4. Set the value of promise's [[PromiseFulfillReactions]] internal slot to undefined.
-      @PromiseFulfillReactions(promise, undefined);
-      // 5. Set the value of promise's [[PromiseRejectReactions]] internal slot to undefined.
-      @PromiseRejectReactions(promise, undefined);
-      // 6. Set the value of promise's [[PromiseState]] internal slot to "fulfilled".
-      @PromiseState(promise, "fulfilled");
-      // 7. Return TriggerPromiseReactions(reactions, value).
-
-      // ------------- TriggerPromiseReactions(reactions, value) -------------- //
-
-      // 1. Repeat for each reaction in reactions, in original insertion order
-      for (var i = 0; i < reactions.length; i++) {
-        var reaction = reactions[i];
-        // a. Perform EnqueueJob("PromiseJobs", PromiseReactionJob, «reaction, argument»).
-        @getLoop().push({ func: @getLoc("PromiseReactionJob"), args: [reaction, resolution] });
-      }
-      // 2. Return undefined.
-      return undefined;
-    }
-
     var thenAction = resolution["then"];
 
+    // 11. If IsCallable(thenAction) is false, then
     if (!@IsCallable(thenAction)) {
+      // a. Return FulfillPromise(promise, resolution).
+
       // ------------------- FulfillPromise(promise, value) ------------------ //
 
       // 1. Assert: the value of promise's [[PromiseState]] internal slot is "pending".
@@ -651,12 +698,10 @@ Function: {
       return undefined;
     }
 
-    @getLoop().push({ func: @getLoc("PromiseResolveThenableJob"), args: [promise, resolution, thenAction] });
-
-    // ---------------------------------------------------------------------- //
-
     // 12. Perform EnqueueJob ("PromiseJobs", PromiseResolveThenableJob, «promise, resolution, thenAction»)
+    @getLoop().push({ func: @getLoc("PromiseResolveThenableJob"), args: [promise, resolution, thenAction] });
     // 13. Return undefined.
+    return undefined;
   }
   \\],
   10: [\\
