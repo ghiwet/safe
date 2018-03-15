@@ -678,7 +678,98 @@ Heap: {
     [[Prototype]]: #Function.prototype,
     [[Scope]]: null,
     "length": <3, F, F, F>,
+    "INTERNAL_FIELDS": <#Field.INTERNAL_FIELDS, T, T, T>,
     "prototype": <#Field.prototype, F, F, F>
+  },
+  #Field.INTERNAL_FIELDS: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "string": <#Field.INTERNAL_FIELDS.string, T, T, T>,
+    "password": <#Field.INTERNAL_FIELDS.password, T, T, T>,
+    "boolean": <#Field.INTERNAL_FIELDS.boolean, T, T, T>,
+    "richtext": <#Field.INTERNAL_FIELDS.richtext, T, T, T>,
+    "action": <#Field.INTERNAL_FIELDS.action, T, T, T>,
+    "image": <#Field.INTERNAL_FIELDS.image, T, T, T>,
+  },
+  #Field.INTERNAL_FIELDS.string: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "EVENTS": <#Field.INTERNAL_FIELDS.string.EVENTS, T, T, T>
+  },
+  #Field.INTERNAL_FIELDS.string.EVENTS: {
+    [[Class]]: "Array",
+    [[Extensible]]: true,
+    [[Prototype]]: #Array.prototype,
+    "0": <"changeValue", T, T, T>,
+    "1": <"keyboardAction", T, T, T>,
+    "length": <2, T, F, F>
+  },
+  #Field.INTERNAL_FIELDS.password: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "EVENTS": <#Field.INTERNAL_FIELDS.password.EVENTS, T, T, T>
+  },
+  #Field.INTERNAL_FIELDS.password.EVENTS: {
+    [[Class]]: "Array",
+    [[Extensible]]: true,
+    [[Prototype]]: #Array.prototype,
+    "0": <"changeValue", T, T, T>,
+    "length": <1, T, F, F>
+  },
+  #Field.INTERNAL_FIELDS.boolean: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "EVENTS": <#Field.INTERNAL_FIELDS.boolean.EVENTS, T, T, T>
+  },
+  #Field.INTERNAL_FIELDS.boolean.EVENTS: {
+    [[Class]]: "Array",
+    [[Extensible]]: true,
+    [[Prototype]]: #Array.prototype,
+    "0": <"changeValue", T, T, T>,
+    "length": <1, T, F, F>
+  },
+  #Field.INTERNAL_FIELDS.richtext: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "EVENTS": <#Field.INTERNAL_FIELDS.richtext.EVENTS, T, T, T>
+  },
+  #Field.INTERNAL_FIELDS.richtext.EVENTS: {
+    [[Class]]: "Array",
+    [[Extensible]]: true,
+    [[Prototype]]: #Array.prototype,
+    "0": <"click", T, T, T>,
+    "length": <1, T, F, F>
+  },
+  #Field.INTERNAL_FIELDS.action: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "EVENTS": <#Field.INTERNAL_FIELDS.action.EVENTS, T, T, T>
+  },
+  #Field.INTERNAL_FIELDS.action.EVENTS: {
+    [[Class]]: "Array",
+    [[Extensible]]: true,
+    [[Prototype]]: #Array.prototype,
+    "0": <"click", T, T, T>,
+    "length": <1, T, F, F>
+  },
+  #Field.INTERNAL_FIELDS.image: {
+    [[Class]]: "Object",
+    [[Extensible]]: true,
+    [[Prototype]]: #Object.prototype,
+    "EVENTS": <#Field.INTERNAL_FIELDS.image.EVENTS, T, T, T>
+  },
+  #Field.INTERNAL_FIELDS.image.EVENTS: {
+    [[Class]]: "Array",
+    [[Extensible]]: true,
+    [[Prototype]]: #Array.prototype,
+    "0": <"click", T, T, T>,
+    "length": <1, T, F, F>
   },
   #Field.prototype: {
     [[Class]]: "Object",
@@ -1002,10 +1093,11 @@ Function: {
   \\],
   24: [\\
   function login (credentials) {
-        return Promise.resolve({
-                data: "this is my data",
-                code: 200
-            });
+    // sink
+    return Promise.resolve({
+            data: "this is my data",
+            code: 200
+        });
   }
   \\],
   25: [\\
@@ -1135,13 +1227,22 @@ Function: {
   }
   \\],
   55: [\\
-  function getLocal() {
-    return Promise.reject();
+  function getLocal(docId) {
+    if (docId === "logincache") {
+      return Promise.resolve({
+        login: "max@@test",
+        password: "passwordIsSecure",
+        autologin: true,
+        _rev: "1-23202479633c2b380f79507a776743d5"
+      });
+    } else {
+      return Promise.reject();
+    }
   }
   \\],
   56: [\\
-  function putLocal() {
-
+  function putLocal(doc) {
+    return Promise.resolve();
   }
   \\],
   57: [\\
@@ -1242,7 +1343,8 @@ Function: {
   76: [\\
   function Field(config, overRides, additionalProps) {
     this.id = config.id;
-    this.EVENTS = [ "click" ];
+    this.type = config.type
+    this.EVENTS = @getLoc("Field.INTERNAL_FIELDS")[this.type].EVENTS;
   }
   \\],
   78: [\\
