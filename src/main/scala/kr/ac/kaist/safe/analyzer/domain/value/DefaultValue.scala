@@ -27,6 +27,7 @@ object DefaultValue extends ValueDomain {
     case StringT => apply(AbsStr.Top)
     case NumberT => apply(AbsNum.Top)
     case BoolT => apply(AbsBool.Top)
+    case UntaintedT => Top
   }
 
   def apply(pvalue: AbsPValue): Elem = Bot.copy(pvalue = pvalue)

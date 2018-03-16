@@ -17,6 +17,7 @@ import kr.ac.kaist.safe.nodes.cfg.CFG
 import kr.ac.kaist.safe.util._
 import kr.ac.kaist.safe.analyzer._
 import kr.ac.kaist.safe.analyzer.domain._
+import kr.ac.kaist.safe.analyzer.domain.str.TaintStringSet
 import kr.ac.kaist.safe.analyzer.models.JSModel
 import kr.ac.kaist.safe.errors.error.NoChoiceError
 

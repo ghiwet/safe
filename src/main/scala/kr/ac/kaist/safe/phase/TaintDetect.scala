@@ -44,12 +44,13 @@ import scala.util.{ Failure, Success, Try }
 import kr.ac.kaist.safe.SafeConfig
 import kr.ac.kaist.safe.analyzer._
 import kr.ac.kaist.safe.analyzer.domain.DefaultBool.True
-import kr.ac.kaist.safe.analyzer.domain._
+import kr.ac.kaist.safe.analyzer.domain.DefaultFId.{ FIdSet, Top }
+import kr.ac.kaist.safe.analyzer.domain.{ ConInf, _ }
 import kr.ac.kaist.safe.nodes.cfg._
 import kr.ac.kaist.safe.analyzer.models.builtin.BuiltinGlobal
 import kr.ac.kaist.safe.nodes.ir.IRNode
+import kr.ac.kaist.safe.phase.TaintDetect.taintSinks
 import kr.ac.kaist.safe.util._
-import kr.ac.kaist.safe.analyzer.domain.DefaultObject.{ ObjMap, Top }
 // Taint analysis prototype: detector phase
 // MISSING: check non-primitive object arguments.
 // MISSING: detecting property stores to sensitive (DOM) properties.
@@ -81,20 +82,15 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
       case loc: AbsLoc => {
         var bVal = false
         val obj = h.get(loc);
-        obj match {
-          case ObjMap(amap, imap) => {
-            val map = amap.getMap
-
-            map.foreach({
-              case (str, dataprop) => {
-                bVal = bVal || dataprop.value.pvalue.strval.isTop
-              }
-            })
-
+        val nmap = obj.nmap
+        nmap.map.foreach({
+          case (str, dataprop) => {
+            bVal = bVal || dataprop.content.value.pvalue.strval.isTop
           }
-        }
+        })
         bVal
       }
+      case _ => false
     }
   }
   private def checkBlock(block: CFGBlock, semantics: Semantics): BugList =
@@ -115,7 +111,7 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
                 val argsObj = state.heap.get(argsLoc)
                 // Determine length of argument object
                 val lenVal = argsObj.Get("length", state.heap)
-                val absLen = TypeConversionHelper.ToUInt32(lenVal)
+                val absLen = TypeConversionHelper.ToUint32(lenVal)
                 val len: Option[Int] = absLen.getSingle match {
                   case ConOne(n) => Option(n.toInt)
                   // Note: Ignore calls with imprecise argument count (unsound)
@@ -133,7 +129,12 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
               val calledSinks = funLocs.foldLeft(Set[FunctionId]()) { (cs, funloc) =>
                 val o = state.heap.get(funloc)
                 val fs = o(ICall).fidset
-                cs ++ fs.filter(f => taintSinks(f))
+                fs match {
+                  case FIdSet(set) =>
+                    cs ++ set.filter(f => taintSinks(f))
+                  case _ => cs
+                }
+
               }
 
               // Construct bug reports
@@ -164,30 +165,36 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
     val (cfg, _, tp, semantics) = in
 
     val st = semantics.getState(ControlPoint(cfg.globalFunc.exit, tp))
-    val g: AbsObject = st.heap.get(BuiltinGlobal.loc)
+    val g: AbsObj = st.heap.get(BuiltinGlobal.loc)
 
     // Helper for heap lookups in model
-    def getSingleLoc(absLoc: AbsLoc): AbsObject = absLoc.getSingle match {
+    def getSingleLoc(absLoc: AbsLoc): AbsObj = absLoc.getSingle match {
       case ConOne(loc) => st.heap.get(loc)
       case _ => throw new AssertionError("expected single location")
     }
 
     // Helper: add sink function's internal ID to the taintSinks set
-    def addSinkFunc(funcObj: AbsObject, name: String): Unit = {
+    def addSinkFunc(funcObj: AbsObj, name: String): Unit = {
       val fs = funcObj(ICall).fidset
-      assert(fs.size == 1, "expected single location")
-      val sink = fs.head
+      fs match {
+        case FIdSet(set) => {
+          assert(set.size == 1, "expected single location")
+          val sink = set.head
 
-      // Report duplicates
-      if (taintSinks.contains(sink))
-        Console.err.println(s"Sink '$name' already exists")
-      else
-        taintSinks += sink
+          // Report duplicates
+          if (taintSinks.contains(sink))
+            Console.err.println(s"Sink '$name' already exists")
+          else
+            taintSinks += sink
+        }
+        case Top =>
+      }
+
     }
 
     // Helper: lookup a sink function and add it the taintSinks set
     def addSink[T](objName: T, funcName: String): Unit = {
-      val o: AbsObject = objName match {
+      val o: AbsObj = objName match {
         case l: Loc => st.heap.get(l)
         case s: String => getSingleLoc(g(s).value.locset)
       }
@@ -210,7 +217,7 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
     // Add sinks from a special global __sinks object in the user code, e.g.
     // __sinks = { "sink description": some_sink_function };
     // rhs value in __sinks must be a reference to a function object
-    if (g.HasProperty(AbsString("__sinks"), st.heap) == AbsBool.True) {
+    if (g.HasProperty(AbsStr("__sinks"), st.heap) == AbsBool.True) {
       val o = getSingleLoc(g.Get("__sinks", st.heap).locset)
       o.abstractKeySet match {
         case ConFin(set) => set foreach { key =>
@@ -221,7 +228,7 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
           val fo = getSingleLoc(o.Get(key, st.heap).locset)
           addSinkFunc(fo, sinkName)
         }
-        case ConInf() => throw new AssertionError("expected concrete __sink object")
+        case ConInf => throw new AssertionError("expected concrete __sink object")
       }
     }
 
