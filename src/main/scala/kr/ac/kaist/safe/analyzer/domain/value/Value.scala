@@ -21,3 +21,4 @@ abstract class TypeValue(name: String) extends Value {
 case object StringT extends TypeValue("string")
 case object NumberT extends TypeValue("number")
 case object BoolT extends TypeValue("bool")
+case object UntaintedT extends TypeValue("untainted")

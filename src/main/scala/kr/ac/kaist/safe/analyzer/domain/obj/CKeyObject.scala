@@ -171,7 +171,7 @@ object CKeyObject extends ObjDomain {
     def contains(iname: IName): AbsBool = imap.contains(_.isBottom)(iname)
 
     // abstract key set
-    def abstractKeySet: ConSet[AbsStr] = ConFin(nmap.map.keySet.map(AbsStr(_)) + AbsStr.Top)
+    def abstractKeySet: ConSet[AbsStr] = ConFin(nmap.map.keySet.map(AbsStr(_)))
 
     // abstract key set with filtering
     def abstractKeySet(filter: (AbsStr, AbsDataProp) => Boolean): ConSet[AbsStr] = {

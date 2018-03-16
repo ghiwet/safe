@@ -38,10 +38,13 @@
  * This distribution may include materials developed by third parties.
  */
 
-package kr.ac.kaist.safe.analyzer.domain
+package kr.ac.kaist.safe.analyzer.domain.str
+
+import kr.ac.kaist.safe.analyzer.domain.{ AbsBool, AbsNum, ConFin, ConInf, ConMany, ConOne, ConSet, ConSingle, ConZero, Num, Str, StrDomain, json2set, json2str }
 
 import scala.collection.immutable.HashSet
 import scala.util.Try
+import spray.json._
 
 // string set domain with max set size
 case class TaintStringSet(maxSetSize: Int) extends StrDomain {
@@ -66,6 +69,12 @@ case class TaintStringSet(maxSetSize: Int) extends StrDomain {
       else Number
     } else if (hasOther(strSet)) Other
     else Top
+  }
+  def fromJson(v: JsValue): Elem = v match {
+    case JsString("⊤") => Top
+    case JsString("number") => Number
+    case JsString("other") => Other
+    case _ => StrSet(json2set(v, json2str))
   }
 
   sealed abstract class Elem extends ElemTrait {
@@ -157,18 +166,18 @@ case class TaintStringSet(maxSetSize: Int) extends StrDomain {
       case (Number, StrSet(v)) if hasNum(v) =>
         alpha(v.filter((s: String) => isNumber(s)))
       case (StrSet(_), Number)
-           | (Number, StrSet(_)) => Bot
+        | (Number, StrSet(_)) => Bot
 
       case (StrSet(v), Other) if hasOther(v) =>
         alpha(v.filter((s: String) => !isNumber(s)))
       case (Other, StrSet(v)) if hasOther(v) =>
         alpha(v.filter((s: String) => !isNumber(s)))
       case (StrSet(_), Other)
-           | (Other, StrSet(_)) => Bot
+        | (Other, StrSet(_)) => Bot
 
       case (Number, Number) => Number
       case (Number, Other)
-           | (Other, Number) => Bot
+        | (Other, Number) => Bot
       case (Other, Other) => Other
 
       case _ =>
@@ -283,7 +292,7 @@ case class TaintStringSet(maxSetSize: Int) extends StrDomain {
             result ⊔ AbsBool(v.contains(s))
           })
         }
-        case Top | Untainted=> AbsBool.Top
+        case Top | Untainted => AbsBool.Top
         case Bot => AbsBool.Bot
       }
 
@@ -292,7 +301,7 @@ case class TaintStringSet(maxSetSize: Int) extends StrDomain {
         case Number => AbsNum.UInt
         case Other => AbsNum.UInt
         case StrSet(vs) => vs.foldLeft[AbsNum](AbsNum.Bot)((result, v) => result ⊔ AbsNum(v.length))
-        case Top | Untainted=> AbsNum.UInt
+        case Top | Untainted => AbsNum.UInt
         case Bot => AbsNum.Bot
       }
 
@@ -310,7 +319,7 @@ case class TaintStringSet(maxSetSize: Int) extends StrDomain {
         case Number => Top
         case Other => Other
         case StrSet(vs) => vs.foldLeft[Elem](Bot)((result, v) => result ⊔ alpha(v.toUpperCase))
-        case Top | Untainted=> Top
+        case Top | Untainted => Top
         case Bot => Bot
       }
 
@@ -332,7 +341,7 @@ case class TaintStringSet(maxSetSize: Int) extends StrDomain {
 
     // gamma(this) contains str
     def isRelated(str: String): Boolean = this match {
-      case Top | Untainted=> true
+      case Top | Untainted => true
       case Bot => false
       case Number => isNumber(str)
       case Other => !isNumber(str)
