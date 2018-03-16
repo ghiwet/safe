@@ -1,24 +1,13 @@
-if(typeof console!=='object'){
-    console= {        
-        log: function(){},
-        appDebug: function(){}       
-    };
- }
- function Parent(){
-     function Controller(){;}
-     Controller.prototype= Object.prototype;
-     return Controller;
- }
 function Login(){
     function LoginController(){;}
-    LoginController.prototype= new Parent();
+    LoginController.prototype= Object.prototype;
     LoginController.prototype.login = function innerLogin(v){
-       console.log("input ",v);
+       //console.log("input ",v);
     }
     external = LoginController; 
     return LoginController;   
 }
-
+var input ={"login":login, "password":"gere"}
 function main(){
     var LoginController= Login();
     var controller = new LoginController();
@@ -29,5 +18,8 @@ function main(){
 main();
 var controller = external;
 
-
+__sinks = {
+	"(info only)cotroller.login": external.login
+};
+Object.freeze(__sinks);
 
