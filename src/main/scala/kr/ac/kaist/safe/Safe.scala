@@ -94,6 +94,7 @@ object Safe {
     HeapBuild,
     Analyze,
     BugDetect,
+    TaintDetect,
     Web,
     Help
   )
