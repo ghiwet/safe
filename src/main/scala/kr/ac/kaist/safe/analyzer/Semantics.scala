@@ -728,8 +728,6 @@ case class Semantics(
         else HashSet(TypeError)
 
       val AT = (AbsBool.True, AbsAbsent.Bot)
-      val name = AbsValue(AbsPValue(strval = keyStr))
-      val desc = AbsDesc((name, AbsAbsent.Bot), AT, AT, AT)
       val (retObj, retExcSet) = keyStr.gamma match {
         case ConFin(set) => {
           // 2. Let n be the number of own properties in O
@@ -741,6 +739,8 @@ case class Semantics(
             case ((arr, e), index) => {
               // b. Call the [[DefineOwnProperty]] internal method of array with arguments ToString(n),
               //    the PropertyDescriptor {[[Value]]: name, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]:true}, and false.
+              val name = AbsValue(AbsPValue(set.toSeq(index)))
+              val desc = AbsDesc((name, AbsAbsent.Bot), AT, AT, AT)
               val (newArr, _, excSet) = arr.DefineOwnProperty(AbsStr(index.toString), desc, false, h)
               (newArr, e ++ excSet)
             }
@@ -754,6 +754,8 @@ case class Semantics(
           // 4. For each named own property P of O (with index n started from 0)
           //   a. Call the [[DefineOwnProperty]] internal method of array with arguments ToString(index),
           //      the PropertyDescriptor {[[Value]]: P, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]: true}, and false.
+          val name = AbsValue(AbsPValue(strval = keyStr))
+          val desc = AbsDesc((name, AbsAbsent.Bot), AT, AT, AT)
           val (newArr, _, excSet) = array.DefineOwnProperty(AbsStr.Number, desc, false, h)
           (newArr, excSet)
         }
@@ -787,8 +789,6 @@ case class Semantics(
         else HashSet(TypeError)
 
       val AT = (AbsBool.True, AbsAbsent.Bot)
-      val name = AbsValue(AbsPValue(strval = keyStr))
-      val desc = AbsDesc((name, AbsAbsent.Bot), AT, AT, AT)
       val (retObj, retExcSet) = keyStr.gamma match {
         case ConFin(set) => {
           // 2. Let n be the number of own properties in O
@@ -800,6 +800,8 @@ case class Semantics(
             case ((arr, e), index) => {
               // b. Call the [[DefineOwnProperty]] internal method of array with arguments ToString(n),
               //    the PropertyDescriptor {[[Value]]: name, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]:true}, and false.
+              val name = AbsValue(AbsPValue(set.toSeq(index)))
+              val desc = AbsDesc((name, AbsAbsent.Bot), AT, AT, AT)
               val (newArr, _, excSet) = arr.DefineOwnProperty(AbsStr(index.toString), desc, false, h)
               (newArr, e ++ excSet)
             }
@@ -813,6 +815,8 @@ case class Semantics(
           // 4. For each named own property P of O (with index n started from 0)
           //   a. Call the [[DefineOwnProperty]] internal method of array with arguments ToString(index),
           //      the PropertyDescriptor {[[Value]]: P, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]: true}, and false.
+          val name = AbsValue(AbsPValue(strval = keyStr))
+          val desc = AbsDesc((name, AbsAbsent.Bot), AT, AT, AT)
           val (newArr, _, excSet) = array.DefineOwnProperty(AbsStr.Number, desc, false, h)
           (newArr, excSet)
         }
