@@ -159,7 +159,7 @@ object ModelParser extends RegexParsers with JavaTokenParsers {
   private lazy val T: Parser[Boolean] = "T" ^^^ { true }
   private lazy val F: Parser[Boolean] = "F" ^^^ { false }
   private lazy val shortBool: Parser[Boolean] = T | F
-  private lazy val any: Parser[String] = """[^\\]*""".r
+  private lazy val any: Parser[String] = """([^\\]|[\\][^\\]|[\\]{2}[^\]])*""".r
 
   // JavaScript primitive value
   private lazy val jsNum: Parser[Num] = num ^^ { Num(_) }
