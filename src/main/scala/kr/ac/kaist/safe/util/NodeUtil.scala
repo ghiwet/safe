@@ -159,6 +159,7 @@ object NodeUtil {
   val INTERNAL_GET_LOC = internalAPIName("getLoc")
   val INTERNAL_HAS_CONST = internalAPIName("HasConstruct")
   val INTERNAL_GET_LOOP = internalAPIName("getLoop")
+  val INTERNAL_Is_STR_TOP = internalAPIName("IsStrTop")
   val internalCallSet: Set[String] = HashSet(
     INTERNAL_CLASS,
     INTERNAL_PRIM_VAL,
@@ -218,7 +219,8 @@ object NodeUtil {
     INTERNAL_PRO_RES,
     INTERNAL_PRO_FREAC,
     INTERNAL_PRO_RREAC,
-    INTERNAL_GET_LOOP
+    INTERNAL_GET_LOOP,
+    INTERNAL_Is_STR_TOP
   )
   def isInternalCall(id: String): Boolean = internalCallSet.contains(id)
 

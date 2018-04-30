@@ -1640,6 +1640,18 @@ case class Semantics(
       val st1 = st.varStore(lhs, value)
       (st1, excSt)
     }
+    case (NodeUtil.INTERNAL_Is_STR_TOP, List(expr), None) => {
+      val (v, excSet) = V(expr, st)
+      val st1 =
+        if (!v.isBottom) {
+          val boolVal = AbsValue(v.pvalue.strval.isTop)
+          st.varStore(lhs, boolVal)
+        } else {
+          AbsState.Bot
+        }
+      val newExcSt = st.raiseException(excSet)
+      (st1, excSt ⊔ newExcSt)
+    }
     case _ =>
       excLog.signal(SemanticsNotYetImplementedError(ir))
       (AbsState.Bot, AbsState.Bot)
