@@ -4,7 +4,8 @@
     arrObj[0] = "a";
     arrObj[1] = "b";
     arrObj[2] = "c";
-    var jsonText = JSON.stringify(arrObj, undefined, "").toString();
+    jsonText = JSON.stringify(arrObj, undefined, "").toString();
+    json = "jsonText".charAt(0)
     return jsonText.charAt(jsonText.length - 1) === "]";
   }
   {
