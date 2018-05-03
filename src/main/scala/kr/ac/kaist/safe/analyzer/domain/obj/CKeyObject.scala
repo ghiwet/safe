@@ -451,13 +451,17 @@ object CKeyObject extends ObjDomain {
       val toString = Get("toString", h)
       val isCallable = TypeConversionHelper.IsCallable(toString, h)
       val str =
-        if (AbsBool.True ⊑ isCallable) AbsPValue(strval = AbsStr.Top)
-        else AbsPValue.Bot
+        if (AbsBool.True ⊑ isCallable) {
+          if (this(IPrimitiveValue).value.pvalue != AbsPValue.Bot) this(IPrimitiveValue).value.pvalue
+          else AbsPValue(strval = AbsStr.Top)
+        } else AbsPValue.Bot
       if (AbsBool.False ⊑ isCallable) {
         val valueOf = Get("valueOf", h)
         val value =
-          if (AbsBool.True ⊑ TypeConversionHelper.IsCallable(valueOf, h)) AbsPValue.Top
-          else AbsPValue.Bot
+          if (AbsBool.True ⊑ TypeConversionHelper.IsCallable(valueOf, h)) {
+            if (this(IPrimitiveValue).value.pvalue != AbsPValue.Bot) this(IPrimitiveValue).value.pvalue
+            else AbsPValue.Top
+          } else AbsPValue.Bot
         str ⊔ value
       } else str
     }
@@ -466,13 +470,17 @@ object CKeyObject extends ObjDomain {
       val valueOf = Get("valueOf", h)
       val isCallable = TypeConversionHelper.IsCallable(valueOf, h)
       val value =
-        if (AbsBool.True ⊑ isCallable) AbsPValue.Top
-        else AbsPValue.Bot
+        if (AbsBool.True ⊑ isCallable) {
+          if (this(IPrimitiveValue).value.pvalue != AbsPValue.Bot) this(IPrimitiveValue).value.pvalue
+          else AbsPValue.Top
+        } else AbsPValue.Bot
       if (AbsBool.False ⊑ isCallable) {
         val toString = Get("toString", h)
         val str =
-          if (AbsBool.True ⊑ TypeConversionHelper.IsCallable(toString, h)) AbsPValue(strval = AbsStr.Top)
-          else AbsPValue.Bot
+          if (AbsBool.True ⊑ TypeConversionHelper.IsCallable(toString, h)) {
+            if (this(IPrimitiveValue).value.pvalue != AbsPValue.Bot) this(IPrimitiveValue).value.pvalue
+            else AbsPValue(strval = AbsStr.Top)
+          } else AbsPValue.Bot
         value ⊔ str
       } else value
     }
