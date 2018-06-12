@@ -69,6 +69,11 @@ case object Analyze extends PhaseObj[(CFG, Semantics, TracePartition, HeapBuildC
       println(state.toString)
     }
 
+    // Compute average points-to size
+    val pointerAnalysis = new PointerAnalysis(sem, cfg);
+    val avgsize = pointerAnalysis.avgPtsSize(initTP);
+    println("average points-to size: " + avgsize)
+
     Success((cfg, iters, initTP, sem))
   }
 

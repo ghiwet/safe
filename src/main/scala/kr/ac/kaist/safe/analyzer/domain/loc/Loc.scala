@@ -24,7 +24,7 @@ abstract class Loc extends Value {
     case UserAllocSite(_) => true
     case PredAllocSite(_) => false
   }
-
+  def getLocASite: AllocSite
   override def toString: String = this match {
     case Recency(loc, _) => loc.toString
     case u @ UserAllocSite(_) => throw UserAllocSiteError(u)

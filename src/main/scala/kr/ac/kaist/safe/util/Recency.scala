@@ -22,6 +22,7 @@ case class Recency(
     loc: Loc,
     recency: RecencyTag = Recent
 ) extends Loc {
+  def getLocASite: AllocSite = loc.asInstanceOf[AllocSite]
   override def toString: String = s"${recency}${loc}"
   def toJson: JsValue = JsObject(
     ("loc", loc.toJson),

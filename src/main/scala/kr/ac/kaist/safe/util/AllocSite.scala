@@ -27,12 +27,14 @@ object AllocSite {
 
 // allocation site defined in user code
 case class UserAllocSite(id: Int) extends AllocSite {
+  def getLocASite: AllocSite = this
   override def toString: String = s"#$id"
   def toJson: JsValue = JsNumber(id)
 }
 
 // predefined allocation site
 case class PredAllocSite(name: String) extends AllocSite {
+  def getLocASite: AllocSite = this
   override def toString: String = s"#$name"
   def toJson: JsValue = JsString(name)
 }
