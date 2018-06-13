@@ -107,7 +107,7 @@ class PointerAnalysis(
     })
     System.out.println("Total number of properties: " + (avgStrcount - 3))
     System.out.println("Total number of properties pointing to undefined: " + strUndefCount)
-    System.out.println("Percentage of properties pointing to undefined: " + strUndefCount / (strUndefCount + avgStrcount - 3))
+    System.out.println("Percentage of properties pointing to undefined: " + 100 * strUndefCount / (strUndefCount + avgStrcount - 3))
     System.out.println("Number properties pointing to UInt/NUInt: " + UIntCount)
     (avgPropCount - 3) / (avgStrcount - 3)
   }
