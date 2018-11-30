@@ -132,6 +132,12 @@ case object CmdAnalyze extends CommandObj("analyze", CmdHeapBuild >> Analyze) {
   }
 }
 
+//analyzeWALA
+case object CmdAnalyzeWALA extends CommandObj("analyzeWALA", CmdCFGBuild >> AnalyzeWALA) {
+  override def display(pointsTo: Double): Unit = ()
+
+}
+
 // bugDetect
 case object CmdBugDetect extends CommandObj("bugDetect", CmdAnalyze >> BugDetect) {
   override def display(cfg: CFG): Unit = ()
