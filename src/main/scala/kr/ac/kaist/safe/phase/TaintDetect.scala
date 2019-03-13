@@ -74,12 +74,13 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
   type BugList = List[TaintBug]
 
   private def isReachableUserCode(sem: Semantics, block: CFGBlock): Boolean =
-    !sem.getState(block).isEmpty && !NodeUtil.isModeled(block)
+    !sem.getState(block).isEmpty
 
-  private def isTainted(argVal: AbsValue, h: AbsHeap, depth: Int): Boolean = {
+  private def isTainted(argVal: AbsValue, h: AbsHeap): Boolean = {
     var iters = Stack[Int]()
     var iter = 0
     var bVal = false
+    var processed = Set[AbsValue](argVal)
     def innerTaints(argVal: AbsValue, h: AbsHeap): Boolean = {
       argVal.locset match {
         case loc: AbsLoc if loc.isBottom => argVal.pvalue.strval.isTop
@@ -88,13 +89,15 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
           val nmap = obj.nmap
           nmap.map.foreach({
             case (str, dataprop) => {
-              if (iter < depth) {
-                iters.push(iter)
-                iter += 1
+              iters.push(iter)
+              iter += 1
+              if (!processed.contains(dataprop.content.value)) {
+                processed = processed + dataprop.content.value
                 bVal = bVal || innerTaints(dataprop.content.value, h)
-                iter = iters.pop()
               } else
                 bVal
+              iter = iters.pop()
+              bVal
             }
           })
           bVal
@@ -104,7 +107,7 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
     }
     innerTaints(argVal, h)
   }
-  private def checkBlock(block: CFGBlock, semantics: Semantics, depth: Int): BugList =
+  private def checkBlock(block: CFGBlock, semantics: Semantics): BugList =
     if (isReachableUserCode(semantics, block) && !block.getInsts.isEmpty) {
       val (_, st) = semantics.getState(block).head
       val (bugs, _) =
@@ -132,7 +135,7 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
                   // Lookup argument value in argument object
                   val argVal = argsObj.Get(i.toString, state.heap)
                   // An argument that may be string-top or that contains string-top property may be tainted
-                  isTainted(argVal, state.heap, depth)
+                  isTainted(argVal, state.heap)
                 }
               }
 
@@ -246,8 +249,7 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
     println(s"num sinks: ${taintSinks.size}")
 
     // Run taint detection
-    val bugs = cfg.getUserBlocks.foldRight(List[TaintBug]())((b, r) => checkBlock(b, semantics, config.depth) ++ r)
-
+    val bugs = cfg.getAllBlocks.foldRight(List[TaintBug]())((b, r) => checkBlock(b, semantics) ++ r)
     // Print results
     if (bugs.nonEmpty) {
       println(s"=== ${bugs.size} taint bug(s) detected ===")
@@ -268,14 +270,11 @@ case object TaintDetect extends PhaseObj[(CFG, Int, TracePartition, Semantics), 
   def defaultConfig: TaintDetectConfig = TaintDetectConfig()
   val options: List[PhaseOption[TaintDetectConfig]] = List(
     ("silent", BoolOption(c => c.silent = true),
-      "messages during bug detection are muted."),
-    ("depth", NumOption((c, n) => c.depth = n),
-      "depth during object tainting")
+      "messages during bug detection are muted.")
   )
 }
 
 // TaintDetect phase config
 case class TaintDetectConfig(
-  var silent: Boolean = false,
-  var depth: Int = 5
+  var silent: Boolean = false
 ) extends Config
